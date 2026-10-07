@@ -21,9 +21,9 @@ import {VO} from '../timeline';
 /* ---------------- mốc thời gian (frame cảnh) ---------------- */
 const RING = [34, 70]; // hai hồi chuông
 const CONNECT = 105; // khách bắt máy
-const HANGUP = 536; // cúp máy
-const CARD = 544; // thẻ kết quả bật lên
-const CHECK = 550; // tick xanh bắt đầu vẽ
+const HANGUP = 533; // cúp máy (khách vừa dứt câu c2)
+const CARD = 545; // thẻ kết quả bật lên
+const CHECK = 551; // tick xanh bắt đầu vẽ
 
 /** Mốc một chữ của câu thoại tính theo frame cảnh. */
 const wordAt = (id: keyof typeof VO, i: number) => VO[id].at + VOICE[id].words[i].at;
@@ -32,11 +32,12 @@ const wordAt = (id: keyof typeof VO, i: number) => VO[id].at + VOICE[id].words[i
 const PY = (1080 - PHONE.h) / 2;
 const PX_DIAL = 1230; // điện thoại khi đang đổ chuông (tiêu đề bên trái)
 const PX_CALL = (1920 - PHONE.w) / 2; // điện thoại ở giữa khi đang nói chuyện
-const SIDE_W = 520;
-const SIDE_L = 110; // cột Sirrok
-const SIDE_R = 1920 - 110 - SIDE_W; // cột khách hàng
-const BUBBLE_BASE = 880; // đáy bong bóng mới nhất
-const BUBBLE_SHIFT = 172; // bong bóng cũ bị đẩy lên bao nhiêu
+const SIDE_W = 580;
+const SIDE_L = 86; // cột Sirrok
+const SIDE_R = 1920 - 86 - SIDE_W; // cột khách hàng
+const HEAD_TOP = 216; // đầu cột: avatar + tên + sóng âm
+const BUBBLE_BASE = 846; // đáy bong bóng mới nhất
+const BUBBLE_SHIFT = 160; // bong bóng cũ bị đẩy lên bao nhiêu
 
 /* ---------------- lời thoại thành bong bóng ---------------- */
 type Phrase = {side: 'a' | 'c'; id: 'a1' | 'a2' | 'c1' | 'c2'; pick: number[]; hi?: boolean; replace?: Record<number, string>};
@@ -80,7 +81,7 @@ const IconHandset: React.FC<{size: number; color: string; rotate?: number}> = ({
 /* ---------------- Dynamic Island: live activity cuộc gọi ---------------- */
 const CallIsland: React.FC<{f: number}> = ({f}) => {
   const grow = Math.min(ev(f, [20, 36], [0, 1], E.back), 1 - ev(f, [HANGUP + 2, HANGUP + 14], [0, 1], E.inOut));
-  const w = 160 + (380 - 160) * grow;
+  const w = 160 + (250 - 160) * grow;
   const h = 46 + (54 - 46) * grow;
   const show = ev(f, [28, 38], [0, 1], E.out) * (1 - ev(f, [HANGUP, HANGUP + 8], [0, 1], E.in));
   const live = ev(f, [CONNECT, CONNECT + 10], [0, 1], E.out);
@@ -99,7 +100,7 @@ const CallIsland: React.FC<{f: number}> = ({f}) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 22px',
+        padding: '0 18px 0 16px',
         overflow: 'hidden',
       }}
     >
@@ -108,7 +109,7 @@ const CallIsland: React.FC<{f: number}> = ({f}) => {
         <EyePair logoWidth={62} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 22, top: 15}} />
       </div>
       {/* phải: đang đổ chuông → chấm xanh + đồng hồ */}
-      <div style={{position: 'relative', height: 30, width: 110, opacity: show}}>
+      <div style={{position: 'relative', height: 30, width: 96, opacity: show}}>
         <div style={{position: 'absolute', right: 0, top: 9, display: 'flex', gap: 7, opacity: 1 - live}}>
           {[0, 1, 2].map((i) => {
             const t = ((f + 30 - i * 6) % 30) / 30;
@@ -138,7 +139,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
   return (
     <>
       {/* quầng xanh rất nhạt sau avatar */}
-      <div style={{position: 'absolute', left: -100, right: -100, top: 180, height: 520, background: 'radial-gradient(closest-side, rgba(11,87,208,0.10), rgba(11,87,208,0))'}} />
+      <div style={{position: 'absolute', left: -100, right: -100, top: 170, height: 500, background: 'radial-gradient(closest-side, rgba(11,87,208,0.10), rgba(11,87,208,0))'}} />
 
       {/* trạng thái → đồng hồ → kết thúc */}
       <div style={{position: 'absolute', left: 0, right: 0, top: 128, height: 44, textAlign: 'center', fontSize: 26, fontWeight: 500}}>
@@ -154,7 +155,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
       </div>
 
       {/* avatar + vòng chuông */}
-      <div style={{position: 'absolute', left: '50%', top: 450, width: 0, height: 0}}>
+      <div style={{position: 'absolute', left: '50%', top: 420, width: 0, height: 0}}>
         {RING.flatMap((r) =>
           [0, 9].map((d) => {
             const t = ev(f, [r + d, r + d + 46], [0, 1], E.out);
@@ -162,26 +163,26 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
             return (
               <div
                 key={`${r}-${d}`}
-                style={{position: 'absolute', left: -100, top: -100, width: 200, height: 200, borderRadius: 100, border: `3px solid ${C.send}`, opacity: vis * 0.55 * (1 - t), scale: String(1 + 0.9 * t)}}
+                style={{position: 'absolute', left: -90, top: -90, width: 180, height: 180, borderRadius: 90, border: `3px solid ${C.send}`, opacity: vis * 0.55 * (1 - t), scale: String(1 + 0.9 * t)}}
               />
             );
           }),
         )}
         {/* vòng sáng theo giọng khách */}
-        <div style={{position: 'absolute', left: -100, top: -100, width: 200, height: 200, borderRadius: 100, background: 'rgba(11,87,208,0.12)', scale: String(1 + Math.min(0.35, cust * 0.6) * live)}} />
+        <div style={{position: 'absolute', left: -90, top: -90, width: 180, height: 180, borderRadius: 90, background: 'rgba(11,87,208,0.12)', scale: String(1 + Math.min(0.35, cust * 0.6) * live)}} />
         <div
           style={{
             position: 'absolute',
-            left: -100,
-            top: -100,
-            width: 200,
-            height: 200,
-            borderRadius: 100,
+            left: -90,
+            top: -90,
+            width: 180,
+            height: 180,
+            borderRadius: 90,
             background: 'linear-gradient(160deg, #9AA0A6, #5F6368)',
             color: C.white,
             display: 'grid',
             placeItems: 'center',
-            fontSize: 96,
+            fontSize: 88,
             fontWeight: 700,
             scale: String(1 + ringBump),
             boxShadow: '0 18px 40px rgba(16,24,40,0.16)',
@@ -192,7 +193,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
       </div>
 
       {/* danh tính người gọi: cặp mắt Sirrok */}
-      <div style={{position: 'absolute', left: '50%', top: 606, translate: '-50% 0', display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 16px', borderRadius: 999, background: '#F1F3F4', whiteSpace: 'nowrap'}}>
+      <div style={{position: 'absolute', left: '50%', top: 556, translate: '-50% 0', display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 16px', borderRadius: 999, background: '#F1F3F4', whiteSpace: 'nowrap'}}>
         <div style={{position: 'relative', width: 44, height: 44, borderRadius: 22, background: C.ink}}>
           <EyePair logoWidth={56} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 22, top: 22}} />
         </div>
@@ -200,7 +201,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
       </div>
 
       {/* nút điều khiển */}
-      <div style={{position: 'absolute', left: 40, right: 40, top: 700, display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{position: 'absolute', left: 40, right: 40, top: 648, display: 'flex', justifyContent: 'space-between'}}>
         {[
           {ic: <IconMic size={38} color={C.text} />, l: 'Tắt tiếng'},
           {ic: <IconKeypad size={38} color={C.text} />, l: 'Phím số'},
@@ -218,7 +219,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
         style={{
           position: 'absolute',
           left: '50%',
-          bottom: 70,
+          bottom: 44,
           translate: '-50% 0',
           width: 104,
           height: 104,
@@ -279,7 +280,7 @@ const SpeakerHead: React.FC<{f: number; side: 'a' | 'c'}> = ({f, side}) => {
   );
 };
 
-const Bubble: React.FC<{f: number; p: Phrase; level: number}> = ({f, p, level}) => {
+const Bubble: React.FC<{f: number; p: Phrase; level: number; retire: number}> = ({f, p, level, retire}) => {
   const isA = p.side === 'a';
   const at = appearAt(p);
   const pop = ev(f, [at, at + 14], [0, 1], E.back);
@@ -297,8 +298,8 @@ const Bubble: React.FC<{f: number; p: Phrase; level: number}> = ({f, p, level}) 
         borderRadius: 40,
         [isA ? 'borderBottomLeftRadius' : 'borderBottomRightRadius']: 12,
         background: bg,
-        opacity: ev(f, [at, at + 8], [0, 1], E.out) * fade,
-        translate: `0px ${-level * BUBBLE_SHIFT + (1 - pop) * 40}px`,
+        opacity: ev(f, [at, at + 8], [0, 1], E.out) * fade * (1 - retire),
+        translate: `0px ${-level * BUBBLE_SHIFT + (1 - pop) * 40 - retire * 40}px`,
         scale: String((0.9 + 0.1 * pop) * (1 - 0.06 * Math.min(1, level))),
         transformOrigin: isA ? 'bottom left' : 'bottom right',
         boxShadow: p.hi ? '0 18px 40px rgba(11,87,208,0.28)' : isA ? '0 16px 36px rgba(0,0,0,0.16)' : 'none',
@@ -310,7 +311,7 @@ const Bubble: React.FC<{f: number; p: Phrase; level: number}> = ({f, p, level}) 
         start={VO[p.id].at}
         pick={p.pick}
         replace={p.replace}
-        size={p.hi ? 52 : 40}
+        size={p.hi ? 52 : 38}
         weight={p.hi ? 800 : 500}
         color={fg}
         align="left"
@@ -336,14 +337,17 @@ const Column: React.FC<{f: number; side: 'a' | 'c'; enter: number; out: number}>
         filter: `blur(${out * 10}px)`,
       }}
     >
-      <div style={{position: 'absolute', top: 150, [isA ? 'left' : 'right']: 0}}>
+      <div style={{position: 'absolute', top: HEAD_TOP, [isA ? 'left' : 'right']: 0}}>
         <SpeakerHead f={f} side={side} />
       </div>
       {mine.map((p, i) => {
         // mỗi câu mới cùng phía đẩy câu cũ lên một bậc
         const level = mine.slice(i + 1).reduce((s, q) => s + ev(f, [appearAt(q) - 4, appearAt(q) + 12], [0, 1], E.inOut), 0);
-        if (f < appearAt(p) || level >= 2) return null;
-        return <Bubble key={i} f={f} p={p} level={level} />;
+        // câu cũ chỉ ở lại một lúc rồi tan, để mỗi phía gọn một bong bóng
+        const next = mine[i + 1];
+        const retire = next ? ev(f, [appearAt(next) + 34, appearAt(next) + 52], [0, 1], E.inOut) : 0;
+        if (f < appearAt(p) || level >= 2 || retire >= 1) return null;
+        return <Bubble key={i} f={f} p={p} level={level} retire={retire} />;
       })}
     </div>
   );
@@ -407,19 +411,21 @@ export const Call: React.FC = () => {
       {/* lưới chấm rất nhạt cho chiều sâu */}
       <AbsoluteFill style={{backgroundImage: 'radial-gradient(rgba(16,24,40,0.07) 1.6px, transparent 1.6px)', backgroundSize: '44px 44px', opacity: 0.8}} />
 
-      {/* tiêu đề lúc đổ chuông */}
-      <div style={{position: 'absolute', left: 150, top: 0, width: 980, height: 1080, display: 'flex', alignItems: 'center'}}>
-        <div style={{position: 'relative', width: '100%'}}>
-          {f < wordAt('n4', 7) + 2 ? (
-            <VoiceText id="n4" f={f} start={VO.n4.at} pick={[1, 2, 3, 4, 5]} size={112} variant="rise" align="left" out={outA} style={{lineHeight: 1.05}} />
-          ) : null}
-          {f >= wordAt('n4', 7) - 4 ? (
-            <div style={{position: 'absolute', left: 0, right: 0, top: '50%', translate: '0 -50%'}}>
-              <VoiceText id="n4" f={f} start={VO.n4.at} pick={[7, 8, 9, 10]} size={112} variant="rise" align="left" out={outB} style={{lineHeight: 1.05}} />
-            </div>
-          ) : null}
-        </div>
-      </div>
+      {/* tiêu đề lúc đổ chuông — ngắt dòng cố định, mỗi lượt ≤ 5 chữ */}
+      {(
+        [
+          {lines: [[1, 2, 3], [4, 5]], out: outA, show: f < wordAt('n4', 7) + 2},
+          {lines: [[7, 8], [9, 10]], out: outB, show: f >= wordAt('n4', 7) - 4},
+        ] as const
+      ).map((h, k) =>
+        h.show ? (
+          <div key={k} style={{position: 'absolute', left: 150, top: 0, width: 980, height: 1080, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            {h.lines.map((pk, j) => (
+              <VoiceText key={j} id="n4" f={f} start={VO.n4.at} pick={[...pk]} size={124} variant="rise" align="left" out={h.out} style={{lineHeight: 1.08}} />
+            ))}
+          </div>
+        ) : null,
+      )}
 
       {/* hai cột hội thoại */}
       {cols > 0 ? (
