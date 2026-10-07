@@ -88,9 +88,19 @@ export async function run({ cfg, dir }) {
   const got = [];
   const skipped = [];
 
+  // Bot check la dac diem cua CA MAY, khong phai cua tung video: dinh mot cai la
+  // dinh het. Thu lai 30 lan chi ton them nua phut moi lan chay ma ket qua y het.
+  const BOT_CHECK = /not a bot|Sign in to confirm|confirm you.re not/i;
+  let botStreak = 0;
+  const BOT_GIVE_UP = reel.botCheckGiveUpAfter ?? 3;
+
   for (const v of research) {
     if (!hasTool) break;
     if (got.length >= want) break;
+    if (botStreak >= BOT_GIVE_UP) {
+      log.warn(`${botStreak} video lien tiep dinh bot check — dung thu, ca may bi chan`);
+      break;
+    }
     let res;
     try {
       res = fetchOne(v.id, subsDir, langs);
@@ -99,9 +109,11 @@ export async function run({ cfg, dir }) {
     }
     if (!res.ok) {
       skipped.push({ id: v.id, title: v.title, reason: res.reason });
+      botStreak = BOT_CHECK.test(res.reason || "") ? botStreak + 1 : 0;
       log.dim(`bo qua ${v.id} — ${res.reason}`);
       continue;
     }
+    botStreak = 0;
     const full = res.text;
     got.push({
       id: v.id,
