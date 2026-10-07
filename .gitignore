@@ -34,6 +34,9 @@ VoiceStudio/
 videos/*/assets/bgm/
 
 # ===== Day chuyen tu dong =====
-automation/config.json      # chua cau hinh rieng
-automation/runs/            # ket qua tung lan chay
-automation/inbox/           # file giong doc ban bo vao
+# cau hinh rieng, chua khoa va duong dan ca nhan
+automation/config.json
+# ket qua tung lan chay
+automation/runs/
+# file giong doc ban bo vao
+automation/inbox/
