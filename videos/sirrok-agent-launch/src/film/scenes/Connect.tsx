@@ -25,27 +25,31 @@ const rnd = (i: number) => {
 const CENTER = {x: 960, y: 430};
 const GHOST_W = 230;
 
-/** Hai vòng quỹ đạo: trong 6 ứng dụng làm việc, ngoài 8 ứng dụng mạng xã hội / nhắn tin. */
-const INNER: BrandKey[] = ['gmail', 'calendar', 'sheets', 'drive', 'notion', 'slack'];
-const OUTER: BrandKey[] = ['facebook', 'zalo', 'instagram', 'telegram', 'tiktok', 'linkedin', 'youtube', 'x'];
+/**
+ * Hai vòng quỹ đạo, mỗi vòng 7 ứng dụng; vòng ngoài lệch nửa bước so với vòng trong
+ * để dây nối của vòng ngoài luồn GIỮA các ô vòng trong, không cắt qua ô nào.
+ */
+const INNER: BrandKey[] = ['gmail', 'calendar', 'sheets', 'drive', 'notion', 'slack', 'telegram'];
+const OUTER: BrandKey[] = ['facebook', 'zalo', 'instagram', 'tiktok', 'linkedin', 'youtube', 'x'];
+const STEP = 360 / 7;
 const RING = [
-  {rx: 360, ry: 220, size: 100, base: -90, drift: 22},
-  {rx: 700, ry: 330, size: 92, base: -90 + 22.5, drift: -14},
+  {rx: 370, ry: 225, size: 100, base: -90, drift: 20},
+  {rx: 700, ry: 330, size: 92, base: -90 + STEP / 2, drift: 15},
 ];
 
-type Node = {brand: BrandKey; ring: 0 | 1; k: number; n: number; idx: number; start: number};
+type Node = {brand: BrandKey; ring: 0 | 1; k: number; idx: number; start: number};
 
-// Thứ tự bay vào xen kẽ hai vòng, rải theo lời đọc (Kết≈19 … dùng≈70)
+// Thứ tự bay vào: xen kẽ trong/ngoài, nhảy gần nửa vòng mỗi lần để vòng tròn
+// được lấp đều; rải theo lời đọc (Kết≈19 … dùng≈70).
 const NODES: Node[] = (() => {
-  const order: {brand: BrandKey; ring: 0 | 1; k: number; n: number}[] = [];
-  const a = INNER.map((b, k) => ({brand: b, ring: 0 as const, k, n: INNER.length}));
-  const b = OUTER.map((x, k) => ({brand: x, ring: 1 as const, k, n: OUTER.length}));
-  // trong, ngoài, ngoài, trong, ngoài, ...
-  const pattern = [0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1];
-  let ia = 0;
-  let ib = 0;
-  for (const p of pattern) order.push(p === 0 ? a[ia++] : b[ib++]);
-  return order.map((o, idx) => ({...o, idx, start: Math.round(14 + idx * 4.3)}));
+  const ks = [0, 4, 1, 5, 2, 6, 3];
+  const out: Node[] = [];
+  ks.forEach((k) => {
+    out.push({brand: INNER[k], ring: 0, k, idx: 0, start: 0});
+    const ko = (k + 2) % 7;
+    out.push({brand: OUTER[ko], ring: 1, k: ko, idx: 0, start: 0});
+  });
+  return out.map((o, idx) => ({...o, idx, start: Math.round(14 + idx * 4.3)}));
 })();
 
 const FLY = 22; // số frame bay vào
@@ -60,15 +64,16 @@ export const CONNECT_MARKS = {
 const nodePos = (n: Node, f: number) => {
   const r = RING[n.ring];
   const drift = ev(f, [0, 200], [0, r.drift], E.inOut);
-  const ang = ((r.base + (360 / n.n) * n.k + drift) * Math.PI) / 180;
+  const ang = ((r.base + STEP * n.k + drift) * Math.PI) / 180;
   const p = ev(f, [n.start, n.start + FLY], [0, 1], E.out);
-  // bay từ xa theo hướng xuyên tâm, hơi xoáy
-  const far = 2.4 - 1.4 * p;
-  const twist = (1 - p) * 0.5 * (n.ring ? -1 : 1);
+  // bay vào chủ yếu từ hai bên (ngang xa, dọc gần) để không quét qua tiêu đề, hơi xoáy
+  const farX = 2.3 - 1.3 * p;
+  const farY = 1.12 - 0.12 * p;
+  const twist = (1 - p) * 0.35 * (n.ring ? -1 : 1);
   const a2 = ang + twist;
   return {
-    x: CENTER.x + Math.cos(a2) * r.rx * far,
-    y: CENTER.y + Math.sin(a2) * r.ry * far,
+    x: CENTER.x + Math.cos(a2) * r.rx * farX,
+    y: CENTER.y + Math.sin(a2) * r.ry * farY,
     p,
   };
 };

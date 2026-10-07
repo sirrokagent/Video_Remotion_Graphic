@@ -15,7 +15,8 @@ import {VO} from '../timeline';
  * ba cùng báo ✓ "Đã gửi báo giá".
  *
  * Mốc (frame cảnh): Mac nở đảo 24–44 · bước 2 ở 72 · "Mac" 100 · iPhone vào 106–122,
- * đảo nở 127–141 · Android vào 134–148, thẻ thả xuống 150–164 · ghép bộ ba 164–200 ·
+ * đảo thu gọn 108, nở 117–131 · Android vào 137–150, chip 146, thẻ thả xuống 152–166 ·
+ * ghép bộ ba 168–206 ·
  * bước 3 ở 212 · bước 4 ở 246 · xong ✓ ở 282 · từ ~306 đứng yên cho vệt chuyển cảnh.
  */
 
@@ -294,7 +295,7 @@ const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 24px',
+            padding: '0 64px',
             fontSize: 24,
             fontWeight: 500,
             color: C.ink,
@@ -358,13 +359,13 @@ const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
 /* ---------------- iPhone ---------------- */
 
 const IosIsland: React.FC<{f: number}> = ({f}) => {
-  const compact = ev(f, [116, 124], [0, 1], E.out);
-  const open = ev(f, [127, 141], [0, 1], E.back);
+  const compact = ev(f, [108, 116], [0, 1], E.out);
+  const open = ev(f, [117, 131], [0, 1], E.back);
   const w = 160 + 140 * compact + (440 - 300) * open;
   const h = 46 + (232 - 46) * open;
   const r = 23 + (54 - 23) * Math.min(1, open);
-  const showCompact = compact * (1 - ev(f, [127, 133], [0, 1], E.out));
-  const showOpen = ev(f, [134, 144], [0, 1], E.out);
+  const showCompact = compact * (1 - ev(f, [117, 122], [0, 1], E.out));
+  const showOpen = ev(f, [123, 133], [0, 1], E.out);
   return (
     <div
       style={{
@@ -418,9 +419,9 @@ const IPhone: React.FC<{f: number}> = ({f}) => (
 const AND = {w: 480, h: 1000, r: 62, bezel: 12};
 
 const AndroidLive: React.FC<{f: number}> = ({f}) => {
-  const chip = ev(f, [144, 154], [0, 1], E.back);
-  const open = ev(f, [150, 164], [0, 1], E.back);
-  const show = ev(f, [156, 166], [0, 1], E.out);
+  const chip = ev(f, [146, 156], [0, 1], E.back);
+  const open = ev(f, [152, 166], [0, 1], E.back);
+  const show = ev(f, [158, 168], [0, 1], E.out);
   return (
     <>
       {/* chip "đang chạy" trên thanh trạng thái */}
@@ -536,10 +537,10 @@ export const Island: React.FC = () => {
   const f = useCurrentFrame();
 
   const push1 = ev(f, [106, 122], [0, 1], E.inOut); // Mac → iPhone
-  const push2 = ev(f, [134, 148], [0, 1], E.inOut); // iPhone → Android
-  const asm = ev(f, [164, 196], [0, 1], E.inOut); // Android về vị trí bộ ba
-  const macIn = ev(f, [170, 202], [0, 1], E.out);
-  const iosIn = ev(f, [174, 204], [0, 1], E.out);
+  const push2 = ev(f, [137, 150], [0, 1], E.inOut); // iPhone → Android
+  const asm = ev(f, [168, 198], [0, 1], E.inOut); // Android về vị trí bộ ba
+  const macIn = ev(f, [172, 204], [0, 1], E.out);
+  const iosIn = ev(f, [176, 206], [0, 1], E.out);
   const drift = ev(f, [196, 306], [0, 1], E.inOut); // máy quay tiến rất nhẹ
 
   // pha 1: cận cảnh mép trên MacBook
@@ -568,7 +569,7 @@ export const Island: React.FC = () => {
       )}
 
       {/* ---- pha 3 + bộ ba: Mac ở giữa, phía sau ---- */}
-      {f >= 166 && (
+      {f >= 168 && (
         <AbsoluteFill style={{scale: String(1 + 0.035 * drift)}}>
           <Place cx={TRI.mac.cx} top={TRI.mac.top + (1 - macIn) * 120} s={TRI.mac.s + 0.08 * (1 - macIn)} w={LID_W} o={macIn}>
             <Mac f={f} win />
@@ -581,9 +582,9 @@ export const Island: React.FC = () => {
           </Place>
           {/* nhãn dưới từng máy */}
           {[
-            {t: 'iPhone', cx: TRI.ios.cx, at: 200},
-            {t: 'Mac', cx: TRI.mac.cx, at: 204},
-            {t: 'Android', cx: TRI.and.cx, at: 208},
+            {t: 'iPhone', cx: TRI.ios.cx, at: 202},
+            {t: 'Mac', cx: TRI.mac.cx, at: 206},
+            {t: 'Android', cx: TRI.and.cx, at: 210},
           ].map((l) => (
             <div key={l.t} style={{position: 'absolute', top: TRI.labelTop, left: l.cx - 300, width: 600}}>
               <Kinetic text={l.t} f={f} start={l.at} size={64} variant="rise" by="char" stagger={1.6} />
@@ -593,7 +594,7 @@ export const Island: React.FC = () => {
       )}
 
       {/* ---- pha 2: iPhone đơn ---- */}
-      {f >= 100 && f < 150 && (
+      {f >= 100 && f < 152 && (
         <AbsoluteFill style={{translate: `${(1 - push1) * 1920 - push2 * 1920}px 0px`}}>
           <Place cx={1320} top={40} s={1} w={PHONE.w}>
             <IPhone f={f} />
@@ -605,7 +606,7 @@ export const Island: React.FC = () => {
       )}
 
       {/* ---- pha 3: Android đơn, rồi lùi về vị trí bộ ba ---- */}
-      {f >= 128 && f < 166 && (
+      {f >= 128 && f < 168 && (
         <AbsoluteFill style={{translate: `${(1 - push2) * 1920}px 0px`}}>
           <Place cx={andCx} top={andTop} s={andS} w={AND.w}>
             <Android f={f} />
@@ -614,7 +615,7 @@ export const Island: React.FC = () => {
       )}
       {f >= 128 && f < 200 && (
         <div style={{position: 'absolute', left: 1000, width: 800, top: 440, translate: `${(1 - push2) * 1920}px 0px`}}>
-          <VoiceText id="n5" f={f} start={N5} size={180} pick={[12]} replace={{12: 'Android'}} variant="scale" out={ev(f, [164, 184], [0, 1], E.in)} />
+          <VoiceText id="n5" f={f} start={N5} size={180} pick={[12]} replace={{12: 'Android'}} variant="scale" out={ev(f, [162, 174], [0, 1], E.in)} />
         </div>
       )}
     </AbsoluteFill>
