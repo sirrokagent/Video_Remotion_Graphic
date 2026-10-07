@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {blinkAt, ev, keys} from '../../anim';
 import {AppTile} from '../../brands';
-import {EyePair} from '../../logo';
+import {GhostMark} from '../../logo';
 import {C, E, FONT} from '../../theme';
 import {IconCheck, IconMic, PHONE, PhoneFrame} from '../../ui';
 import {VOICE, VoiceWave, loudness} from '../../voice';
@@ -104,9 +104,9 @@ export const CallIsland: React.FC<{f: number}> = ({f}) => {
         overflow: 'hidden',
       }}
     >
-      {/* trái: mắt Sirrok — người gọi */}
+      {/* trái: ghost Sirrok màu trắng — người gọi */}
       <div style={{position: 'relative', width: 44, height: 30, opacity: show}}>
-        <EyePair logoWidth={62} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 22, top: 15}} />
+        <GhostMark size={34} body={C.white} eyes={C.ink} blink={blinkAt(f, AGENT_BLINKS)} style={{position: 'absolute', translate: '-50% -50%', left: 22, top: 15}} />
       </div>
       {/* phải: đang đổ chuông → chấm xanh + đồng hồ */}
       <div style={{position: 'relative', height: 30, width: 84, opacity: show}}>
@@ -194,9 +194,7 @@ export const CallScreen: React.FC<{f: number}> = ({f}) => {
 
       {/* danh tính người gọi: cặp mắt Sirrok */}
       <div style={{position: 'absolute', left: '50%', top: 556, translate: '-50% 0', display: 'flex', alignItems: 'center', gap: 14, padding: '12px 22px 12px 16px', borderRadius: 999, background: '#F1F3F4', whiteSpace: 'nowrap'}}>
-        <div style={{position: 'relative', width: 44, height: 44, borderRadius: 22, background: C.ink}}>
-          <EyePair logoWidth={56} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 22, top: 22}} />
-        </div>
+        <GhostMark size={44} blink={blinkAt(f, AGENT_BLINKS)} />
         <div style={{fontSize: 24, fontWeight: 600, color: C.text}}>Sirrok Agent gọi</div>
       </div>
 
@@ -253,7 +251,7 @@ export const SpeakerHead: React.FC<{f: number; side: 'a' | 'c'}> = ({f, side}) =
           position: 'absolute',
           inset: 0,
           borderRadius: 48,
-          background: isA ? C.ink : 'linear-gradient(160deg, #9AA0A6, #5F6368)',
+          background: isA ? 'transparent' : 'linear-gradient(160deg, #9AA0A6, #5F6368)',
           display: 'grid',
           placeItems: 'center',
           color: C.white,
@@ -262,7 +260,7 @@ export const SpeakerHead: React.FC<{f: number; side: 'a' | 'c'}> = ({f, side}) =
           scale: String(1 + pulse),
         }}
       >
-        {isA ? <EyePair logoWidth={118} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 48, top: 48}} /> : 'M'}
+        {isA ? <GhostMark size={92} blink={blinkAt(f, AGENT_BLINKS)} /> : 'M'}
       </div>
     </div>
   );

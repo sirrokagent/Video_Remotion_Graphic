@@ -7,7 +7,7 @@ import {VO} from '../timeline';
 import {Kinetic, VoiceText} from '../text';
 
 /**
- * Màn kết "Gặp Sirrok Agent" — dựng theo bố cục trang ra mắt (pill nhỏ, tiêu đề
+ * Màn kết "Meet Sirrok Agent" — dựng theo bố cục trang ra mắt (pill nhỏ, tiêu đề
  * có icon nằm giữa hai chữ, câu phụ xám, hai nút, cửa sổ app trồi lên từ đáy).
  * Thay icon tròn bằng ghost thương hiệu, avatar agent bằng ghost nhiều màu.
  *
@@ -180,7 +180,7 @@ export const Meet: React.FC = () => {
 
   const bob = (i: number) => (f > T.win ? Math.sin((f - T.win) * 0.07 + i * 1.3) * 3.5 * ev(f, [T.win + 30, T.win + 60], [0, 1], E.inOut) : 0);
 
-  // lúc đầu chỉ có "Gặp [ghost]" → dời cả dòng cho cân giữa, rồi trượt về khi tên được đọc
+  // lúc đầu chỉ có "Meet [ghost]" → dời cả dòng cho cân giữa, rồi trượt về khi tên được đọc
   const rowShift = keys(f, [0, n9 + 4, n9 + 26], [362, 362, 0], E.inOut);
 
   const typingO = ev(f, [T.typing, T.typing + 8], [0, 1], E.out) * ev(f, [T.msg1 - 8, T.msg1], [1, 0], E.in);
@@ -218,9 +218,9 @@ export const Meet: React.FC = () => {
           </span>
         </div>
 
-        {/* tiêu đề: Gặp [ghost] Sirrok Agent */}
+        {/* tiêu đề: Meet [ghost] Sirrok Agent */}
         <div style={{display: 'flex', alignItems: 'center', marginTop: 30, height: 160, translate: `${rowShift}px 0px`}}>
-          <Kinetic text="Gặp" f={f} start={4} size={140} variant="rise" />
+          <Kinetic text="Meet" f={f} start={4} size={140} variant="rise" />
           <div style={{margin: '0 34px 0 30px', translate: '0px -4px', scale: String(ghostScale)}}>
             <HeroGhost width={132} reveal={reveal} blink={heroBlink} look={{x: lookX, y: 0}} eyeScale={eyeScale} />
           </div>

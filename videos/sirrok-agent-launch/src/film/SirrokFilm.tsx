@@ -23,7 +23,7 @@ import {SFX} from './sfx';
  * Sirrok Agent — phim ra mắt 90 giây.
  * Ghost nhiều hiệu ứng → "Hey Sirrok" → agent tự làm trên desktop → tự gọi khách →
  * tiến độ trên Dynamic Island (Mac / iPhone / Android) → tự đăng mạng xã hội →
- * kết nối mọi công cụ → mọi nơi, mọi lúc → hé lộ logo → "Gặp Sirrok Agent".
+ * kết nối mọi công cụ → mọi nơi, mọi lúc → hé lộ logo → "Meet Sirrok Agent".
  */
 
 export type SceneMap = Record<(typeof ORDER)[number]['key'], React.FC>;

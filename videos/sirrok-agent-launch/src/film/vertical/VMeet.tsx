@@ -8,12 +8,12 @@ import {AG, AgentTag, ArrowUpRight, bubbleIn, Download, GhostIcon, HeroGhost, Mo
 import {SAFE, VH, VW} from './frame';
 
 /**
- * Màn kết "Gặp Sirrok Agent" — bản dọc 9:16. Giữ nguyên mọi mốc của Meet.tsx:
+ * Màn kết "Meet Sirrok Agent" — bản dọc 9:16. Giữ nguyên mọi mốc của Meet.tsx:
  *   8 mắt mở · 21 chớp · 26 thân ghost nở · 31 "Sirrok" · 44 "Agent" (giọng n9)
  *   71–106 "Bạn ra lệnh. Nó làm." · 106 hai nút · 118 khối chữ dời lên
  *   122 cửa sổ app trồi lên · 150 / 160 / 174 / 198 tin nhắn · 200–230 khung kết tĩnh.
  *
- * Bố cục dọc: pill → "Gặp [ghost]" / "Sirrok Agent" (hai dòng, ngắt có chủ đích)
+ * Bố cục dọc: pill → "Meet [ghost]" / "Sirrok Agent" (hai dòng, ngắt có chủ đích)
  * → câu phụ → hai nút cạnh nhau → cửa sổ app hẹp (thanh avatar mảnh + khung chat)
  * trồi từ đáy khung, tràn khỏi mép dưới như bản ngang.
  */
@@ -43,7 +43,7 @@ export const VMeet: React.FC = () => {
 
   const bob = (i: number) => (f > T.win ? Math.sin((f - T.win) * 0.07 + i * 1.3) * 3.5 * ev(f, [T.win + 30, T.win + 60], [0, 1], E.inOut) : 0);
 
-  // lúc đầu chỉ có "Gặp [ghost]" — cả khối hạ thêm để dòng này nằm giữa khung,
+  // lúc đầu chỉ có "Meet [ghost]" — cả khối hạ thêm để dòng này nằm giữa khung,
   // rồi nâng lên khi tên được đọc để hai dòng tiêu đề cùng cân giữa
   const rowDrop = keys(f, [0, n9 + 4, n9 + 26], [150, 150, 0], E.inOut);
 
@@ -82,9 +82,9 @@ export const VMeet: React.FC = () => {
           </span>
         </div>
 
-        {/* tiêu đề dòng 1: Gặp [ghost] */}
+        {/* tiêu đề dòng 1: Meet [ghost] */}
         <div style={{display: 'flex', alignItems: 'center', marginTop: 20, height: 150}}>
-          <Kinetic text="Gặp" f={f} start={4} size={138} variant="rise" />
+          <Kinetic text="Meet" f={f} start={4} size={138} variant="rise" />
           <div style={{marginLeft: 34, translate: '0px -4px', scale: String(ghostScale)}}>
             <HeroGhost width={136} reveal={reveal} blink={heroBlink} look={look} eyeScale={eyeScale} />
           </div>

@@ -177,3 +177,19 @@ export const Wordmark: React.FC<{ghostWidth: number; style?: React.CSSProperties
     Sirrok
   </div>
 );
+
+/**
+ * Icon agent: đúng con ghost của logo (thân + hai nét mắt), dùng làm avatar / icon.
+ * Hộp rộng `size`, cao theo tỉ lệ logo. Trên nền tối dùng thân trắng, mắt đen.
+ */
+export const GhostMark: React.FC<{size: number; blink?: number; body?: string; eyes?: string; style?: React.CSSProperties}> = ({
+  size,
+  blink = 0,
+  body = C.ink,
+  eyes = C.white,
+  style,
+}) => (
+  <div style={{position: 'relative', width: size, height: (size * LOGO_H) / 100, flexShrink: 0, ...style}}>
+    <Ghost width={size} blink={blink} bodyColor={body} eyeColor={eyes} style={{left: 0, top: 0}} />
+  </div>
+);

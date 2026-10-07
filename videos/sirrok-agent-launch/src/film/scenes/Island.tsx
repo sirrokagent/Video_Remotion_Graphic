@@ -3,7 +3,7 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {blinkAt, ev, keys} from '../../anim';
 import {IconCheck, PHONE, PhoneFrame} from '../../ui';
 import {AppTile} from '../../brands';
-import {EyePair, Ghost} from '../../logo';
+import {Ghost, GhostMark} from '../../logo';
 import {C, E, FONT} from '../../theme';
 import {Kinetic, VoiceText} from '../text';
 import {VO} from '../timeline';
@@ -47,7 +47,7 @@ const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
   return (
     <div style={{position: 'relative', width: size, height: size, flexShrink: 0}}>
       <div style={{position: 'absolute', left: size / 2, top: size / 2, opacity: 1 - d, scale: String(1 - 0.4 * d)}}>
-        <EyePair logoWidth={size * 1.9} color={C.white} blink={blinkOf(f)} style={{left: 0, top: 0}} />
+        <GhostMark size={size * 0.92} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 0, top: 0}} />
       </div>
       <div
         style={{
@@ -328,7 +328,7 @@ export const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
           }}
         >
           <div style={{width: 64, height: 64, borderRadius: 16, background: C.ink, position: 'relative'}}>
-            <EyePair logoWidth={110} color={C.white} blink={blinkOf(f)} style={{left: 32, top: 32}} />
+            <GhostMark size={44} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 32, top: 33}} />
           </div>
           {(['gmail', 'sheets', 'calendar', 'drive', 'zalo'] as const).map((b) => (
             <AppTile key={b} brand={b} size={64} />
@@ -385,7 +385,7 @@ const IosIsland: React.FC<{f: number}> = ({f}) => {
     >
       {/* dạng thu gọn: mắt bên trái, vòng tiến độ bên phải */}
       <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: 46, opacity: showCompact}}>
-        <EyePair logoWidth={62} color={C.white} blink={blinkOf(f)} style={{left: 38, top: 23}} />
+        <GhostMark size={34} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 38, top: 23}} />
         <div style={{position: 'absolute', right: 12, top: 8}}>
           <Ring f={f} size={30} />
         </div>
@@ -438,7 +438,7 @@ const AndroidLive: React.FC<{f: number}> = ({f}) => {
           opacity: Math.min(1, chip * 2),
         }}
       >
-        <EyePair logoWidth={60} color={C.white} blink={blinkOf(f)} style={{left: 46, top: 19}} />
+        <GhostMark size={30} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 46, top: 19}} />
       </div>
       {/* thẻ thông báo trực tiếp thả xuống từ trên */}
       <div

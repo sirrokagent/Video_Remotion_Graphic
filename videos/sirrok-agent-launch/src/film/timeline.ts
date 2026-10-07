@@ -13,7 +13,7 @@ export const F = {
   connect: 200, // logo bên thứ ba quanh ghost
   everywhere: 210, // ở mọi nơi, mọi lúc (S4Everywhere)
   reveal: 240, // hé lộ logo (S5Reveal)
-  meet: 250, // màn kết "Gặp Sirrok Agent" — trang ra mắt + đội agent ghost
+  meet: 250, // màn kết "Meet Sirrok Agent" — trang ra mắt + đội agent ghost
   wipe: 20,
 } as const;
 

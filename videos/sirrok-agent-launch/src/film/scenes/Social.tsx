@@ -3,7 +3,7 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {blinkAt, ev, keys, typed} from '../../anim';
 import {AppTile, BrandKey} from '../../brands';
 import {ClickRipple} from '../../cursor';
-import {EyePair, Ghost, LOGO_H, Sparkle} from '../../logo';
+import {EyePair, Ghost, GhostMark, LOGO_H, Sparkle} from '../../logo';
 import {C, E, FONT} from '../../theme';
 import {IconCheck} from '../../ui';
 import {VoiceText} from '../text';
@@ -150,10 +150,10 @@ const BrandImage: React.FC<{w: number; h: number; gen?: number; label?: number; 
   );
 };
 
-/** Ảnh đại diện: tròn đen, hai nét mắt trắng. */
+/** Ảnh đại diện: đúng con ghost của logo. */
 const Avatar: React.FC<{size: number; blink?: number}> = ({size, blink = 0}) => (
-  <div style={{position: 'relative', width: size, height: size, borderRadius: '50%', background: C.ink, flexShrink: 0}}>
-    <EyePair logoWidth={size * 1.25} color={C.white} blink={blink} style={{left: size / 2, top: size / 2}} />
+  <div style={{width: size, height: size, flexShrink: 0, display: 'grid', placeItems: 'center'}}>
+    <GhostMark size={size * 0.96} blink={blink} />
   </div>
 );
 
