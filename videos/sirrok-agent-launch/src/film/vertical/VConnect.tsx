@@ -24,12 +24,12 @@ const rnd = (i: number) => {
   return x - Math.floor(x);
 };
 
-const CENTER = {x: VW / 2, y: 735};
+const CENTER = {x: VW / 2, y: 722};
 const GK = 1.25; // ghost to hơn bản ngang một chút cho khung dọc
 const GW = GHOST_W * GK;
 const RING = [
   {rx: 262, ry: 300, size: 108, base: -90, drift: 20},
-  {rx: 420, ry: 462, size: 100, base: -90 + STEP / 2, drift: 15},
+  {rx: 420, ry: 452, size: 100, base: -90 + STEP / 2, drift: 15},
 ];
 
 /** Vị trí một ứng dụng tại frame f (bay vào + trôi theo quỹ đạo). */

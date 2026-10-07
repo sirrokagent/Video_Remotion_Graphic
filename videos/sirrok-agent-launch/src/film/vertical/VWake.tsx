@@ -34,8 +34,8 @@ const SLOT = {x: BAR.x + PAD_L + PLUS + GAP + SLOT_W / 2, y: BAR.y + BAR.h / 2};
 const BTN = 108;
 const CMD_TOP = 770; // khối "Đang nghe" + câu lệnh chữ lớn
 const CMD_SIZE = 132;
-const BUBBLE_TOP = 780; // bong bóng việc vừa giao (sau khi gửi)
-const REPLY_TOP = 960;
+const BUBBLE_TOP = 850; // bong bóng việc vừa giao (sau khi gửi)
+const REPLY_TOP = 1040;
 
 /* tách câu lệnh thành 2 dòng có chủ đích, giữ nguyên mốc từng chữ */
 const CMD_L1 = {...VOICE.command, words: VOICE.command.words.slice(0, 3)}; // Gửi báo giá
@@ -71,8 +71,8 @@ const VoiceBar: React.FC<{f: number; listen: number; out: number; voiceOn: boole
           </div>
         </div>
       ) : null}
-      {/* placeholder: trước khi nghe, và trở lại sau khi gửi */}
-      <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, display: 'flex', alignItems: 'center', fontSize: 40, fontWeight: 500, color: C.muted, whiteSpace: 'nowrap', opacity: voiceOn ? out : 1}}>
+      {/* placeholder: trước khi nghe, và trở lại sau khi gửi (đợi mắt tan hẳn) */}
+      <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, display: 'flex', alignItems: 'center', fontSize: 40, fontWeight: 500, color: C.muted, whiteSpace: 'nowrap', opacity: voiceOn ? ev(f, [SEND + 18, SEND + 32], [0, 1], E.out) : 1}}>
         Hỏi Sirrok Agent
       </div>
     </div>
@@ -199,7 +199,7 @@ export const VWake: React.FC = () => {
           borderBottomRightRadius: 14,
           background: C.ink,
           color: C.white,
-          fontSize: 50,
+          fontSize: 54,
           fontWeight: 500,
           letterSpacing: '-0.01em',
           opacity: out,
@@ -215,7 +215,7 @@ export const VWake: React.FC = () => {
         <div style={{position: 'relative', width: 96, height: 83, flexShrink: 0}}>
           <Ghost width={96} blink={blinkAt(f, [SEND + 30])} />
         </div>
-        <div style={{padding: '30px 42px', borderRadius: 48, borderTopLeftRadius: 14, background: '#F1F3F4', fontSize: 50, fontWeight: 500, color: C.text, whiteSpace: 'nowrap', minWidth: 120, minHeight: 125}}>
+        <div style={{padding: '30px 42px', borderRadius: 48, borderTopLeftRadius: 14, background: '#F1F3F4', fontSize: 54, fontWeight: 500, color: C.text, whiteSpace: 'nowrap', minWidth: 120, minHeight: 125}}>
           {/* gõ nhanh hơn bản ngang một chút để xong trước vệt chuyển cảnh (CUT.wake) */}
           {typed('Rõ. Mình làm ngay.', f, SEND + 20, 1.2)}
         </div>

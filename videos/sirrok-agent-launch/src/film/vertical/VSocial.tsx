@@ -25,15 +25,15 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 // ———————————————————————————— khung soạn bài ————————————————————————————
 /** Tỉ lệ phóng khung soạn bài (860 → ~946 px, vừa lề 60 px hai bên). */
 const CK = 1.1;
-const COMP = {x: (VW - CARD.w * CK) / 2, y: 470};
+const COMP = {x: (VW - CARD.w * CK) / 2, y: 540};
 /** Đổi toạ độ trong khung soạn bài gốc (bản ngang) sang toạ độ khung dọc. */
 const cardPt = (x: number, y: number) => ({x: COMP.x + (x - CARD.x) * CK, y: COMP.y + (y - CARD.y) * CK});
 
 // ———————————————————————————— lưới 6 thẻ ————————————————————————————
-/** Tỉ lệ thẻ trong lưới: 280×560 → 235×470. */
-const TK = 0.84;
-const COL_GAP = 290; // khoảng cách tâm hai cột
-const ROW_Y = [728, 1268]; // tâm hai hàng
+/** Thẻ giữ nguyên cỡ gốc 280×560 để chữ mockup ≥ 24 px. */
+const TK = 1;
+const COL_GAP = 300; // khoảng cách tâm hai cột
+const ROW_Y = [650, 1240]; // tâm hai hàng — lưới nằm gọn trong vùng an toàn
 const GRID_C = {x: VW / 2, y: (ROW_Y[0] + ROW_Y[1]) / 2};
 
 /**
@@ -45,14 +45,17 @@ const gridPos = (i: number) => {
   const row = i < 3 ? 0 : 1;
   const col = row === 0 ? i : 5 - i; // 0..2
   const d = col - 1;
-  return {x: GRID_C.x + d * COL_GAP, y: ROW_Y[row] + 10 * d * d, rot: d * 2.4};
+  return {x: GRID_C.x + d * COL_GAP, y: ROW_Y[row], rot: d * 2};
 };
 
-/** Chỗ hai nét mắt dừng để đóng dấu (ngay dưới con dấu ở cạnh dưới thẻ). */
+/**
+ * Chỗ hai nét mắt dừng để đóng dấu: ngay TRÊN chỗ con dấu (cạnh dưới thẻ) — khung dọc
+ * không còn chỗ trống dưới thẻ, nên mắt "ấn" xuống rồi nhảy đi, con dấu nở ra dưới đó.
+ */
 const stampPos = (i: number) => {
   const p = gridPos(i);
   const r = (p.rot * Math.PI) / 180;
-  const d = (TILE.h / 2 + 64) * TK;
+  const d = (TILE.h / 2 - 6) * TK;
   return {x: p.x - Math.sin(r) * d, y: p.y + Math.cos(r) * d};
 };
 
@@ -129,7 +132,7 @@ const Hopper: React.FC<{f: number}> = ({f}) => {
   const lift = ev(f, [last + 4, last + 16], [0, 60], E.in) + (1 - ev(f, [104, 116], [0, 1], E.out)) * -50;
   return (
     <EyePair
-      logoWidth={130}
+      logoWidth={140}
       blink={blinkAt(f, stamps.map((s) => s - 3))}
       color={C.ink}
       style={{left: pos.x, top: pos.y - 2 - lift, opacity, zIndex: 20}}
@@ -144,7 +147,7 @@ export const VSocial: React.FC = () => {
   const f = useCurrentFrame();
   const composerIn = ev(f, [0, 18], [0, 1], E.out);
   const exit = ev(f, [78, 100], [0, 1], E.inOut);
-  const drift = ev(f, [100, 330], [1, 1.02], E.inOut);
+  const drift = ev(f, [100, 330], [1, 1.012], E.inOut);
   const click = cardPt(CARD.x + CARD.w - CARD.pad - 80, CARD.y + 672);
   return (
     <AbsoluteFill style={{background: C.bg, overflow: 'hidden'}}>
@@ -155,10 +158,9 @@ export const VSocial: React.FC = () => {
       <div style={{position: 'absolute', left: 0, right: 0, top: HEAD_TOP}}>
         {f >= 40 && f < 74 ? <VoiceText id="n6" f={f} start={S} size={HEAD} pick={[3, 4]} replace={{4: 'hình'}} out={ev(f, [62, 71], [0, 1], E.in)} /> : null}
       </div>
-      {/* nhịp 3: ngắt hai dòng có chủ đích — "đăng lên / mọi nền tảng." */}
-      <div style={{position: 'absolute', left: 0, right: 0, top: HEAD_TOP}}>
-        {f >= 68 ? <VoiceText id="n6" f={f} start={S} size={HEAD * 0.86} pick={[6, 7]} /> : null}
-        {f >= 68 ? <VoiceText id="n6" f={f} start={S} size={HEAD * 0.86} pick={[8, 9, 10]} /> : null}
+      {/* nhịp 3: một dòng để lưới 6 thẻ cỡ thật vừa vùng an toàn */}
+      <div style={{position: 'absolute', left: 0, right: 0, top: HEAD_TOP - 6}}>
+        {f >= 68 ? <VoiceText id="n6" f={f} start={S} size={84} pick={[6, 7, 8, 9, 10]} /> : null}
       </div>
 
       {f < 102 ? (

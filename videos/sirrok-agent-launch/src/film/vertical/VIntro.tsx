@@ -20,7 +20,7 @@ import {V_EYE, V_LW, V_WAVE} from './VWake';
  *   ~279   mắt nhắm đúng vị trí/cỡ của VWake frame 0, hàng chấm sóng âm đã nằm sẵn → cắt liền.
  */
 
-const SIZE_UP = 1.58; // cỡ ghost montage so với bản ngang (520/540 → ~820/850)
+const SIZE_UP = 1.45; // cỡ ghost montage so với bản ngang (520/540 → ~755/785), chừa lề cho hiệu ứng toả ra
 const GHOST_CY = 660; // tâm dọc của ghost trong montage — trùng tầm mắt cảnh sau
 const TEXT_TOP = 1090; // dòng chữ thoại — dưới ghost, trên vùng an toàn đáy (1540)
 const N1_SIZE = 112;
