@@ -1,8 +1,8 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, useVideoConfig} from 'remotion';
 import type {TransitionPresentation, TransitionPresentationComponentProps} from '@remotion/transitions';
 import {EYE_ANGLE_DEG, LOGO} from './logo';
-import {C, H, W} from './theme';
+import {C} from './theme';
 
 /**
  * Chuyển cảnh = hai nét mắt của logo phóng to thành hai vệt quét ngang khung hình,
@@ -14,7 +14,6 @@ type Props = Record<string, never>;
 const rad = (EYE_ANGLE_DEG * Math.PI) / 180;
 // hệ số lệch x theo y của đường quét nghiêng
 const slope = Math.cos(rad) / Math.sin(rad);
-const reach = (H / 2) * Math.abs(slope);
 
 const BAR_A = 78;
 const BAR_B = 78 * (LOGO.eyes[1].w / LOGO.eyes[0].w);
@@ -25,6 +24,9 @@ const StrokeWipePresentation: React.FC<TransitionPresentationComponentProps<Prop
   presentationDirection,
   presentationProgress,
 }) => {
+  // khung ngang hay dọc đều chạy được — lấy kích thước từ composition
+  const {width: W, height: H} = useVideoConfig();
+  const reach = (H / 2) * Math.abs(slope);
   // easing nằm ở timing của TransitionSeries, ở đây dùng thẳng tiến độ
   const p = presentationProgress;
   // mép quét đi từ ngoài trái sang ngoài phải, có tính cả độ nghiêng và hai vệt
@@ -37,7 +39,7 @@ const StrokeWipePresentation: React.FC<TransitionPresentationComponentProps<Prop
     );
   }
 
-  const clip = `polygon(-400px 0px, ${xAt(0, fx)}px 0px, ${xAt(H, fx)}px ${H}px, -400px ${H}px)`;
+  const clip = `polygon(-4000px 0px, ${xAt(0, fx)}px 0px, ${xAt(H, fx)}px ${H}px, -4000px ${H}px)`;
   const bar = (x: number, w: number) => (
     <line x1={xAt(-200, x)} y1={-200} x2={xAt(H + 200, x)} y2={H + 200} stroke={C.ink} strokeWidth={w} strokeLinecap="round" />
   );

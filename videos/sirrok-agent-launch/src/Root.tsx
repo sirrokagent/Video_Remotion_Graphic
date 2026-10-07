@@ -17,10 +17,35 @@ import {Island} from './film/scenes/Island';
 import {Social} from './film/scenes/Social';
 import {Connect} from './film/scenes/Connect';
 import {Meet} from './film/scenes/Meet';
+import {SirrokFilmVertical} from './film/vertical/SirrokFilmVertical';
+import {VW, VH} from './film/vertical/frame';
+import {VIntro} from './film/vertical/VIntro';
+import {VWake} from './film/vertical/VWake';
+import {VWork} from './film/vertical/VWork';
+import {VCall} from './film/vertical/VCall';
+import {VIsland} from './film/vertical/VIsland';
+import {VSocial} from './film/vertical/VSocial';
+import {VConnect} from './film/vertical/VConnect';
+import {VEverywhere} from './film/vertical/VEverywhere';
+import {VReveal} from './film/vertical/VReveal';
+import {VMeet} from './film/vertical/VMeet';
 
 export const RemotionRoot: React.FC = () => (
   <>
     <Composition id="SirrokFilm" component={SirrokFilm} width={W} height={H} fps={FPS} durationInFrames={FILM_TOTAL} />
+    <Composition id="SirrokFilmVertical" component={SirrokFilmVertical} width={VW} height={VH} fps={FPS} durationInFrames={FILM_TOTAL} />
+    <Folder name="Vertical-Scenes">
+      <Composition id="V-Intro" component={VIntro} width={VW} height={VH} fps={FPS} durationInFrames={F.intro} />
+      <Composition id="V-Wake" component={VWake} width={VW} height={VH} fps={FPS} durationInFrames={F.wake} />
+      <Composition id="V-Work" component={VWork} width={VW} height={VH} fps={FPS} durationInFrames={F.work} />
+      <Composition id="V-Call" component={VCall} width={VW} height={VH} fps={FPS} durationInFrames={F.call} />
+      <Composition id="V-Island" component={VIsland} width={VW} height={VH} fps={FPS} durationInFrames={F.island} />
+      <Composition id="V-Social" component={VSocial} width={VW} height={VH} fps={FPS} durationInFrames={F.social} />
+      <Composition id="V-Connect" component={VConnect} width={VW} height={VH} fps={FPS} durationInFrames={F.connect} />
+      <Composition id="V-Everywhere" component={VEverywhere} width={VW} height={VH} fps={FPS} durationInFrames={F.everywhere} />
+      <Composition id="V-Reveal" component={VReveal} width={VW} height={VH} fps={FPS} durationInFrames={F.reveal} />
+      <Composition id="V-Meet" component={VMeet} width={VW} height={VH} fps={FPS} durationInFrames={F.meet} />
+    </Folder>
     <Composition id="GhostFX" component={GhostFXShowcase} width={W} height={H} fps={FPS} durationInFrames={GHOSTFX_DURATION} />
     <Folder name="Film-Scenes">
       <Composition id="F-Intro" component={Intro} width={W} height={H} fps={FPS} durationInFrames={F.intro} />

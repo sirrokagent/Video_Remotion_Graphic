@@ -26,7 +26,9 @@ import {SFX} from './sfx';
  * kết nối mọi công cụ → mọi nơi, mọi lúc → hé lộ logo → "Gặp Sirrok Agent".
  */
 
-const SCENES: Record<(typeof ORDER)[number]['key'], React.FC> = {
+export type SceneMap = Record<(typeof ORDER)[number]['key'], React.FC>;
+
+const SCENES: SceneMap = {
   intro: Intro,
   wake: S1Wake,
   work: S2Work,
@@ -58,13 +60,16 @@ const duck = (f: number) => {
   return d;
 };
 
-export const SirrokFilm: React.FC = () => {
+export const SirrokFilm: React.FC = () => <FilmBody scenes={SCENES} />;
+
+/** Thân phim dùng chung cho bản ngang 16:9 và bản dọc 9:16 — chỉ khác bộ cảnh. */
+export const FilmBody: React.FC<{scenes: SceneMap}> = ({scenes}) => {
   const {fps} = useVideoConfig();
   return (
     <AbsoluteFill style={{background: C.bg}}>
       <TransitionSeries>
         {ORDER.flatMap((o) => {
-          const Scene = SCENES[o.key];
+          const Scene = scenes[o.key];
           const seq = (
             <TransitionSeries.Sequence key={o.key} name={o.key} durationInFrames={CUT[o.key]} premountFor={fps}>
               <Scene />
