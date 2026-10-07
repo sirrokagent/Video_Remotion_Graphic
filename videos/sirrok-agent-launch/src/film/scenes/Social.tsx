@@ -408,7 +408,7 @@ const Platform: React.FC<{brand: BrandKey; f: number; s: number}> = ({brand, f, 
               <svg width={22} height={22} viewBox="0 0 24 24"><path d="M6 3.5v17L21 12z" fill="#fff" /></svg>
             </div>
             <div style={{position: 'absolute', right: 10, bottom: 10, background: 'rgba(0,0,0,0.8)', color: C.white, fontSize: 24, fontWeight: 800, padding: '0 8px', borderRadius: 6}}>
-              0:90
+              1:30
             </div>
           </div>
           <div style={{padding: '0 16px', display: 'flex', flexDirection: 'column', gap: 12}}>
