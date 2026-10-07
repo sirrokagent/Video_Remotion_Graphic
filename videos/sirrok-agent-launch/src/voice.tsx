@@ -9,7 +9,8 @@ import {C, E, FONT} from './theme';
  * 28 dải tần cho mỗi frame. Sóng âm và chữ trên màn hình chạy theo đúng số này.
  */
 type Clip = {durFrames: number; words: {text: string; at: number}[]; bands: number[][]};
-export const VOICE = data as {hey: Clip; command: Clip};
+export type {Clip};
+export const VOICE = data as Record<string, Clip> & {hey: Clip; command: Clip};
 
 /** Năng lượng một dải tại frame lẻ (nội suy giữa hai frame), 0 ngoài clip. */
 const bandAt = (clip: Clip, f: number, b: number) => {
