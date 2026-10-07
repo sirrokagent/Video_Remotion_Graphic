@@ -2,7 +2,9 @@ import React from 'react';
 import {AbsoluteFill, Sequence, staticFile, useVideoConfig} from 'remotion';
 import {Audio} from '@remotion/media';
 import {linearTiming, TransitionSeries} from '@remotion/transitions';
-import {S1Wake} from './scenes/S1Wake';
+import {CMD_AT, HEY_AT, S1Wake} from './scenes/S1Wake';
+import {ev} from './anim';
+import {VOICE} from './voice';
 import {S2Work} from './scenes/S2Work';
 import {S3Phone} from './scenes/S3Phone';
 import {S4Everywhere} from './scenes/S4Everywhere';
@@ -21,15 +23,10 @@ const wipe = linearTiming({durationInFrames: T.wipe, easing: E.inOut});
 
 /** Hiệu ứng âm thanh — mốc tính theo frame tuyệt đối của cả phim. */
 const SFX: {at: number; file: string; vol: number}[] = [
-  // cảnh 1
-  {at: START.wake + 14, file: 'soft-digital-tick', vol: 0.5},
-  {at: START.wake + 34, file: 'mic-open-blip', vol: 0.45},
-  {at: START.wake + 48, file: 'soft-digital-tick', vol: 0.3},
-  {at: START.wake + 102, file: 'layered-paper-whoosh', vol: 0.3},
-  {at: START.wake + 150, file: 'staggered-soft-snaps-x4', vol: 0.35},
-  {at: START.wake + 172, file: 'staggered-soft-snaps-x4', vol: 0.35},
-  {at: START.wake + 194, file: 'staggered-soft-snaps-x4', vol: 0.3},
-  {at: START.wake + 230, file: 'subtle-haptic-pop', vol: 0.6},
+  // cảnh 1 — giọng nói nằm riêng ở dưới; ở đây chỉ là tiếng của giao diện
+  {at: START.wake + 84, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.wake + 114, file: 'mic-open-blip', vol: 0.45},
+  {at: START.wake + CMD_AT + Math.round(VOICE.command.durFrames) + 8, file: 'subtle-haptic-pop', vol: 0.6},
   {at: START.work - 4, file: 'layered-paper-whoosh', vol: 0.45},
   // cảnh 2
   {at: START.work + 70, file: 'soft-digital-tick', vol: 0.6},
@@ -60,6 +57,12 @@ const SFX: {at: number; file: string; vol: number}[] = [
   {at: START.reveal + 134, file: 'final-brand-chime', vol: 0.5},
 ];
 
+/** 0 → 1 quanh hai câu nói: hạ nhạc trước 6 frame, trả lại sau 10 frame. */
+const duck = (f: number) => {
+  const win = (a: number, len: number) => Math.min(ev(f, [a - 6, a], [0, 1]), 1 - ev(f, [a + len, a + len + 10], [0, 1]));
+  return Math.max(win(START.wake + HEY_AT, VOICE.hey.durFrames), win(START.wake + CMD_AT, VOICE.command.durFrames));
+};
+
 export const SirrokLaunch: React.FC = () => {
   const {fps} = useVideoConfig();
   return (
@@ -85,7 +88,14 @@ export const SirrokLaunch: React.FC = () => {
         </TransitionSeries.Sequence>
       </TransitionSeries>
 
-      <Audio src={staticFile('music/bed.mp3')} volume={0.55} />
+      {/* nhạc nền hạ xuống khi có giọng nói, để lời nghe rõ */}
+      <Audio src={staticFile('music/bed.mp3')} volume={(f) => 0.55 * (1 - 0.55 * duck(f))} />
+      <Sequence from={START.wake + HEY_AT} premountFor={fps} name="giọng · Hey Sirrok">
+        <Audio src={staticFile('voice/hey.mp3')} volume={1} />
+      </Sequence>
+      <Sequence from={START.wake + CMD_AT} premountFor={fps} name="giọng · Gửi báo giá cho khách">
+        <Audio src={staticFile('voice/command.mp3')} volume={1} />
+      </Sequence>
       {SFX.map((s, i) => (
         <Sequence key={i} from={s.at} premountFor={fps} name={`sfx ${s.file}`}>
           <Audio src={staticFile(`sfx/${s.file}.mp3`)} volume={s.vol} />

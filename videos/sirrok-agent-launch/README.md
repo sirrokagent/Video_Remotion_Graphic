@@ -33,7 +33,7 @@ làm xuyên bốn ứng dụng, kết quả về điện thoại, rồi mở r�
 
 | # | Cảnh | Frame | File |
 |---|---|---|---|
-| 1 | Thức dậy & giao việc | 0–270 | `src/scenes/S1Wake.tsx` |
+| 1 | "Hey Sirrok" — ra lệnh bằng giọng nói | 0–270 | `src/scenes/S1Wake.tsx` |
 | 2 | Agent tự làm | 250–610 | `src/scenes/S2Work.tsx` |
 | 3 | Kết quả về tận tay | 590–810 | `src/scenes/S3Phone.tsx` |
 | 4 | Ở mọi nơi. Mọi lúc. | 790–1000 | `src/scenes/S4Everywhere.tsx` |
@@ -95,6 +95,12 @@ Hiệu ứng âm thanh (`public/sfx/`) lấy từ thư viện của dự án Hyp
 
 ## Âm thanh
 
+- **Giọng nói** `public/voice/hey.mp3`, `public/voice/command.mp3` — "Hey Sirrok." và
+  "Gửi báo giá cho khách.", đọc bằng giọng clone *AhitOfficial VN* (vidIQ / ElevenLabs).
+  `scripts/analyze_voice.py <file giọng>` tách hai câu, đo mốc bắt đầu từng âm tiết và
+  năng lượng 28 dải tần mỗi frame → `src/voice.json`. Sóng âm (`VoiceWave`) và chữ hiện
+  từng từ, mờ → nét (`BlurWords`) trong `src/voice.tsx` chạy theo đúng số đo đó.
+  Nhạc nền tự hạ khi có giọng (ducking trong `src/SirrokLaunch.tsx`).
 - **Nhạc nền** `public/music/bed.mp3` — tổng hợp bằng `scripts/make_music.py` (numpy,
   seed cố định, chạy lại ra y hệt). 100 BPM, cú hit trầm đúng frame thân ghost nở, chuông
   đúng frame sao bật.

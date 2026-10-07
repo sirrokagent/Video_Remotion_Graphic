@@ -121,6 +121,12 @@ type DesktopProps = {
   /** Dấu nháy — chính là cặp mắt. Đứng trước placeholder khi chưa gõ, sau chữ khi đang gõ. */
   caret?: React.ReactNode;
   inputOpacity?: number;
+  /** Chế độ giọng nói: thay phần chữ trong ô nhập bằng nội dung này (mắt lắng nghe + sóng âm). */
+  voiceContent?: React.ReactNode;
+  /** 0 → 1: nút giọng nói đang thu — có vòng sóng lan ra. */
+  recording?: number;
+  /** frame của cảnh, để vòng sóng của nút thu chạy. */
+  frame?: number;
   greetOpacity?: number;
   sendPulse?: number;
   activeItem?: 'new' | 'agent' | 'task' | 'link';
@@ -150,6 +156,9 @@ export const DesktopApp: React.FC<DesktopProps> = ({
   typedText = '',
   caret,
   inputOpacity = 1,
+  voiceContent,
+  recording = 0,
+  frame = 0,
   greetOpacity = 1,
   sendPulse = 0,
   activeItem = 'new',
@@ -237,9 +246,13 @@ export const DesktopApp: React.FC<DesktopProps> = ({
     >
       <IconPlus size={36} />
       <div style={{flex: 1, minWidth: 0, overflow: 'hidden', display: 'flex', alignItems: 'center', fontSize: 38, fontWeight: 500, whiteSpace: 'nowrap', opacity: inputOpacity}}>
-        {typedText ? <span style={{color: C.text}}>{typedText}</span> : null}
-        {caret}
-        {typedText ? null : <span style={{color: C.muted}}>Hỏi Sirrok Agent</span>}
+        {voiceContent ?? (
+          <>
+            {typedText ? <span style={{color: C.text}}>{typedText}</span> : null}
+            {caret}
+            {typedText ? null : <span style={{color: C.muted}}>Hỏi Sirrok Agent</span>}
+          </>
+        )}
       </div>
       <div style={{display: 'flex', alignItems: 'center', gap: 10, fontSize: 28, fontWeight: 500, color: C.label, flexShrink: 0, whiteSpace: 'nowrap'}}>
         <ClaudeMark size={26} />
@@ -247,18 +260,39 @@ export const DesktopApp: React.FC<DesktopProps> = ({
         <IconChevron size={26} />
       </div>
       <IconMic size={34} />
-      <div
-        style={{
-          width: 74,
-          height: 74,
-          borderRadius: 37,
-          background: C.send,
-          display: 'grid',
-          placeItems: 'center',
-          scale: String(1 - 0.12 * Math.sin(Math.PI * Math.min(1, sendPulse))),
-        }}
-      >
-        <IconWave size={36} />
+      <div style={{position: 'relative', width: 74, height: 74, flexShrink: 0}}>
+        {/* vòng sóng lan ra khi đang thu giọng */}
+        {recording > 0
+          ? [0, 1].map((k) => {
+              const t = ((frame + k * 15) % 30) / 30;
+              return (
+                <div
+                  key={k}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '50%',
+                    background: C.send,
+                    opacity: 0.28 * (1 - t) * recording,
+                    scale: String(1 + 0.75 * (1 - (1 - t) * (1 - t))),
+                  }}
+                />
+              );
+            })
+          : null}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: 37,
+            background: C.send,
+            display: 'grid',
+            placeItems: 'center',
+            scale: String(1 - 0.12 * Math.sin(Math.PI * Math.min(1, sendPulse))),
+          }}
+        >
+          <IconWave size={36} />
+        </div>
       </div>
     </div>
 
