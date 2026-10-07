@@ -27,6 +27,53 @@
     "_comment": "4,42 chu/giay do tu video goc: 640 chu / 144,75 giay"
   },
 
+  "reel": {
+    "_comment": "Day chuyen rieng: node automation/reel.mjs — tim video view cao, lay phu de that, viet lai thanh reel 1-2 phut, gui Telegram.",
+    "defaultTopic": "AI Agent va tu dong hoa kiem tien 2026",
+
+    "targetSeconds": 90,
+    "minSeconds": 60,
+    "maxSeconds": 120,
+    "wordsPerSecond": 4.42,
+
+    "transcriptCount": 6,
+    "_transcriptNote": "So video LAY DUOC phu de thi dung. Video khong bat phu de se bi bo qua va lay tiep video sau.",
+    "subtitleLangs": "vi,en,en-orig,en-US",
+    "transcriptMaxChars": 9000,
+
+    "verbatimWindow": 8,
+    "_verbatimNote": "Cum tu bao nhieu tu tro len ma trung nguyen van voi ban goc thi coi la chep va chan lai. Ha xuong = nghiem hon.",
+
+    "research": {
+      "_comment": "Ghi de rieng cho luong reel. Khong dong vao muc 'research' o tren, nen run.mjs khong bi anh huong.",
+      "keywords": [
+        "AI Agent",
+        "AI automation",
+        "kiếm tiền với AI",
+        "AI làm việc thay bạn",
+        "make money with AI",
+        "AI agent business"
+      ],
+      "markets": [
+        { "regionCode": "VN", "relevanceLanguage": "vi" },
+        { "regionCode": "US", "relevanceLanguage": "en" }
+      ],
+      "_marketsNote": "Moi cap (keyword x market) ton 100 don vi quota. 6 keyword x 2 market = 1.200/10.000 moi lan chay.",
+      "minViews": 10000,
+      "publishedWithinDays": 60,
+      "maxResults": 30
+    }
+  },
+
+  "telegram": {
+    "_comment": "Can TELEGRAM_BOT_TOKEN. Nhan tin @BotFather -> /newbot -> lay token.",
+    "enabled": true,
+    "chatId": "",
+    "_chatIdNote": "Nhan /start cho bot truoc, roi mo https://api.telegram.org/bot<TOKEN>/getUpdates va doc message.chat.id. Chat nhom la so am, giu ca dau tru. De trong thi doc tu bien moi truong TELEGRAM_CHAT_ID.",
+    "sendFile": true,
+    "_sendFileNote": "Gui kem ca file reel.md ben canh tin nhan van ban."
+  },
+
   "voice": {
     "mode": "manual",
     "_comment": "manual = ban tu thu am roi bo file vao inbox/. elevenlabs = pipeline tu sinh (can ELEVENLABS_API_KEY; luu y goi free chi 10.000 ky tu/thang).",
