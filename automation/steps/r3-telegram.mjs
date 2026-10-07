@@ -34,14 +34,23 @@ export async function run({ cfg, dir, slug, args, state }) {
   // tom tat nguon de nguoi doc biet kich ban nay dung tu dau ma ra
   // Chay khong co giam sat, nen moi thu doc tu dia deu coi la co the thieu truong.
   const tfile = path.join(dir, "transcripts.json");
-  const sources = (fs.existsSync(tfile) ? JSON.parse(fs.readFileSync(tfile, "utf8")).got : []) || [];
+  const t = fs.existsSync(tfile) ? JSON.parse(fs.readFileSync(tfile, "utf8")) : {};
+  const sources = (t.got?.length ? t.got : t.meta) || [];
   const check = fs.existsSync(path.join(dir, "reel-check.json"))
     ? JSON.parse(fs.readFileSync(path.join(dir, "reel-check.json"), "utf8")) : null;
+
+  // Noi thang che do nao da sinh ra ban nay. Mot kich ban viet tu mo ta yeu hon
+  // han mot kich ban viet tu phu de — nguoi doc phai biet dieu do truoc khi dung.
+  const degraded = check?.degraded ?? (t.mode === "metadata");
 
   const header = [
     `KICH BAN REEL MOI — ${cfg.brand.name}`,
     `chu de: ${state.topic || slug}`,
     check ? `do dai: ${check.words} chu ≈ ${Math.floor(check.seconds / 60)}:${String(Math.round(check.seconds % 60)).padStart(2, "0")}` : null,
+    degraded
+      ? `⚠ CHE DO RUT GON: khong tai duoc phu de${t.botChecked ? " (YouTube chan IP may chay)" : ""},\n` +
+        `  kich ban nay chi viet tu TIEU DE + MO TA. Doc ky truoc khi dung.`
+      : null,
     `phan tich tu ${sources.length} video view cao:`,
     ...sources.map((v) => `  • ${Number(v.views || 0).toLocaleString()} view — ${String(v.title || "?").slice(0, 70)}\n    ${v.url || ""}`),
   ].filter(Boolean).join("\n");

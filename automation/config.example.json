@@ -41,6 +41,9 @@
     "subtitleLangs": "vi,en,en-orig,en-US",
     "transcriptMaxChars": 9000,
 
+    "allowNoTranscript": false,
+    "_allowNoTranscriptNote": "false = khong lay duoc phu de thi DUNG HAN (dung cho may ca nhan). true = van chay tiep, viet kich ban tu tieu de + mo ta va dan nhan CHE DO RUT GON (dung cho GitHub Actions, vi YouTube chan IP trung tam du lieu nen yt-dlp gan nhu chac chan hong o do). Workflow tu bat co nay len, khong can sua file.",
+
     "verbatimWindow": 8,
     "_verbatimNote": "Cum tu bao nhieu tu tro len ma trung nguyen van voi ban goc thi coi la chep va chan lai. Ha xuong = nghiem hon.",
 

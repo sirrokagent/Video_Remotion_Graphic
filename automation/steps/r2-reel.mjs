@@ -27,7 +27,12 @@ const countWords = (s) => s.split(/\s+/).filter(Boolean).length;
 export async function run({ cfg, dir, state }) {
   const tp = path.join(dir, "transcripts.json");
   if (!fs.existsSync(tp)) throw new Blocked("Chua co transcripts.json", "Chay lai buoc transcript truoc.");
-  const { got } = JSON.parse(fs.readFileSync(tp, "utf8"));
+  const { got = [], meta = [], mode = "transcript" } = JSON.parse(fs.readFileSync(tp, "utf8"));
+  const degraded = mode === "metadata" || !got.length;
+  if (degraded && !meta.length) throw new Blocked(
+    "Khong co phu de lan mo ta de lam tu lieu.",
+    "Chay lai buoc research va transcript truoc."
+  );
 
   const reel = cfg.reel || {};
   const targetSeconds = reel.targetSeconds ?? 90;
@@ -40,14 +45,35 @@ export async function run({ cfg, dir, state }) {
     ? fs.readFileSync(path.join(ROOT, cfg.brand.briefPath), "utf8").slice(0, 3500)
     : "";
 
-  const sources = got.map((v, i) => `
+  // Hai che do tu lieu. "transcript" la che do that; "metadata" la che do rut gon
+  // khi khong tai duoc phu de (hay gap khi chay tren may chu bi YouTube chan IP).
+  const used = degraded ? meta : got;
+
+  const sources = degraded
+    ? meta.map((v, i) => `
 --- NGUON ${i + 1} ---
 Tieu de: ${v.title}
-Kenh: ${v.channel} · ${v.views.toLocaleString()} view · ngon ngu phu de: ${v.lang}
+Kenh: ${v.channel} · ${Number(v.views || 0).toLocaleString()} view
+Link: ${v.url}
+Mo ta cua video:
+${v.description || "(khong co mo ta)"}
+`).join("\n")
+    : got.map((v, i) => `
+--- NGUON ${i + 1} ---
+Tieu de: ${v.title}
+Kenh: ${v.channel} · ${Number(v.views || 0).toLocaleString()} view · ngon ngu phu de: ${v.lang}
 Link: ${v.url}
 Phu de${v.truncated ? " (da cat bot phan duoi)" : ""}:
 ${v.transcript}
 `).join("\n");
+
+  const materialLine = degraded
+    ? `DUOI DAY LA TIEU DE VA MO TA cua ${meta.length} video dang co view cao cung chu de.\n` +
+      `KHONG tai duoc phu de cua chung, nen ban CHI co tieu de va mo ta de lam viec.\n` +
+      `Vi tu lieu mong, tuyet doi khong suy dien noi dung ben trong video ma ban khong thay.\n` +
+      `Viet tu cai ban BIET, va neu phai noi chung chung thi noi it di chu dung bia cho day.`
+    : `DUOI DAY LA PHU DE THAT CUA ${got.length} VIDEO dang co view cao cung chu de.\n` +
+      `Day la TU LIEU PHAN TICH, khong phai thu de chep.`;
 
   const prompt = `Bạn đang viết kịch bản REEL cho kênh ${cfg.brand.name}.
 
@@ -58,8 +84,7 @@ ${brief}
 
 CHỦ ĐỀ: ${state.topic}
 
-DƯỚI ĐÂY LÀ PHỤ ĐỀ THẬT CỦA ${got.length} VIDEO ĐANG CÓ VIEW CAO CÙNG CHỦ ĐỀ.
-Đây là TƯ LIỆU PHÂN TÍCH, không phải thứ để chép.
+${materialLine}
 ${sources}
 
 NHIỆM VỤ
@@ -124,8 +149,13 @@ RÀNG BUỘC CỨNG
   }
 
   // --- canh chep nguyen van ---
-  const hits = findVerbatim(spoken, got, reel.verbatimWindow ?? 8);
-  const report = { words: n, seconds: +secs.toFixed(1), verbatimHits: hits };
+  // O che do rut gon thi do voi MO TA, vi do la tu lieu duy nhat da dua vao prompt.
+  const against = used.map((v) => ({
+    id: v.id, title: v.title, transcript: v.transcript || v.description || "",
+  })).filter((v) => v.transcript);
+
+  const hits = findVerbatim(spoken, against, reel.verbatimWindow ?? 8);
+  const report = { mode, degraded, sources: against.length, words: n, seconds: +secs.toFixed(1), verbatimHits: hits };
   fs.writeFileSync(path.join(dir, "reel-check.json"), JSON.stringify(report, null, 2));
 
   if (hits.length) {
@@ -137,5 +167,6 @@ RÀNG BUỘC CỨNG
       "      node automation/reel.mjs --resume <slug> --from 4"
     );
   }
-  log.ok("khong co cum nao trung nguyen van voi ban goc");
+  log.ok(`khong co cum nao trung nguyen van (do voi ${against.length} nguon)`);
+  if (degraded) log.warn("kich ban nay viet o CHE DO RUT GON — chi tu tieu de + mo ta, khong co phu de");
 }

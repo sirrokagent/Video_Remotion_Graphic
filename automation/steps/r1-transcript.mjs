@@ -11,9 +11,18 @@ import { vttToText, wordCount } from "../lib/vtt.mjs";
  * endpoint captions.download doi OAuth cua CHINH chu kenh.
  */
 
+/**
+ * sh() nem khi khong tim thay lenh (ENOENT), nen phai bat lai o day —
+ * neu khong thi "chua cai yt-dlp" se roi ra thanh loi la thay vi mot cau
+ * noi ro phai cai gi.
+ */
 function haveYtDlp() {
-  const r = sh("yt-dlp", ["--version"]);
-  return !r.error && r.status === 0;
+  try {
+    const r = sh("yt-dlp", ["--version"]);
+    return !r.error && r.status === 0;
+  } catch {
+    return false;
+  }
 }
 
 /** Tai phu de mot video. Tra ve null neu video khong co phu de nao dung duoc. */
@@ -57,15 +66,18 @@ export async function run({ cfg, dir }) {
   if (!fs.existsSync(rp)) throw new Blocked("Chua co research.json", "Chay lai buoc research truoc.");
   const research = JSON.parse(fs.readFileSync(rp, "utf8"));
 
-  if (!haveYtDlp()) throw new Blocked(
+  const reel = cfg.reel || {};
+  const degradeOk = reel.allowNoTranscript ?? false;
+
+  const hasTool = haveYtDlp();
+  if (!hasTool && !degradeOk) throw new Blocked(
     "Chua cai yt-dlp (can de lay phu de video cua nguoi khac)",
     "Cai mot trong hai cach:\n" +
     "      pip install -U yt-dlp\n" +
     "      winget install yt-dlp.yt-dlp\n" +
     "    YouTube Data API khong thay the duoc: captions.download chi cho tai phu de video cua chinh ban."
   );
-
-  const reel = cfg.reel || {};
+  if (!hasTool) log.warn("khong co yt-dlp — bo qua buoc lay phu de");
   const want = reel.transcriptCount ?? 6;
   const langs = reel.subtitleLangs ?? "vi,en,en-orig,en-US";
   const capChars = reel.transcriptMaxChars ?? 9000;
@@ -77,6 +89,7 @@ export async function run({ cfg, dir }) {
   const skipped = [];
 
   for (const v of research) {
+    if (!hasTool) break;
     if (got.length >= want) break;
     let res;
     try {
@@ -104,12 +117,46 @@ export async function run({ cfg, dir }) {
     log.dim(`${String(v.views).padStart(9)} view · ${res.lang} · ${wordCount(full)} tu · ${v.title.slice(0, 50)}`);
   }
 
-  if (!got.length) throw new Blocked(
-    "Khong lay duoc phu de cua video nao.",
-    "Thuong do: (1) cac video dau bang khong bat phu de, (2) YouTube chan IP may chu.\n" +
-    "    Thu: noi rong 'subtitleLangs' trong config, hoac tang 'maxResults' o muc research de co them ung vien."
-  );
+  // YouTube chan IP trung tam du lieu. Tren GitHub Actions (runner cua Azure)
+  // gan nhu chac chan dinh, nen phai nhan ra va goi dung ten, dung bao "khong co phu de".
+  const botChecked = skipped.some((s) => /not a bot|Sign in to confirm|confirm you.re not/i.test(s.reason || ""));
 
-  fs.writeFileSync(path.join(dir, "transcripts.json"), JSON.stringify({ got, skipped }, null, 2));
-  log.ok(`lay duoc phu de ${got.length}/${got.length + skipped.length} video (bo qua ${skipped.length})`);
+  if (!got.length) {
+    const why = botChecked
+      ? "YouTube chan IP may dang chay (bot check). Day la chuyen BINH THUONG khi chay tren may chu\n" +
+        "    hosted cua GitHub Actions — runner dung IP trung tam du lieu."
+      : "Cac video dau bang khong bat phu de, hoac yt-dlp loi.";
+
+    if (!(cfg.reel?.allowNoTranscript ?? false)) {
+      throw new Blocked("Khong lay duoc phu de cua video nao.",
+        `${why}\n` +
+        "    Ba huong go:\n" +
+        "      1. Chay tren may ca nhan (IP nha dan) — cach sach nhat, phu de lay duoc binh thuong.\n" +
+        "      2. Dung self-hosted runner tren may minh thay cho runner hosted cua GitHub.\n" +
+        "      3. Bat reel.allowNoTranscript = true de pipeline van chay, viet tu tieu de + mo ta.\n" +
+        "    Ngoai ra co the noi rong 'subtitleLangs' hoac tang 'maxResults' de co them ung vien."
+      );
+    }
+
+    log.warn("khong lay duoc phu de nao — chay tiep o che do RUT GON (chi tieu de + mo ta)");
+    log.dim(why.replace(/\n\s+/g, " "));
+  }
+
+  // Luon kem 'meta' (tieu de + mo ta day du tu YouTube API) de buoc viet kich ban
+  // van co tu lieu khi che do rut gon. Mo ta la thu duy nhat lay duoc ma khong
+  // vuong bot check, vi no den tu API chu khong phai tu trang web.
+  const meta = research.slice(0, Math.max(want, 8)).map((v) => ({
+    id: v.id,
+    url: `https://www.youtube.com/watch?v=${v.id}`,
+    title: v.title,
+    channel: v.channelTitle,
+    views: v.views,
+    description: (v.description || "").slice(0, 1200),
+  }));
+
+  const mode = got.length ? "transcript" : "metadata";
+  fs.writeFileSync(path.join(dir, "transcripts.json"),
+    JSON.stringify({ mode, botChecked, got, skipped, meta }, null, 2));
+
+  if (got.length) log.ok(`lay duoc phu de ${got.length}/${got.length + skipped.length} video (bo qua ${skipped.length})`);
 }

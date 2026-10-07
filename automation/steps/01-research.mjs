@@ -51,17 +51,25 @@ export async function run({ cfg, dir, state }) {
     }
   }
 
-  // lay thong ke that de loc theo view
+  // Lay thong ke that de loc theo view.
+  // Xin luon 'snippet' de co MO TA DAY DU: videos.list tinh 1 don vi quota du
+  // xin bao nhieu part, nen day la mien phi. Mo ta la tu lieu du phong cho buoc
+  // viet kich ban khi khong lay duoc phu de (hay gap khi chay tren may chu).
   const ids = [...seen.keys()];
   const stats = {};
   for (let i = 0; i < ids.length; i += 50) {
-    const q = new URLSearchParams({ part: "statistics,contentDetails", id: ids.slice(i, i + 50).join(","), key });
+    const q = new URLSearchParams({ part: "statistics,contentDetails,snippet", id: ids.slice(i, i + 50).join(","), key });
     const j = await (await fetch(`https://www.googleapis.com/youtube/v3/videos?${q}`)).json();
     for (const v of j.items || []) stats[v.id] = v;
   }
 
   const picked = [...seen.values()]
-    .map((v) => ({ ...v, views: +(stats[v.id]?.statistics?.viewCount || 0), duration: stats[v.id]?.contentDetails?.duration }))
+    .map((v) => ({
+      ...v,
+      views: +(stats[v.id]?.statistics?.viewCount || 0),
+      duration: stats[v.id]?.contentDetails?.duration,
+      description: (stats[v.id]?.snippet?.description || v.description || "").slice(0, 1500),
+    }))
     .filter((v) => v.views >= r.minViews)
     .sort((a, b) => b.views - a.views)
     .slice(0, r.maxResults);

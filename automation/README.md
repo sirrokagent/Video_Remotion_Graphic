@@ -177,3 +177,67 @@ node automation/test.mjs
 
 Kiểm phần logic thuần, không cần API key và không gọi mạng: đọc phụ đề WebVTT,
 cắt tin nhắn Telegram, máy dò chép nguyên văn, tách phần lời đọc để đếm chữ.
+
+---
+
+## Chạy tự động bằng GitHub Actions
+
+Workflow: [`.github/workflows/reel.yml`](../.github/workflows/reel.yml) — chạy 07:23 sáng thứ Hai
+(giờ Việt Nam), hoặc bấm tay ở tab **Actions → Run workflow**.
+
+### Đặt 4 secret
+
+`Settings → Secrets and variables → Actions → New repository secret`
+
+| Secret | Lấy ở đâu |
+|---|---|
+| `YOUTUBE_API_KEY` | console.cloud.google.com → bật YouTube Data API v3 → Credentials |
+| `TELEGRAM_BOT_TOKEN` | nhắn `@BotFather` → `/newbot` |
+| `TELEGRAM_CHAT_ID` | `/start` cho bot → mở `api.telegram.org/bot<TOKEN>/getUpdates` |
+| `CLAUDE_CODE_OAUTH_TOKEN` | chạy `claude setup-token` trên máy có trình duyệt (cần gói Pro/Max) |
+
+Thay cho `CLAUDE_CODE_OAUTH_TOKEN` có thể dùng `ANTHROPIC_API_KEY` (trả theo lượt gọi).
+Token OAuth hạn **1 năm** và **không tự gia hạn** — hết hạn thì workflow hỏng cho tới khi chạy lại `setup-token`.
+
+### Vấn đề thật: runner của GitHub bị YouTube chặn
+
+Runner `ubuntu-latest` dùng IP trung tâm dữ liệu. YouTube chặn rất mạnh IP loại đó
+("Sign in to confirm you're not a bot"), và PO token phần lớn **không còn** vượt được
+nữa. Nên **bước lấy phụ đề gần như chắc chắn hỏng trên runner hosted.**
+
+Workflow không giấu chuyện đó. Trên runner hosted nó bật **chế độ rút gọn**:
+
+- Bước 1 vẫn chạy bình thường — YouTube Data API dùng API key, không dính bot check.
+  Pipeline lấy luôn **mô tả đầy đủ** của từng video (cùng lời gọi, không tốn thêm quota).
+- Không có phụ đề thì bước 3 viết từ **tiêu đề + mô tả**, và prompt cấm suy diễn nội dung
+  bên trong video mà nó không thấy.
+- Tin Telegram dán nhãn `⚠ CHE DO RUT GON` ngay dòng đầu, để đọc là biết kịch bản này
+  mỏng tư liệu hơn bình thường.
+
+Kịch bản rút gọn vẫn dùng được, nhưng **yếu hơn hẳn** kịch bản viết từ phụ đề thật.
+
+### Muốn có phụ đề thật: chạy runner trên máy mình
+
+IP nhà dân thì YouTube không chặn. Cài self-hosted runner
+(`Settings → Actions → Runners → New self-hosted runner`), rồi đặt biến repo:
+
+`Settings → Secrets and variables → Actions → Variables → New repository variable`
+
+| Biến | Giá trị |
+|---|---|
+| `RUNNER` | `self-hosted` |
+
+Workflow tự nhận: có `RUNNER` thì nó **tắt** chế độ rút gọn, tức là không lấy được phụ đề
+sẽ báo hỏng chứ không im lặng gửi bản mỏng.
+
+Biến `CLAUDE_ARGS` (tuỳ chọn) để thêm cờ cho lệnh `claude` mà không phải sửa code.
+
+### Những thứ workflow cố ý làm
+
+- **Kiểm secret trước khi làm gì** — chỉ in "đã có / thiếu", không bao giờ in giá trị.
+  Log Actions ai đọc được repo cũng xem được.
+- **Chạy `test.mjs` trước** — hỏng logic thì dừng sớm, không tốn lượt gọi Claude.
+- **Artifact chỉ chứa `reel.md` và `reel-check.json`** — không đưa `config.json` (có chat id)
+  và không đưa `transcripts.json` (phụ đề của người khác) lên.
+- **Hỏng thì nhắn Telegram** — cron hỏng mà im lặng thì vài tuần sau mới phát hiện.
+- **`concurrency: reel`** — hai lần chạy chồng nhau sẽ ghi đè cùng thư mục `runs/`.
