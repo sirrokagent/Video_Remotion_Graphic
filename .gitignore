@@ -31,7 +31,9 @@ D:/Temp/
 VoiceStudio/
 
 # nhac nen cua du an khac, dung lai tu nguon goc khi can
-videos/*/assets/bgm/
+# GIU lai README de ban clone sach biet thieu file gi va lay lai o dau
+videos/*/assets/bgm/*
+!videos/*/assets/bgm/README.md
 
 # ===== Day chuyen tu dong =====
 # cau hinh rieng, chua khoa va duong dan ca nhan

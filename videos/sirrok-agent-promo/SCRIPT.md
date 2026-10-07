@@ -14,6 +14,15 @@ tương ứng; phần dư trong frame là khoảng nghỉ ở đuôi để hình
 **Nếu sửa chữ ở bất kỳ dòng nào → phải thu lại dòng đó** rồi chạy lại bước
 đồng bộ duration; đừng sửa chữ mà giữ file cũ.
 
+**Về 8 cảnh báo `clip_media_fit` khi chạy `hyperframes check`:** đã rà, đây là
+CỐ Ý, đừng "sửa". Mỗi thẻ `<audio>` giọng đọc có `data-duration` bằng độ dài
+frame chứ không bằng độ dài file mp3 — phần chênh chính là khoảng nghỉ đuôi ghi
+ở từng dòng bên dưới. Khi render, khung giọng tự co về đúng độ dài file, còn
+hình vẫn giữ nguyên nhịp vì thời lượng frame nằm ở thẻ `<div>` cảnh, không phải
+ở thẻ `<audio>`. Nếu ép `data-duration` của giọng về đúng số giây đo được thì
+chỉ đổi được con số trên báo cáo, mà lại dễ cắt cụt đuôi câu do sai lệch giữa
+độ dài container mp3 và độ dài trình duyệt báo. Để nguyên.
+
 ---
 
 ## Line 1 — Hook (Frame 1)
