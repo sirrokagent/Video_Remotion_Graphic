@@ -21,7 +21,7 @@ export const F = {
  * Thời lượng THẬT trong phim — cắt bớt đuôi tĩnh của vài cảnh để cả phim đúng 90 giây.
  * (F giữ độ dài thiết kế của từng cảnh khi xem riêng.)
  */
-export const CUT = {...F, wake: 250, work: 350, call: 560, island: 320, social: 310, connect: 180, everywhere: 180, reveal: 150} as const;
+export const CUT = {...F, wake: 240, work: 340, call: 560, island: 310, social: 300, connect: 180, everywhere: 210, reveal: 180, meet: 230} as const;
 
 /** Cảnh nào nối bằng vệt mắt (wipe), cảnh nào cắt liền (mắt nối mắt). */
 export const ORDER = [

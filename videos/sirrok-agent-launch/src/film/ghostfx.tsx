@@ -276,6 +276,15 @@ const Glitch: Fx = ({f, size, dark}) => {
   const split = A > 0.01 ? 3.6 * A + 0.5 : 0;
   const hide = f < 10 && rnd(s + 99) < 0.35;
   const k = idleK(f);
+  if (A <= 0.001) {
+    // đã khoá: vẽ một khối liền, không cắt lát (tránh vệt mảnh ở mép lát)
+    return (
+      <Stage size={size}>
+        <path d={BODY} fill={p.body} />
+        <Eyes k={k} color={p.eye} />
+      </Stage>
+    );
+  }
   return (
     <Stage size={size}>
       <defs>
@@ -327,7 +336,7 @@ const PART = sample(4.1);
 const PART_START = PART.map((pt, i) => {
   const a = rnd(i * 3 + 1) * Math.PI * 2;
   const R = 55 + rnd(i * 5 + 2) * 75;
-  return {x: CX + Math.cos(a) * R * 1.3, y: CY + Math.sin(a) * R * 0.8, d: rnd(i * 7 + 3) * 10, sw: (rnd(i * 11 + 4) - 0.5) * 34};
+  return {x: CX + Math.cos(a) * R * 1.45, y: CY - 4 + Math.sin(a) * R * 0.42, d: rnd(i * 7 + 3) * 10, sw: (rnd(i * 11 + 4) - 0.5) * 34};
 });
 
 const Particles: Fx = ({f, size, dark}) => {
@@ -412,7 +421,7 @@ const Halftone: Fx = ({f, size, dark}) => {
             const w1 = ev(f, [d, d + 10], [0, 1], E.back);
             const w2 = ev(f, [d + 12, d + 22], [0, 1], E.out);
             const r = 2.9 * (0.34 * w1 + 0.28 * w2);
-            return r > 0.02 ? <circle key={i} cx={pt.x} cy={pt.y} r={r} fill={mix(BLUE, p.body === C.ink ? '#000000' : '#FFFFFF', w2)} /> : null;
+            return r > 0.02 ? <circle key={i} cx={pt.x} cy={pt.y} r={r} fill={mix(BLUE, p.body, w2)} /> : null;
           })
         : null}
       <path d={BODY} fill={p.body} opacity={solid} />
@@ -525,7 +534,7 @@ const Shatter: Fx = ({f, size, dark}) => {
 /** Ghost có bề dày (các lớp xanh xếp chồng), xoay từ nghiêng về chính diện. Đứng yên vẫn lắc rất nhẹ. */
 const Extrude: Fx = ({f, size, dark}) => {
   const p = pal(dark);
-  const u = ev(f, [0, 40], [0, 1], E.out);
+  const u = ev(f, [0, 40], [0, 1], E.inOut);
   const sway = ev(f, [40, 70], [0, 1], E.inOut) * 3.5 * Math.sin((f - 40) * 0.055);
   const th = ((-62 * (1 - u) + sway) * Math.PI) / 180;
   const ph = ((16 * (1 - u)) * Math.PI) / 180;
@@ -644,8 +653,8 @@ const Pulse: Fx = ({f, size, dark}) => {
           rx={h / 2}
           transform={`translate(${e.cx} ${e.cy}) rotate(${e.ang})`}
           fill="none"
-          stroke={BLUE}
-          strokeWidth={0.3 + 1.1 * (1 - q)}
+          stroke="#3D8BFF"
+          strokeWidth={0.45 + 1.5 * (1 - q)}
           opacity={em.o * (1 - q)}
         />,
       );
@@ -704,7 +713,7 @@ const Pixel: Fx = ({f, size, dark}) => {
             const q = Math.round(c.v * 4) / 4;
             if (q <= 0) return null;
             const edge = q < 1 && lv < 4;
-            return <rect key={i} x={c.x} y={c.y} width={s + 0.06} height={s + 0.06} fill={edge ? BLUE : p.body} opacity={edge ? 0.55 + 0.45 * q : q} />;
+            return <rect key={i} x={c.x} y={c.y} width={s + 0.3} height={s + 0.3} fill={edge ? BLUE : p.body} opacity={edge ? 0.55 + 0.45 * q : q} />;
           })}
         </g>
       ) : null}
@@ -848,8 +857,11 @@ const Grid: React.FC<{f: number}> = ({f}) => {
               scale: String(0.92 + 0.08 * enter),
             }}
           >
-            <div style={{position: 'absolute', left: (tw - size) / 2, top: 34}}>
-              <Comp f={lf} size={size} dark={dark} />
+            {/* vùng hình riêng, cắt trước dải nhãn — hạt/mảnh bay không chạm chữ */}
+            <div style={{position: 'absolute', left: 0, top: 0, width: tw, height: th - 76, overflow: 'hidden'}}>
+              <div style={{position: 'absolute', left: (tw - size) / 2, top: 34}}>
+                <Comp f={lf} size={size} dark={dark} />
+              </div>
             </div>
             <div style={{position: 'absolute', left: 0, right: 0, bottom: 26, textAlign: 'center', fontSize: 30, fontWeight: 500, color: dark ? C.white : C.ink}}>
               {name}

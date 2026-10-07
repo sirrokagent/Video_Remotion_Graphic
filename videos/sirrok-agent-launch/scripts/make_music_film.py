@@ -1,8 +1,8 @@
 """
 Nhạc nền phim 90 giây — tổng hợp bằng numpy, tất định (seed cố định). 100 BPM.
 Mọi mốc lấy từ src/film/timeline.ts (frame tuyệt đối @30fps):
-  intro 0 · wake 290 · work 520 · call 850 · island 1390 · social 1690 · connect 1980
-  everywhere 2140 · reveal 2320 (thân ghost nở +40) · meet 2450 · hết 2700
+  intro 0 · wake 290 · work 510 · call 830 · island 1370 · social 1660 · connect 1940
+  everywhere 2100 · reveal 2310 (thân ghost nở +40) · meet 2470 · hết 2700
 
   python3 scripts/make_music_film.py /tmp/film.wav && ffmpeg -i /tmp/film.wav -b:a 256k public/music/film.mp3
 """
@@ -46,7 +46,7 @@ def add(sig, start, gain=1.0, pan=0.0):
 
 
 S = lambda fr: fr / 30  # frame → giây
-WAKE, WORK, CALL, ISLAND, SOCIAL, CONNECT, EVERY, REVEAL, MEET = map(S, [290, 520, 850, 1390, 1690, 1980, 2140, 2320, 2450])
+WAKE, WORK, CALL, ISLAND, SOCIAL, CONNECT, EVERY, REVEAL, MEET = map(S, [290, 510, 830, 1370, 1660, 1940, 2100, 2310, 2470])
 
 # ---------- pad ----------
 CHORDS = [[53, 57, 60, 64], [57, 60, 64, 67], [48, 55, 59, 64], [55, 59, 62, 64]]  # Fmaj7 Am7 Cmaj7 G6
