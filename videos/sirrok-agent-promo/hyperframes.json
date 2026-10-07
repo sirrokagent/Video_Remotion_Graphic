@@ -1,0 +1,55 @@
+{
+  "$schema": "https://hyperframes.heygen.com/schema/hyperframes.json",
+  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "paths": {
+    "blocks": "compositions",
+    "components": "compositions/components",
+    "assets": "assets"
+  },
+  "media": {
+    "autoProxy": true
+  },
+  "authoringSkill": "product-launch-video",
+  "registryItems": [
+    {
+      "name": "count-up",
+      "type": "hyperframes:component",
+      "target": "compositions/components/count-up.html"
+    },
+    {
+      "name": "overwhelm-surround",
+      "type": "hyperframes:component",
+      "target": "compositions/components/overwhelm-surround.html"
+    },
+    {
+      "name": "logo-outro",
+      "type": "hyperframes:block",
+      "target": "compositions/logo-outro.html"
+    },
+    {
+      "name": "browser-device-stage",
+      "type": "hyperframes:component",
+      "target": "compositions/components/browser-device-stage.html"
+    },
+    {
+      "name": "mk-specs-list",
+      "type": "hyperframes:block",
+      "target": "compositions/mk-specs-list.html"
+    },
+    {
+      "name": "success-check",
+      "type": "hyperframes:component",
+      "target": "compositions/components/success-check.html"
+    },
+    {
+      "name": "multi-device-splay",
+      "type": "hyperframes:component",
+      "target": "compositions/components/multi-device-splay.html"
+    },
+    {
+      "name": "cta-lockup",
+      "type": "hyperframes:component",
+      "target": "compositions/components/cta-lockup.html"
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+<template>
+  <div id="root" data-composition-id="14-2026-va-con-so" data-width="1080" data-height="1920">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f14-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+      .f14-stage { position:absolute; left:0; right:0; top:12%; height:71%; }
+
+      .f14-year {
+        position:absolute; left:6cqw; right:6cqw; top:30%;
+        text-align:center;
+        font-size:22.10cqw; font-weight:900; line-height:0.88; letter-spacing:-0.04em;
+        color:#000000;
+      }
+      .f14-yearlab {
+        position:absolute; left:5.5cqw; top:8%;
+        font-family:"IBM Plex Mono",monospace; font-size:2.04cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#0b5ed7;
+      }
+
+      /* ba the dan dat o giua canh — lap day doan VO noi ve doanh nghiep */
+      .f14-step {
+        position:absolute; left:6cqw; right:6cqw; top:38%;
+        text-align:center;
+        font-size:9.35cqw; font-weight:700; line-height:1.05;
+        letter-spacing:-0.03em; text-transform:lowercase;
+      }
+      .f14-st0 { color:#000000; }
+      .f14-st1 { color:#000000; }
+      .f14-st2 { color:#000000; }
+      .f14-st3 { color:#0b5ed7; }
+
+      .f14-counter {
+        position:absolute; left:6cqw; right:6cqw; top:17%;
+        text-align:center;
+        font-size:18.70cqw; font-weight:900; line-height:1; letter-spacing:-0.04em;
+        color:#0b5ed7;
+      }
+      .f14-cunit {
+        position:absolute; left:6cqw; right:6cqw; top:32%; text-align:center;
+        font-family:"IBM Plex Mono",monospace; font-size:1.87cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000;
+      }
+
+      .f14-chart { position:absolute; left:8cqw; right:8cqw; top:42%; }
+      .f14-crow { margin-bottom:4.32cqw; }
+      .f14-ckey {
+        font-family:"IBM Plex Mono",monospace; font-size:1.78cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000;
+        margin-bottom:1.08cqw;
+      }
+      .f14-ctrack { height:3.2cqw; border-radius:0.5cqw; background:#edeef0; position:relative; overflow:hidden; }
+      .f14-cbar { position:absolute; left:0; top:0; bottom:0; width:100%; border-radius:0.5cqw; transform-origin:left center; }
+      .f14-b1 { background:#6b6f76; }
+      .f14-b2 { background:#1877f2; }
+      /* Nhan nam TRONG .f14-ctrack chu khong trong .f14-cbar: cbar bi scaleX nen
+         moi chu con nam trong no deu bi bop ngang theo. Chieu rong .f14-cv* khop
+         voi scaleX cuoi cua tung cot nen nhan van dinh dung mep cot. */
+      .f14-cval {
+        position:absolute; left:0; top:50%; margin-top:-1.45cqw;
+        text-align:right; padding-right:1.1cqw;
+        font-size:2.90cqw; line-height:1; font-weight:800; color:#ffffff; letter-spacing:-0.02em;
+      }
+      .f14-cv1 { width:20%; }
+      .f14-cv2 { width:100%; }
+
+      .f14-people {
+        position:absolute; left:8cqw; right:8cqw; top:70%;
+        display:flex; flex-wrap:wrap; gap:0.74cqw;
+      }
+      .f14-p { width:2.10cqw; height:2.84cqw; color:#6b6f76; }  /* xam = doi ngu that, xanh = nang luc them */
+      .f14-p svg { display:block; width:100%; height:100%; fill:currentColor; }
+      .f14-p.acc { color:#1877f2; }
+      /* ===== Phac thao doanh nghiep sieu nho =====
+         VO doc "doanh nghiep" o 118.01s (local 3.16) va "sieu nho" o 120.83s (local 5.98).
+         Net ve chay dan bang stroke-dashoffset; pathLength="1" de khong phai do do dai that. */
+      .f14-biz {
+        position:absolute; left:50%; top:57%; width:48cqw; margin-left:-24cqw;
+      }
+      .f14-biz svg { display:block; width:100%; height:auto; }
+      .f14-biz .ln { fill:none; stroke:#000000; stroke-width:1.7; stroke-linejoin:round; stroke-linecap:round; }
+      .f14-biz .ac { stroke:#1877f2; }
+      .f14-biz .pp { fill:#6b6f76; }
+    </style>
+
+    <div id="f14-ground" class="clip f14-ground" data-start="0" data-duration="21.95" data-track-index="0"></div>
+
+    <div id="f14-stage" class="clip f14-stage" data-start="0" data-duration="21.95" data-track-index="1">
+      <div class="f14-year"    id="f14-year">2026</div>
+      <div class="f14-yearlab" id="f14-yearlab">2026</div>
+
+      <div class="f14-step f14-st0" id="f14-s0">ngưng tư duy ai cũ</div>
+      <div class="f14-step f14-st1" id="f14-s1">doanh nghiệp siêu nhỏ</div>
+      <div class="f14-step f14-st2" id="f14-s2">hiệu suất khủng khiếp</div>
+      <div class="f14-step f14-st3" id="f14-s3">điểm yếu: quy mô nhân sự</div>
+
+      <div class="f14-counter" id="f14-counter">10</div>
+      <div class="f14-cunit"   id="f14-cunit">người</div>
+
+      <div class="f14-chart" id="f14-chart">
+        <div class="f14-crow">
+          <div class="f14-ckey" id="f14-k1">đội ngũ thật</div>
+          <div class="f14-ctrack"><div class="f14-cbar f14-b1" id="f14-bar1"></div><span class="f14-cval f14-cv1" id="f14-v1">10</span></div>
+        </div>
+        <div class="f14-crow">
+          <div class="f14-ckey" id="f14-k2">khối lượng việc gánh được</div>
+          <div class="f14-ctrack"><div class="f14-cbar f14-b2" id="f14-bar2"></div><span class="f14-cval f14-cv2" id="f14-v2">30–50</span></div>
+        </div>
+      </div>
+
+      <div class="f14-biz" id="f14-biz">
+        <svg viewBox="0 0 220 104" aria-label="doanh nghiep sieu nho">
+          <path class="ln" id="f14-bz1" pathLength="1" d="M18 96 V40 L52 20 L86 40 V96"/>
+          <path class="ln" id="f14-bz2" pathLength="1" d="M86 96 V54 H134 V96"/>
+          <path class="ln ac" id="f14-bz3" pathLength="1" d="M34 56 h14 v12 h-14 Z M56 56 h14 v12 h-14 Z M34 76 h14 v20 h-14"/>
+          <path class="ln ac" id="f14-bz4" pathLength="1" d="M98 64 h12 v10 h-12 Z M116 64 h10 v10 h-10 Z M98 82 h12 v14 h-12"/>
+          <path class="ln" id="f14-bz5" pathLength="1" d="M8 96 H212"/>
+          <g id="f14-bzp">
+            <g class="pp"><circle cx="156" cy="70" r="6"/><path d="M156 79c5.6 0 10 3.9 10 8.7V96h-20v-8.3c0-4.8 4.4-8.7 10-8.7Z"/></g>
+            <g class="pp"><circle cx="178" cy="70" r="6"/><path d="M178 79c5.6 0 10 3.9 10 8.7V96h-20v-8.3c0-4.8 4.4-8.7 10-8.7Z"/></g>
+            <g class="pp"><circle cx="200" cy="70" r="6"/><path d="M200 79c5.6 0 10 3.9 10 8.7V96h-20v-8.3c0-4.8 4.4-8.7 10-8.7Z"/></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="f14-people" id="f14-people"></div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        const peopleBox = document.querySelector("#root #f14-people");
+
+        const people = [];
+        for (let i = 0; i < 50; i++) {
+          const el = document.createElement("div");
+          el.className = "f14-p" + (i >= 10 ? " acc" : "");
+          el.id = "f14-p" + i;
+          // icon nguoi dung: dau + vai. Dung currentColor nen .acc doi mau duoc.
+          el.innerHTML =
+            '<svg viewBox="0 0 14 19" aria-hidden="true">' +
+            '<circle cx="7" cy="4.5" r="3.4"/>' +
+            '<path d="M7 9.7c3.6 0 6.5 2.5 6.5 5.6V19H0.5v-3.7C0.5 12.2 3.4 9.7 7 9.7Z"/>' +
+            '</svg>';
+          peopleBox.appendChild(el);
+          people.push(el);
+        }
+
+        ["#f14-chart","#f14-yearlab","#f14-counter","#f14-cunit","#f14-k1","#f14-k2","#f14-v1","#f14-v2",
+         "#f14-s0","#f14-s1","#f14-s2","#f14-s3"].forEach(function (s) { gsap.set(s, { opacity: 0 }); });
+        // --- phac thao doanh nghiep ---
+        const bzLines = ["#f14-bz1","#f14-bz2","#f14-bz3","#f14-bz4","#f14-bz5"];
+        bzLines.forEach(function (l) { gsap.set(l, { strokeDasharray: 1, strokeDashoffset: 1 }); });
+        gsap.set("#f14-bzp", { opacity: 0 });
+        // net ve chay dan tu 3.16s — dung giay VO doc "doanh nghiep"
+        bzLines.forEach(function (l, i) {
+          tl.fromTo(l, { strokeDashoffset: 1 },
+            { strokeDashoffset: 0, duration: 0.62, ease: "power2.inOut", immediateRender: false }, 3.16 + i * 0.30);
+        });
+        tl.fromTo("#f14-bzp", { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.45, ease: "power3.out", immediateRender: false }, 5.00);
+        // nhuong cho bieu do
+        tl.to("#f14-biz",    { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 13.60);
+
+        gsap.set("#f14-bar1", { scaleX: 0 });
+        gsap.set("#f14-bar2", { scaleX: 0 });
+        people.forEach(function (p) { gsap.set(p, { opacity: 0, scaleY: 0 }); });
+
+        // ---- Moc lay tu ban do tung tu cua VO (giay trong canh) ----
+        // 0.37  "Nam 2026 roi"        6.0  "doanh nghiep sieu nho"
+        // 9.0   "hieu suat khung khiep"  13.0 "quy mo nhan su"
+        // 15.54 "muoi nguoi"          19.03 "ba muoi den nam muoi"
+
+        // Scene 1 (0.37–2.4s): "2026" beat-slam, roi co nho len goc tren trai.
+        tl.fromTo("#f14-year", { scale: 1.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power4.out" }, 0.37);
+        tl.fromTo("#f14-year", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.35, duration: 0.7, ease: "power2.inOut", immediateRender: false }, 1.95);
+        tl.fromTo("#f14-yearlab", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.45);
+
+        // Scene 1b (2.60–5.6s): "hay ngung tu duy theo kieu AI cu" — lap cho trong 3.25s.
+        tl.fromTo("#f14-s0", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.60);
+        tl.fromTo("#f14-s0", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in", immediateRender: false }, 5.45);
+
+        // Scene 2 (6.0–8.6s): "doanh nghiep sieu nho".
+        tl.fromTo("#f14-s1", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 6.00);
+        tl.fromTo("#f14-s1", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in", immediateRender: false }, 8.40);
+
+        // Scene 3 (9.0–12.4s): "hieu suat cuc ky khung khiep".
+        tl.fromTo("#f14-s2", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 9.00);
+        tl.fromTo("#f14-s2", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in", immediateRender: false }, 12.30);
+
+        // Scene 4 (13.0–15.0s): "diem yeu chi mang ve quy mo nhan su".
+        tl.fromTo("#f14-s3", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 13.00);
+        tl.fromTo("#f14-s3", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in", immediateRender: false }, 14.90);
+
+        // Scene 5 (15.54–18.6s): "mot doi ngu chi MUOI NGUOI" — cot 1, so 10, 10 khoi nguoi xam.
+        tl.fromTo("#f14-chart", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 15.50);
+        tl.fromTo("#f14-k1", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 15.54);
+        tl.fromTo("#f14-counter", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 15.60);
+        tl.fromTo("#f14-cunit", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 15.90);
+        tl.fromTo("#f14-bar1", { scaleX: 0 }, { scaleX: 0.2, duration: 0.7, ease: "power3.out" }, 15.75);
+        tl.fromTo("#f14-v1", { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "power2.out" }, 16.35);
+        for (let i = 0; i < 10; i++) {
+          tl.fromTo(people[i], { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, 16.10 + i * 0.075);
+        }
+
+        // Scene 6 (19.03–21.3s): "BA MUOI DEN NAM MUOI nguoi" — count-up va cot 2 moc dai.
+        tl.fromTo("#f14-k2", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" }, 19.03);
+        tl.fromTo("#f14-bar2", { scaleX: 0 }, { scaleX: 1, duration: 1.9, ease: "power2.inOut" }, 19.10);
+
+        const counterEl = document.querySelector("#root #f14-counter");
+        const box = { v: 10 };
+        tl.to(box, {
+          v: 50,
+          duration: 1.9,
+          ease: "power2.inOut",
+          onUpdate: function () {
+            const n = Math.round(box.v);
+            counterEl.textContent = String(n);
+            counterEl.style.fontSize = (11 + (n - 10) * 0.03).toFixed(2) + "cqw";
+          },
+        }, 19.10);
+
+        for (let i = 10; i < 50; i++) {
+          tl.fromTo(people[i], { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 19.15 + (i - 10) * 0.045);
+        }
+        tl.fromTo("#f14-v2", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 20.85);
+
+        // Scene 7 (21.3–21.95s): giu tinh — VO dang doc "tao da tang truong dot pha".
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["14-2026-va-con-so"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

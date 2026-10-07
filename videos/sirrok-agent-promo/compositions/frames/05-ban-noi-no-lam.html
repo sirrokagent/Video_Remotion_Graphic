@@ -1,0 +1,226 @@
+<template>
+  <div data-hf-id="hf-j8gk" id="root" data-composition-id="05-ban-noi-no-lam" data-width="1920" data-height="1080" data-duration="8.2">
+    <style>
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+      #root{
+        position:relative; width:100%; height:100%;
+        container-type:size; overflow:hidden;
+        font-family:'Be Vietnam Pro',sans-serif; font-weight:500;
+        --bg:#FAFAF8; --text:#0A0A0A; --muted:#52525B; --light:#6E6E76;
+        --primary:#0E52B8; --fill:#1877F2; --pos:#047857;
+        --tint:rgba(24,119,242,.08); --tint2:rgba(24,119,242,.15);
+        --border:rgba(24,119,242,.2); --card:rgba(24,119,242,.04);
+      }
+      #root .f05-bg{position:absolute;inset:0;background:var(--bg);}
+
+      /* Window stops at y=880 — inside the 900px caption keep-out. */
+      #root .f05-win{
+        position:absolute;left:96px;right:96px;top:77px;height:803px;
+        background:var(--bg);border:1.5px solid var(--border);border-radius:14px;
+        overflow:hidden;display:flex;flex-direction:column;
+      }
+      #root .f05-tbar{
+        flex:0 0 auto;height:48px;border-bottom:1.5px solid var(--border);
+        display:flex;align-items:center;gap:10px;padding:0 20px;background:var(--card);
+      }
+      #root .f05-dot{width:13px;height:13px;border-radius:50%;background:var(--light);opacity:.35;}
+      #root .f05-tbar .t{margin-left:14px;font-size:1.9cqw;font-weight:500;color:var(--light);}
+      #root .f05-body{flex:1;display:flex;min-height:0;}
+      #root .f05-side{
+        flex:0 0 300px;border-right:1.5px solid var(--border);background:var(--card);
+        padding:26px 20px;display:flex;flex-direction:column;gap:20px;
+      }
+      #root .f05-ag{display:flex;align-items:center;gap:14px;font-size:1.9cqw;color:var(--muted);}
+      #root .f05-ag .av{
+        flex:0 0 auto;width:64px;height:64px;border-radius:50%;background:var(--tint2);
+      }
+      #root .f05-ag.on{color:var(--text);font-weight:800;}
+      #root .f05-main{flex:1;padding:34px 40px;display:flex;flex-direction:column;gap:26px;min-width:0;}
+
+      #root .f05-wave{display:flex;align-items:center;gap:10px;height:132px;flex:0 0 auto;}
+      #root .f05-wave i{
+        display:block;width:12px;height:118px;border-radius:6px;background:var(--fill);
+        transform-origin:50% 50%;
+      }
+
+      #root .f05-task{
+        display:flex;align-items:center;gap:20px;font-size:2cqw;font-weight:500;color:var(--text);
+        border-bottom:1.5px solid var(--border);padding-bottom:18px;
+      }
+      #root .f05-task .ck{
+        flex:0 0 auto;width:38px;height:38px;border-radius:50%;
+        border:2px solid var(--border);position:relative;
+      }
+      #root .f05-task .ck svg{position:absolute;inset:0;width:38px;height:38px;}
+      #root .f05-task .ck svg path{
+        fill:none;stroke:var(--pos);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;
+      }
+      #root .f05-task .ck .ring{
+        position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--pos);opacity:0;
+      }
+      #root .f05-task .st{
+        margin-left:auto;position:relative;font-size:1.9cqw;font-weight:800;
+        color:var(--light);white-space:nowrap;
+      }
+      #root .f05-task .st i{font-style:normal;display:block;}
+      #root .f05-task .st i.b{position:absolute;right:0;top:0;color:var(--pos);opacity:0;}
+      #root .f05-task.q{color:var(--light);}
+      #root .f05-task:last-child{border-bottom:0;}
+      #root .f05-prog{
+        position:absolute;left:0;bottom:-1.5px;height:3px;background:var(--fill);width:0;border-radius:2px;
+      }
+      #root .f05-task{position:relative;}
+
+      /* handoff_in: the mark flies from frame 04's centre into this avatar slot. */
+      #root .f05-mark{
+        position:absolute;left:116px;top:155.5px;width:64px;height:auto;display:block;
+      }
+    </style>
+
+    <div data-hf-id="hf-af9s" id="f05-ground" class="clip f05-bg" data-start="0" data-duration="8.2" data-track-index="0"></div>
+
+    <div data-hf-id="hf-c0mr" id="f05-window" class="clip f05-win" data-start="0" data-duration="8.2" data-track-index="1">
+      <div data-hf-id="hf-qgdr" class="f05-tbar">
+        <span data-hf-id="hf-s0ka" class="f05-dot"></span><span data-hf-id="hf-z8ji" class="f05-dot"></span><span data-hf-id="hf-zmuj" class="f05-dot"></span>
+        <span data-hf-id="hf-2gr8" class="t">Sirrok Agent</span>
+      </div>
+      <div data-hf-id="hf-nk8g" class="f05-body">
+        <div data-hf-id="hf-oub9" class="f05-side">
+          <div data-hf-id="hf-kbc5" class="f05-ag on"><span data-hf-id="hf-23os" class="av"></span>Sirrok</div>
+          <div data-hf-id="hf-facl" class="f05-ag"><span data-hf-id="hf-lupw" class="av"></span>Content</div>
+          <div data-hf-id="hf-flv6" class="f05-ag"><span data-hf-id="hf-knst" class="av"></span>Ads</div>
+          <div data-hf-id="hf-f7k7" class="f05-ag"><span data-hf-id="hf-l23u" class="av"></span>Support</div>
+        </div>
+        <div data-hf-id="hf-8qmb" class="f05-main">
+          <div data-hf-id="hf-90lj" class="f05-wave"></div>
+          <div data-hf-id="hf-diyg" class="f05-task">
+            <span data-hf-id="hf-ga0f" class="ck"><span data-hf-id="hf-ohjn" class="ring"></span><svg data-hf-id="hf-s0tj" viewBox="0 0 38 38"><path data-hf-id="hf-o75d" d="M10 19.5 L16.5 26 L28 13" /></svg></span>
+            Soạn 20 email<span data-hf-id="hf-ec2u" class="st" data-layout-allow-overlap=""><i data-hf-id="hf-4dx5" class="a" data-layout-allow-overlap="">đang chạy</i><i data-hf-id="hf-rbjm" class="b" data-layout-allow-overlap="">xong</i></span>
+          </div>
+          <div data-hf-id="hf-lz8e" class="f05-task">
+            <span data-hf-id="hf-h7m7" class="ck"><span data-hf-id="hf-qib7" class="ring"></span><svg data-hf-id="hf-pc5j" viewBox="0 0 38 38"><path data-hf-id="hf-c2lh" d="M10 19.5 L16.5 26 L28 13" /></svg></span>
+            Dựng báo cáo tuần<span data-hf-id="hf-7ne2" class="st" data-layout-allow-overlap=""><i data-hf-id="hf-c6dp" class="a" data-layout-allow-overlap="">đang chạy</i><i data-hf-id="hf-nily" class="b" data-layout-allow-overlap="">xong</i></span>
+          </div>
+          <div data-hf-id="hf-0f15" class="f05-task">
+            <span data-hf-id="hf-gtb6" class="ck"><span data-hf-id="hf-q406" class="ring"></span><svg data-hf-id="hf-oxui" viewBox="0 0 38 38"><path data-hf-id="hf-d9ik" d="M10 19.5 L16.5 26 L28 13" /></svg></span>
+            Trả 14 ticket<span data-hf-id="hf-81p3" class="st" data-layout-allow-overlap=""><i data-hf-id="hf-ddas" class="a" data-layout-allow-overlap="">đang chạy</i><i data-hf-id="hf-nwwz" class="b" data-layout-allow-overlap="">xong</i></span>
+            <span data-hf-id="hf-ecbp" class="f05-prog"></span>
+          </div>
+          <div data-hf-id="hf-yk9e" class="f05-task q">
+            <span data-hf-id="hf-gf05" class="ck"></span>
+            Lên 6 post<span data-hf-id="hf-ceiq" class="st">chờ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-hpst" id="f05-mark-handoff" class="clip" data-start="0" data-duration="8.2" data-track-index="2" style="position:absolute;inset:0;">
+      <img data-hf-id="hf-jz88" class="f05-mark" src="assets/sirrok-agent-icon.svg" alt="">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var q = function (s) { return document.querySelector("#root " + s); };
+        var qa = function (s) { return document.querySelectorAll("#root " + s); };
+
+        // ── voice wave: 24 bars on a FIXED envelope. Closed-form from the bar index and
+        // the step index, so every seek reproduces the same bar heights exactly.
+        var BARS = 24, STEPS = 11;
+        var wave = q(".f05-wave");
+        for (var b = 0; b < BARS; b++) wave.appendChild(document.createElement("i"));
+        var bars = qa(".f05-wave i");
+
+        function env(i, k) {
+          var a = Math.abs(Math.sin(i * 0.77 + k * 1.31));
+          var c = Math.abs(Math.cos(i * 0.41 - k * 0.83));
+          var edge = 0.45 + 0.55 * Math.sin((Math.PI * (i + 0.5)) / BARS); // quieter at the ends
+          return Number((0.14 + 0.86 * (0.62 * a + 0.38 * c) * edge).toFixed(4));
+        }
+
+        var tasks = qa(".f05-task");
+        var tl = gsap.timeline({ paused: true });
+
+        // Scene 1 (0.0-0.7) — handoff_in: the mark arrives from frame 04 at (960,470)
+        // scale 1.0 and flies into the sidebar avatar at (330,300) scale 0.22.
+        tl.fromTo(q(".f05-mark"),
+          { x: 812, y: 287, scale: 4.545, opacity: 1 },
+          { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.62, ease: "power3.inOut" }, 0);
+        tl.fromTo(q(".f05-win"),
+          { opacity: 0, scale: 0.97 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.06);
+
+        // Scene 2 (0.7-2.0) — "Bạn nói": the wave ignites. This is the frame's whole claim,
+        // so it is a live reacting waveform, never a static microphone glyph.
+        tl.fromTo(bars,
+          { scaleY: 0.06, opacity: 0 },
+          { scaleY: env(0, 0), opacity: 1, duration: 0.26, ease: "power2.out", stagger: 0.012 }, 0.7);
+        for (var i = 0; i < BARS; i++) {
+          var kf = [];
+          for (var k = 1; k < STEPS; k++) kf.push({ scaleY: env(i, k), duration: 0.5 });
+          tl.to(bars[i], { keyframes: kf, ease: "power1.inOut" }, 0.98);
+        }
+        // the wave drops to an idle register once the machine takes over, but never dies
+        tl.to(bars, { scaleY: 0.16, duration: 0.7, ease: "power2.out", stagger: 0.008 }, 6.0);
+
+        // Scene 3 (2.0-3.1) — "Nó nghe": the sidebar roster wakes, one agent at a time.
+        tl.fromTo(qa(".f05-ag"),
+          { opacity: 0.35, x: -16 },
+          { opacity: 1, x: 0, duration: 0.34, ease: "power3.out", stagger: 0.2 }, 2.02);
+
+        // Scene 4 (3.1-4.2) — "nó chia việc": four task rows cascade in, none ticked yet.
+        tl.fromTo(tasks,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.17 }, 3.1);
+
+        // Scene 5 (4.2-6.0) — "rồi nó làm xong": rows 1 and 2 check off; the check draws
+        // itself and its ring pops. Row 3's progress starts filling.
+        [0, 1].forEach(function (n, idx) {
+          var at = 4.24 + idx * 0.62;
+          var path = tasks[n].querySelector("svg path");
+          tl.fromTo(path,
+            { strokeDasharray: 34, strokeDashoffset: 34 },
+            { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, at);
+          tl.fromTo(tasks[n].querySelector(".ring"),
+            { opacity: 0.9, scale: 0.7 },
+            { opacity: 0, scale: 1.45, duration: 0.42, ease: "power2.out" }, at);
+          tl.to(tasks[n], { color: "#6E6E76", duration: 0.3 }, at + 0.1);
+          // the status chip must not claim "xong" before the tick lands
+          tl.fromTo(tasks[n].querySelector(".st .a"),
+            { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power2.in" }, at);
+          tl.fromTo(tasks[n].querySelector(".st .b"),
+            { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, at + 0.15);
+        });
+        tl.fromTo(q(".f05-prog"),
+          { width: "0%" }, { width: "64%", duration: 1.5, ease: "power2.out" }, 4.9);
+
+        // Scene 6 (6.0-8.2) — "và trả lại kết quả": row 3 lands, row 4 stays honestly queued
+        // (the agent is still working), then the frame holds for the last 0.3s.
+        var p3 = tasks[2].querySelector("svg path");
+        tl.fromTo(p3,
+          { strokeDasharray: 34, strokeDashoffset: 34 },
+          { strokeDashoffset: 0, duration: 0.34, ease: "power2.out" }, 6.42);
+        tl.fromTo(tasks[2].querySelector(".ring"),
+          { opacity: 0.9, scale: 0.7 },
+          { opacity: 0, scale: 1.45, duration: 0.42, ease: "power2.out" }, 6.42);
+        tl.to(q(".f05-prog"), { width: "100%", duration: 0.4, ease: "power2.out" }, 6.42);
+        tl.to(tasks[2], { color: "#6E6E76", duration: 0.3 }, 6.52);
+        tl.fromTo(tasks[2].querySelector(".st .a"),
+          { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "power2.in" }, 6.42);
+        tl.fromTo(tasks[2].querySelector(".st .b"),
+          { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 6.57);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["05-ban-noi-no-lam"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

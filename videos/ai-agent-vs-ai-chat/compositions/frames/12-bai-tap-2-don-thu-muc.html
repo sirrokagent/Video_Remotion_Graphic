@@ -1,0 +1,182 @@
+<template>
+  <div id="root" data-composition-id="12-bai-tap-2-don-thu-muc" data-width="1080" data-height="1920" data-duration="15.95">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f12-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+      .f12-stage { position:absolute; left:0; right:0; top:12%; height:71%; }
+
+      .f12-lab, .f12-lab2 {
+        position:absolute; left:5.5cqw; top:7%;
+        font-family:"IBM Plex Mono",monospace; font-size:2.04cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase;
+      }
+      .f12-lab  { color:#000000; }
+      .f12-lab2 { color:#0b5ed7; }
+
+      .f12-field { position:absolute; left:0; right:0; top:0; bottom:0; }
+
+      .f12-tile {
+        position:absolute; width:2.20cqw; height:2.80cqw;
+        left:0; top:0; color:#71777f;
+      }
+      .f12-tile svg { display:block; width:100%; height:100%; }
+
+      /* icon thu muc con dung canh nhan dinh dang */
+      .f12-folder { width:3.4cqw; height:2.65cqw; flex:none; color:#1877f2; }
+      .f12-folder svg { display:block; width:100%; height:100%; fill:currentColor; }
+
+      .f12-binlab {
+        position:absolute; bottom:2%;
+        display:flex; align-items:center; gap:1.1cqw;
+        font-family:"IBM Plex Mono",monospace; font-size:1.78cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000;
+      }
+
+      .f12-track { border-radius:0.1cqw;
+        position:absolute; left:5.5cqw; right:5.5cqw; bottom:6%;
+        height:0.2cqw; background:#d0d3d9;
+      }
+      .f12-fill { border-radius:0.1cqw;
+        position:absolute; left:0; top:0; height:100%; width:100%;
+        background:#1877f2; transform-origin:left center;
+      }
+      /* lop camera: zoom / lia. Dat trong .clip chu khong phai chinh .clip */
+      .f12-cam { position:absolute; inset:0; transform-origin:center center; }
+    </style>
+
+    <div id="f12-ground" class="clip f12-ground" data-start="0" data-duration="15.95" data-track-index="0"></div>
+
+    <div id="f12-stage" class="clip f12-stage" data-start="0" data-duration="15.95" data-track-index="1">
+      <div class="f12-cam" id="f12-cam">
+      <div class="f12-lab"  id="f12-lab">vài trăm file</div>
+      <div class="f12-lab2" id="f12-lab2">tự phân loại</div>
+
+      <div class="f12-field" id="f12-field"></div>
+
+      <div class="f12-binlab" id="f12-b0" style="left:7.7cqw"><span class="f12-folder"><svg viewBox="0 0 18 14" aria-hidden="true"><path d="M1 3.1a1.3 1.3 0 0 1 1.3-1.3h4.2l1.7 2h7.5A1.3 1.3 0 0 1 17 5.1v7.6a1.3 1.3 0 0 1-1.3 1.3H2.3A1.3 1.3 0 0 1 1 12.7Z"/></svg></span>.jpg</div>
+      <div class="f12-binlab" id="f12-b1" style="left:29.7cqw"><span class="f12-folder"><svg viewBox="0 0 18 14" aria-hidden="true"><path d="M1 3.1a1.3 1.3 0 0 1 1.3-1.3h4.2l1.7 2h7.5A1.3 1.3 0 0 1 17 5.1v7.6a1.3 1.3 0 0 1-1.3 1.3H2.3A1.3 1.3 0 0 1 1 12.7Z"/></svg></span>.pdf</div>
+      <div class="f12-binlab" id="f12-b2" style="left:51.7cqw"><span class="f12-folder"><svg viewBox="0 0 18 14" aria-hidden="true"><path d="M1 3.1a1.3 1.3 0 0 1 1.3-1.3h4.2l1.7 2h7.5A1.3 1.3 0 0 1 17 5.1v7.6a1.3 1.3 0 0 1-1.3 1.3H2.3A1.3 1.3 0 0 1 1 12.7Z"/></svg></span>.mp4</div>
+      <div class="f12-binlab" id="f12-b3" style="left:73.7cqw"><span class="f12-folder"><svg viewBox="0 0 18 14" aria-hidden="true"><path d="M1 3.1a1.3 1.3 0 0 1 1.3-1.3h4.2l1.7 2h7.5A1.3 1.3 0 0 1 17 5.1v7.6a1.3 1.3 0 0 1-1.3 1.3H2.3A1.3 1.3 0 0 1 1 12.7Z"/></svg></span>.docx</div>
+
+      <div class="f12-track" id="f12-track"><div class="f12-fill" id="f12-fill"></div></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        // Camera: mo dau hoi can, lui ra khi file rai khap khung, cuoi cung day xuong cum thu muc.
+        gsap.set("#f12-cam", { scale: 1.15, x: 0, y: 0 });
+        tl.fromTo("#f12-cam", { scale: 1.15, y: 0 },
+          { scale: 1.0, y: 0, duration: 1.5, ease: "power2.inOut", immediateRender: false }, 2.40);
+        tl.fromTo("#f12-cam", { scale: 1.0, y: 0 },
+          { scale: 1.26, y: -125, duration: 1.3, ease: "power2.inOut", immediateRender: false }, 12.20);
+
+        const field = document.querySelector("#root #f12-field");
+
+        // 120 o file. Vi tri "lon xon" sinh bang cong thuc CO DINH theo index —
+        // khong Math.random(), khong Date.now(). Cung mot index luon cho cung toa do.
+        const N = 120;
+        const W = 1080, H = 1920 * 0.83;
+        const tiles = [];
+        const bins = [
+          { x: 0.125 * W, y: 0.74 * H },
+          { x: 0.345 * W, y: 0.74 * H },
+          { x: 0.565 * W, y: 0.74 * H },
+          { x: 0.785 * W, y: 0.74 * H },
+        ];
+
+        for (let i = 0; i < N; i++) {
+          const el = document.createElement("div");
+          el.className = "f12-tile";
+          el.id = "f12-t" + i;
+          // icon file: to giay goc gap. Net ve bang currentColor, than giay trang.
+          el.innerHTML =
+            '<svg viewBox="0 0 14 18" aria-hidden="true">' +
+            '<path d="M2.2 0.9H7.8L13.1 6.2V17.1a1 1 0 0 1-1 1H2.2a1 1 0 0 1-1-1V1.9a1 1 0 0 1 1-1Z"' +
+            ' fill="#ffffff" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>' +
+            '<path d="M7.8 0.9V5.2a1 1 0 0 0 1 1h4.3" fill="none" stroke="currentColor"' +
+            ' stroke-width="1.35" stroke-linejoin="round"/>' +
+            '</svg>';
+          // scatter co dinh kieu R2 low-discrepancy: phan bo deu, khong tao van cheo.
+          // Hoan toan deterministic — cung index luon cho cung toa do.
+          const sx = (i * 0.7548776662) % 1;
+          const sy = (i * 0.5698402909) % 1;
+          const x0 = 0.07 * W + sx * 0.86 * W;
+          const y0 = 0.16 * H + sy * 0.42 * H;
+          const bin = bins[i % 4];
+          // vi tri trong cum dich: luoi 6 cot
+          const k = Math.floor(i / 4);
+          const bx = bin.x + ((k % 6) - 2.5) * 28;
+          const by = bin.y + Math.floor(k / 6) * 34 - 76;
+          el.style.left = "0px";
+          el.style.top = "0px";
+          field.appendChild(el);
+          tiles.push({ el: el, x0: x0, y0: y0, x1: bx, y1: by, wave: i % 4 });
+        }
+
+        gsap.set("#f12-lab2", { opacity: 0 });
+        gsap.set("#f12-fill", { scaleX: 0 });
+        gsap.set("#f12-track", { opacity: 0 });
+        ["#f12-b0", "#f12-b1", "#f12-b2", "#f12-b3"].forEach(function (b) { gsap.set(b, { opacity: 0 }); });
+
+        // Scene 1 (0–2.6s): nhan hien tren; khung duoi con trong.
+        tl.fromTo("#f12-lab", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.475, ease: "power3.out" }, 0.095);
+
+        // Scene 2 (2.6–6.0s): ~120 o xuat hien rai khap khung, waterfall-entry theo index.
+        tiles.forEach(function (t, i) {
+          tl.fromTo(
+            t.el,
+            { x: t.x0, y: t.y0 - 40, opacity: 0, scale: 0.7 },
+            { x: t.x0, y: t.y0, opacity: 1, scale: 1, duration: 0.399, ease: "power3.out" , immediateRender: false }, 0.855 + i * 0.0247);
+        });
+
+        // Scene 3 (6.0–7.4s): 4 nhan duoi khung hien — dich den.
+        ["#f12-b0", "#f12-b1", "#f12-b2", "#f12-b3"].forEach(function (b, i) {
+          tl.fromTo(b, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.399, ease: "power3.out" }, 5.698 + i * 0.2089);
+        });
+        tl.fromTo("#f12-track", { opacity: 0 }, { opacity: 1, duration: 0.380, ease: "power2.out" }, 6.552);
+
+        // Scene 4 (7.4–12.8s): cac o bay ve cum cua minh theo 4 dot.
+        tiles.forEach(function (t, i) {
+          const waveAt = 9.09 + t.wave * 0.95;
+          const within = (Math.floor(i / 4) % 30) * 0.028;
+          tl.fromTo(
+            t.el,
+            { x: t.x0, y: t.y0, borderColor: "#c3c7ce" },
+            { x: t.x1, y: t.y1, borderColor: "#1877f2", duration: 0.874, ease: "power3.inOut" },
+            waveAt + within
+          );
+        });
+
+        // Thanh tien trinh chay dong bo voi so o da ve.
+        tl.fromTo("#f12-fill", { scaleX: 0 }, { scaleX: 1, duration: 4.0, ease: "power1.inOut" }, 9.09);
+
+        // Scene 5 (12.8–14.6s): o cuoi ve cho, thanh tien trinh day.
+        tl.fromTo("#f12-fill", { opacity: 1 }, { opacity: 1, duration: 0.285, ease: "none" , immediateRender: false }, 13.10);
+
+        // Scene 6 (14.6–16.27s): nhan doi thanh "tu phan loai", toan khung giu tinh.
+        tl.fromTo("#f12-lab",  { opacity: 1 }, { opacity: 0, duration: 0.323, ease: "power2.in" , immediateRender: false }, 13.674);
+        tl.fromTo("#f12-lab2", { opacity: 0 }, { opacity: 1, duration: 0.437, ease: "power3.out" }, 13.883);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["12-bai-tap-2-don-thu-muc"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

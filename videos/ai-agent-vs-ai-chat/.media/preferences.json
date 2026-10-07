@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "youtube",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:08:03.763Z"
+    },
+    "aspect": {
+      "value": "1920x1080",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:08:03.940Z"
+    },
+    "language": {
+      "value": "vi",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:08:04.113Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:08:04.251Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:08:04.390Z"
+    },
+    "style_preset.faceless-explainer": {
+      "value": "broadside",
+      "confirmed_in": [
+        "ai-agent-vs-ai-chat"
+      ],
+      "updated_at": "2026-10-04T02:09:29.192Z"
+    }
+  },
+  "sightings": {}
+}

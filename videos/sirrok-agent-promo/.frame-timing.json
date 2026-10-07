@@ -1,0 +1,74 @@
+[
+  {
+    "n": 1,
+    "id": "01",
+    "rel": "public/audio/vo-01.mp3",
+    "vo": 3.065,
+    "frameDur": 4.6,
+    "start": 0,
+    "end": 4.6
+  },
+  {
+    "n": 2,
+    "id": "02",
+    "rel": "public/audio/vo-02.mp3",
+    "vo": 6.548,
+    "frameDur": 6.9,
+    "start": 4.6,
+    "end": 11.5
+  },
+  {
+    "n": 3,
+    "id": "03",
+    "rel": "public/audio/vo-03.mp3",
+    "vo": 3.994,
+    "frameDur": 4.7,
+    "start": 11.5,
+    "end": 16.2
+  },
+  {
+    "n": 4,
+    "id": "04",
+    "rel": "public/audio/vo-04.mp3",
+    "vo": 4.644,
+    "frameDur": 5.5,
+    "start": 16.2,
+    "end": 21.7
+  },
+  {
+    "n": 5,
+    "id": "05",
+    "rel": "public/audio/vo-05.mp3",
+    "vo": 7.895,
+    "frameDur": 8.2,
+    "start": 21.7,
+    "end": 29.9
+  },
+  {
+    "n": 6,
+    "id": "06",
+    "rel": "public/audio/vo-06.mp3",
+    "vo": 5.48,
+    "frameDur": 5.8,
+    "start": 29.9,
+    "end": 35.7
+  },
+  {
+    "n": 7,
+    "id": "07",
+    "rel": "public/audio/vo-07.mp3",
+    "vo": 6.316,
+    "frameDur": 6.6,
+    "start": 35.7,
+    "end": 42.3
+  },
+  {
+    "n": 8,
+    "id": "08",
+    "rel": "public/audio/vo-08.mp3",
+    "vo": 4.737,
+    "frameDur": 5.7,
+    "start": 42.3,
+    "end": 48
+  }
+]

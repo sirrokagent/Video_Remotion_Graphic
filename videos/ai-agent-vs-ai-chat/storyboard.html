@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>AI Agent không phải AI Chat — Storyboard v1</title>
+<style>
+  :root{
+    --canvas:#000000; --ink:#FFFFFF; --accent:#1877F2;
+    --muted:#888880; --hint:#505048; --border:#282826;
+    --sheet:#0b0b0b;
+    --font:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--sheet);color:var(--ink);font-family:var(--font);padding:40px 48px 80px;line-height:1.5}
+
+  header{border-bottom:1px solid var(--border);padding-bottom:24px;margin-bottom:32px}
+  h1{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+  h1 em{font-style:normal;color:var(--accent)}
+  .dek{color:var(--muted);margin-top:10px;font-size:15px;max-width:70ch}
+  .tags{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+       border:1px solid var(--border);color:var(--muted);padding:5px 10px}
+  .tag.v{color:var(--accent);border-color:var(--accent)}
+
+  .actbar{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--accent);margin:34px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .cell{display:flex;flex-direction:column}
+  .art{aspect-ratio:16/9;container-type:inline-size;background:var(--canvas);
+       border:1px solid var(--border);position:relative;overflow:hidden}
+  .labels{display:flex;justify-content:space-between;gap:10px;margin-top:9px;
+          font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+  .labels .l{color:var(--ink)} .labels .r{color:var(--hint);white-space:nowrap}
+  .note{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.55}
+  .note b{color:var(--ink);font-weight:600}
+  .chip{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:10px;
+        letter-spacing:.12em;text-transform:uppercase;color:var(--hint);
+        border:1px solid var(--border);padding:3px 7px}
+
+  /* ---- wireframe atoms, sized in cqw so the sheet matches the build ---- */
+  .pad{position:absolute;inset:0;padding:5.5cqw;display:flex;flex-direction:column;justify-content:center}
+  .disp{font-size:13cqw;font-weight:900;line-height:.88;letter-spacing:-.04em;text-transform:lowercase}
+  .h1{font-size:9cqw;font-weight:800;line-height:.92;letter-spacing:-.03em;text-transform:lowercase}
+  .h2{font-size:6cqw;font-weight:700;line-height:1.05;letter-spacing:-.02em;text-transform:lowercase}
+  .stat{font-size:12cqw;font-weight:900;line-height:1;letter-spacing:-.04em}
+  .lab{font-family:var(--mono);font-size:1.5cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .acc{color:var(--accent)}
+  .dim{color:var(--muted)}
+  .rule{height:1px;background:var(--accent);margin-top:2cqw}
+  .rule.d{background:var(--border)}
+  .center{align-items:center;text-align:center}
+
+  .box{border:1px solid var(--border);padding:1.6cqw 2cqw;font-size:2.2cqw;color:var(--muted)}
+  .box.on{border-color:var(--accent);color:var(--ink)}
+  .row{display:flex;gap:1.5cqw;align-items:center}
+  .col{display:flex;flex-direction:column;gap:1.2cqw}
+  .split{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1px 1fr}
+  .seam{background:var(--accent)}
+  .half{padding:4cqw;display:flex;flex-direction:column;justify-content:center;gap:1.5cqw}
+
+  .win{position:absolute;inset:8cqw 6cqw;border:1px solid var(--border);display:flex;flex-direction:column}
+  .winbar{height:4cqw;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5cqw;gap:1cqw}
+  .dot{width:1cqw;height:1cqw;border:1px solid var(--hint);border-radius:50%}
+  .winbody{flex:1;padding:2cqw;display:flex;flex-direction:column;gap:1.4cqw;justify-content:center}
+  .cursor{position:absolute;width:0;height:0;border-left:1.6cqw solid var(--accent);
+          border-top:.9cqw solid transparent;border-bottom:.9cqw solid transparent;
+          transform:rotate(35deg)}
+  .ping{position:absolute;width:5cqw;height:5cqw;border:1px solid var(--accent);border-radius:50%}
+
+  .files{position:absolute;inset:0;padding:4cqw;display:flex;flex-wrap:wrap;gap:.7cqw;align-content:center}
+  .f{width:2.3cqw;height:2.3cqw;border:1px solid var(--hint)}
+  .f.on{border-color:var(--accent);background:rgba(24,119,242,.22)}
+
+  .mark{width:3.4cqw;height:3.4cqw;color:var(--ink);flex:none}
+  .mark.sm{width:2.4cqw;height:2.4cqw}
+  .mark.dim{color:var(--muted)}
+
+  .people{display:flex;gap:.6cqw;flex-wrap:wrap;max-width:46cqw}
+  .p{width:2cqw;height:3.4cqw;background:var(--muted)}
+  .p.acc{background:var(--accent)}
+
+  .closing{display:grid;grid-template-columns:2fr 1fr;gap:26px;margin-top:34px}
+  .panel{border:1px solid var(--border);padding:22px;background:var(--canvas)}
+  .panel h3{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+            color:var(--accent);margin-bottom:16px;font-weight:500}
+  .strip{display:flex;height:46px;border:1px solid var(--border)}
+  .strip div{flex:1;border-right:1px solid var(--border);font-family:var(--mono);font-size:9px;
+             display:flex;align-items:center;justify-content:center;color:var(--hint)}
+  .strip div:last-child{border-right:0}
+  .strip div.cut{color:var(--accent)}
+  .seamlegend{display:flex;gap:18px;margin-top:14px;font-family:var(--mono);font-size:10px;
+              letter-spacing:.1em;text-transform:uppercase;color:var(--hint)}
+  .sw{display:flex;align-items:center;gap:9px;margin-bottom:11px;font-size:13px;color:var(--muted)}
+  .chipc{width:26px;height:26px;border:1px solid var(--border)}
+  .bans{margin-top:18px;font-size:12.5px;color:var(--muted)}
+  .bans li{margin:5px 0 5px 16px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="m-openai" viewBox="0 0 256 260"><path fill="currentColor" d="M239.184 106.203a64.716 64.716 0 0 0-5.576-53.103C219.452 28.459 191 15.784 163.213 21.74A65.586 65.586 0 0 0 52.096 45.22a64.716 64.716 0 0 0-43.23 31.36c-14.31 24.602-11.061 55.634 8.033 76.74a64.665 64.665 0 0 0 5.525 53.102c14.174 24.65 42.644 37.324 70.446 31.36a64.72 64.72 0 0 0 48.754 21.744c28.481.025 53.714-18.361 62.414-45.481a64.767 64.767 0 0 0 43.229-31.36c14.137-24.558 10.875-55.423-8.083-76.483Zm-97.56 136.338a48.397 48.397 0 0 1-31.105-11.255l1.535-.87 51.67-29.825a8.595 8.595 0 0 0 4.247-7.367v-72.85l21.845 12.636c.218.111.37.32.409.563v60.367c-.056 26.818-21.783 48.545-48.601 48.601Zm-104.466-44.61a48.345 48.345 0 0 1-5.781-32.589l1.534.921 51.722 29.826a8.339 8.339 0 0 0 8.441 0l63.181-36.425v25.221a.87.87 0 0 1-.358.665l-52.335 30.184c-23.257 13.398-52.97 5.431-66.404-17.803ZM23.549 85.38a48.499 48.499 0 0 1 25.58-21.333v61.39a8.288 8.288 0 0 0 4.195 7.316l62.874 36.272-21.845 12.636a.819.819 0 0 1-.767 0L41.353 151.53c-23.211-13.454-31.171-43.144-17.804-66.405v.256Zm179.466 41.695-63.08-36.63L161.73 77.86a.819.819 0 0 1 .768 0l52.233 30.184a48.6 48.6 0 0 1-7.316 87.635v-61.391a8.544 8.544 0 0 0-4.4-7.213Zm21.742-32.69-1.535-.922-51.619-30.081a8.39 8.39 0 0 0-8.492 0L99.98 99.808V74.587a.716.716 0 0 1 .307-.665l52.233-30.133a48.652 48.652 0 0 1 72.236 50.391v.205ZM88.061 139.097l-21.845-12.585a.87.87 0 0 1-.41-.614V65.685a48.652 48.652 0 0 1 79.757-37.346l-1.535.87-51.67 29.825a8.595 8.595 0 0 0-4.246 7.367l-.051 72.697Zm11.868-25.58 28.138-16.217 28.188 16.218v32.434l-28.086 16.218-28.188-16.218-.052-32.434Z"/></symbol>
+  <symbol id="m-claude" viewBox="0 0 256 257"><path fill="currentColor" d="m50.228 170.321 50.357-28.257.843-2.463-.843-1.361h-2.462l-8.426-.518-28.775-.778-24.952-1.037-24.175-1.296-6.092-1.297L0 125.796l.583-3.759 5.12-3.434 7.324.648 16.202 1.101 24.304 1.685 17.629 1.037 26.118 2.722h4.148l.583-1.685-1.426-1.037-1.101-1.037-25.147-17.045-27.22-18.017-14.258-10.37-7.713-5.25-3.888-4.925-1.685-10.758 7-7.713 9.397.649 2.398.648 9.527 7.323 20.35 15.75L94.817 91.9l3.889 3.24 1.555-1.102.195-.777-1.75-2.917-14.453-26.118-15.425-26.572-6.87-11.018-1.814-6.61c-.648-2.723-1.102-4.991-1.102-7.778l7.972-10.823L71.42 0 82.05 1.426l4.472 3.888 6.61 15.101 10.694 23.786 16.591 32.34 4.861 9.592 2.592 8.879.973 2.722h1.685v-1.556l1.36-18.211 2.528-22.36 2.463-28.776.843-8.1 4.018-9.722 7.971-5.25 6.222 2.981 5.12 7.324-.713 4.73-3.046 19.768-5.962 30.98-3.889 20.739h2.268l2.593-2.593 10.499-13.934 17.628-22.036 7.778-8.749 9.073-9.657 5.833-4.601h11.018l8.1 12.055-3.628 12.443-11.342 14.388-9.398 12.184-13.48 18.147-8.426 14.518.778 1.166 2.01-.194 30.46-6.481 16.462-2.982 19.637-3.37 8.88 4.148.971 4.213-3.5 8.62-20.998 5.184-24.628 4.926-36.682 8.685-.454.324.519.648 16.526 1.555 7.065.389h17.304l32.21 2.398 8.426 5.574 5.055 6.805-.843 5.184-12.962 6.611-17.498-4.148-40.83-9.721-14-3.5h-1.944v1.167l11.666 11.406 21.387 19.314 26.767 24.887 1.36 6.157-3.434 4.86-3.63-.518-23.526-17.693-9.073-7.972-20.545-17.304h-1.36v1.814l4.73 6.935 25.017 37.59 1.296 11.536-1.814 3.76-6.481 2.268-7.13-1.297-14.647-20.544-15.1-23.138-12.185-20.739-1.49.843-7.194 77.448-3.37 3.953-7.778 2.981-6.48-4.925-3.436-7.972 3.435-15.749 4.148-20.544 3.37-16.333 3.046-20.285 1.815-6.74-.13-.454-1.49.194-15.295 20.999-23.267 31.433-18.406 19.702-4.407 1.75-7.648-3.954.713-7.064 4.277-6.286 25.47-32.405 15.36-20.092 9.917-11.6-.065-1.686h-.583L44.07 198.125l-12.055 1.555-5.185-4.86.648-7.972 2.463-2.593 20.35-13.999-.064.065Z"/></symbol>
+  <symbol id="m-gemini" viewBox="0 0 24 24"><path fill="currentColor" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></symbol>
+</svg>
+
+<header>
+  <h1>AI Agent <em>không phải</em> AI Chat</h1>
+  <p class="dek">Lật lại định kiến “Agent còn hạn chế lắm” — thứ mọi người đang đánh giá chỉ là AI Chat.
+     Khoảng cách mỏng đúng như một tờ giấy: tải về và giao một việc thật.</p>
+  <div class="tags">
+    <span class="tag v">v1</span>
+    <span class="tag">1920 × 1080</span>
+    <span class="tag">30 fps</span>
+    <span class="tag">144.744s</span>
+    <span class="tag">14 cảnh</span>
+    <span class="tag">preset broadside</span>
+    <span class="tag">A Hít Official</span>
+  </div>
+</header>
+
+<div class="actbar">Hồi 1 · Lật định kiến — 0.00 → 42.83</div>
+<div class="grid">
+
+  <div class="cell">
+    <div class="art" id="frame-01"><div class="pad">
+      <div class="h1">một lời khuyên</div><div class="rule" style="width:34%"></div>
+    </div></div>
+    <div class="labels"><span class="l">01 · Chào và ra đòn</span><span class="r">0.00–6.17</span></div>
+    <p class="note"><b>Chữ trồi lên từ dưới qua mask</b>, hairline xanh vẽ từ trái sang sau khi chữ dừng. Nền đen tuyệt đối, không logo, không chrome — im lặng thị giác trước câu đầu tiên.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-02"><div class="pad">
+      <div class="disp">quên hết</div>
+      <div class="h2 acc" style="margin-top:1.5cqw">phế bỏ võ công</div>
+    </div></div>
+    <div class="labels"><span class="l">02 · Quên hết đi</span><span class="r">6.17–12.34</span></div>
+    <p class="note"><b>“quên hết” vỡ thành từng ký tự rơi khỏi khung</b>, mỗi ký tự lệch pha nhẹ, rồi dòng xanh thế chỗ. Đòn mạnh nhất của hồi 1 — đặt sớm để giữ người xem.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-03"><div class="pad">
+      <div class="lab">06 / 2026</div>
+      <div class="h2" style="margin:2cqw 0">hơn nửa năm</div>
+      <div class="row" style="gap:3cqw">
+        <div style="width:2cqw;height:2cqw;background:var(--accent)"></div>
+        <div style="width:2cqw;height:2cqw;background:var(--accent)"></div>
+        <div style="width:2cqw;height:2cqw;background:var(--hint)"></div>
+        <div style="width:2cqw;height:2cqw;background:var(--hint)"></div>
+      </div>
+      <div class="rule d" style="margin-top:1.5cqw"></div>
+    </div></div>
+    <div class="labels"><span class="l">03 · Nửa năm hô hào</span><span class="r">12.34–19.92</span></div>
+    <p class="note"><b>Camera pan ngang chậm</b> dọc trục thời gian hairline; các mốc vuông sáng lên theo index cố định, không random. Nhịp chùng xuống sau cú đập cảnh 02.</p>
+    <span class="chip">seam: crossfade</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-04"><div class="pad center" style="justify-content:center">
+      <div class="row" style="flex-wrap:wrap;justify-content:center;gap:1.2cqw">
+        <span class="box">cái này được</span><span class="box">cái kia chịu</span>
+      </div>
+      <div class="row" style="flex-wrap:wrap;justify-content:center;gap:1.2cqw;margin-top:1.2cqw">
+        <span class="box">hạn chế lắm</span><span class="box">chưa tới đâu</span>
+      </div>
+    </div></div>
+    <div class="labels"><span class="l">04 · Những lời than phiền</span><span class="r">19.92–28.34</span></div>
+    <p class="note"><b>Bốn thẻ trôi vào từ bốn cạnh và chồng lớp</b>, khung mỗi lúc một chật. Chữ để xám chứ không trắng — đây là tiếng ồn cần bác bỏ, không cho nó trọng lượng ngang lời dẫn.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-05">
+      <div class="split"><div class="half">
+        <div class="row" style="gap:1.4cqw">
+          <svg class="mark dim"><use href="#m-openai"/></svg>
+          <svg class="mark dim"><use href="#m-gemini"/></svg>
+          <span class="lab">ai chat</span>
+        </div>
+        <div class="col" style="margin-top:1cqw">
+          <span class="box" style="font-size:1.8cqw">cái này được</span>
+          <span class="box" style="font-size:1.8cqw">hạn chế lắm</span>
+        </div>
+      </div><div class="seam"></div><div class="half"></div></div>
+    </div>
+    <div class="labels"><span class="l">05 · Đó chỉ là AI Chat</span><span class="r">28.34–33.95</span></div>
+    <p class="note"><b>Mọi thẻ ồn ào bị hút hết về nửa trái</b> và đóng khung dưới nhãn AI CHAT, có logo ChatGPT và Gemini — đúng hai cái tên script gọi ra. Nửa phải để trống đen: khoảng trống đó chính là Agent, chưa ai nhìn tới. Khoảnh khắc lật của cả video.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-06">
+      <div class="split"><div class="half">
+        <div class="lab">ai chat</div>
+        <div class="box" style="margin-top:1cqw;font-size:1.8cqw">định kiến cũ</div>
+      </div><div class="seam"></div><div class="half">
+        <div class="h2 acc">thứ hoàn toàn mới</div>
+      </div></div>
+    </div>
+    <div class="labels"><span class="l">06 · Đừng mang định kiến</span><span class="r">33.95–42.83</span></div>
+    <p class="note"><b>Khối Chat trượt sang phải, khựng ở hairline rồi bật ngược</b> — easing back.out, dứt khoát. Dòng xanh bên phải hiện sau cú bật, như một cánh cửa khác mở ra.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+</div>
+
+<div class="actbar">Hồi 2 · Mở đường — 42.83 → 79.82</div>
+<div class="grid">
+
+  <div class="cell">
+    <div class="art" id="frame-07"><div class="pad center" style="justify-content:center">
+      <div class="row" style="width:100%;align-items:stretch;gap:0">
+        <div style="flex:1;height:14cqw;border:1px solid var(--border)"></div>
+        <div style="width:2px;background:var(--accent)"></div>
+        <div style="flex:1;height:14cqw;border:1px solid var(--border)"></div>
+      </div>
+      <div class="h2" style="margin-top:2.5cqw">mỏng như tờ giấy</div>
+    </div></div>
+    <div class="labels"><span class="l">07 · Mỏng như tờ giấy</span><span class="r">42.83–51.53</span></div>
+    <p class="note"><b>Hai mặt phẳng ép sát nhau, khe sáng xanh co dần còn đúng 1px</b>, rồi chữ đổi thành “tải về. giao việc.” Hình ảnh chủ đạo — bản lề giữa phần lý lẽ và phần hành động.</p>
+    <span class="chip">seam: crossfade</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-08">
+      <div class="win"><div class="winbar"><svg class="mark sm"><use href="#m-openai"/></svg><span class="lab" style="font-size:1.2cqw">chatgpt</span></div>
+        <div class="winbody"><div class="box on" style="width:46%">codex</div>
+          <div class="box" style="width:70%">&nbsp;</div><div class="box" style="width:58%">&nbsp;</div></div></div>
+      <div class="ping" style="left:9cqw;top:12cqw"></div>
+      <div class="cursor" style="left:13cqw;top:15cqw"></div>
+    </div>
+    <div class="labels"><span class="l">08 · ChatGPT → Codex</span><span class="r">51.53–61.83</span></div>
+    <p class="note"><b>Con trỏ đi lên góc trên trái với easing, vòng tròn xanh nhấn vị trí bấm.</b> Cửa sổ dựng bằng hình khối, không dùng ảnh chụp thật. Vỏ giữ nguyên, ruột đổi sang xanh — đúng nghịch lý “giao diện giống, lõi khác”.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-09">
+      <div class="win"><div class="winbar"><svg class="mark sm"><use href="#m-claude"/></svg><span class="lab" style="font-size:1.2cqw">claude</span></div>
+        <div class="winbody"><div class="row"><div class="box" style="flex:1">chat</div><div class="box on" style="flex:1">code</div></div>
+          <div class="box" style="width:74%">&nbsp;</div></div></div>
+      <div class="cursor" style="left:30cqw;top:14cqw"></div>
+    </div>
+    <div class="labels"><span class="l">09 · Claude → nút Code</span><span class="r">61.83–75.52</span></div>
+    <p class="note"><b>Lặp lại đúng bố cục cảnh 08 để tạo nhịp song song</b> — người xem đã học cách đọc khung này nên nắm ngay, tiết kiệm thời gian cho đúng chỗ cần. Nút Code sáng xanh, Chat mờ đi.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-10"><div class="pad center" style="justify-content:center">
+      <div class="row" style="gap:4cqw"><span class="stat dim">01</span><span class="stat acc">02</span></div>
+      <div class="lab" style="margin-top:2cqw">2 bài tập</div>
+    </div></div>
+    <div class="labels"><span class="l">10 · Hai bài tập</span><span class="r">75.52–79.82</span></div>
+    <p class="note"><b>Hai ô số trượt vào từ hai phía rồi dừng.</b> Nhịp thở ngắn 4.3s trước hai cảnh demo dài — cho người xem biết sắp có hai thứ cụ thể để làm theo.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+</div>
+
+<div class="actbar">Hồi 3 · Bằng chứng và đòn chốt — 79.82 → 144.74</div>
+<div class="grid">
+
+  <div class="cell">
+    <div class="art" id="frame-11">
+      <div class="win"><div class="winbar"><span class="dot"></span><span class="lab" style="font-size:1.2cqw">bài tập 01</span></div>
+        <div class="winbody">
+          <div class="box on" style="font-size:1.7cqw">tạo phần mềm cờ caro…</div>
+          <div class="row" style="justify-content:center;margin-top:1cqw">
+            <div style="display:grid;grid-template-columns:repeat(3,3.2cqw);grid-template-rows:repeat(3,3.2cqw)">
+              <div style="border:1px solid var(--hint)"></div><div style="border:1px solid var(--hint)"></div><div style="border:1px solid var(--hint);color:var(--accent);font-size:2cqw;text-align:center">x</div>
+              <div style="border:1px solid var(--hint)"></div><div style="border:1px solid var(--hint);color:var(--accent);font-size:2cqw;text-align:center">x</div><div style="border:1px solid var(--hint)"></div>
+              <div style="border:1px solid var(--hint);color:var(--muted);font-size:2cqw;text-align:center">o</div><div style="border:1px solid var(--hint)"></div><div style="border:1px solid var(--hint)"></div>
+            </div></div></div></div>
+    </div>
+    <div class="labels"><span class="l">11 · Bài tập 1 — cờ caro</span><span class="r">79.82–89.53</span></div>
+    <p class="note"><b>Chữ gõ ra theo nhịp cố định</b> (không random), submit, rồi lưới cờ tự vẽ từng đường và quân X/O xuất hiện theo thứ tự định sẵn. Người xem thấy “một câu → một phần mềm chạy được”.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-12">
+      <div class="files">
+        <span class="f"></span><span class="f"></span><span class="f on"></span><span class="f"></span><span class="f"></span><span class="f on"></span><span class="f"></span><span class="f"></span>
+        <span class="f on"></span><span class="f"></span><span class="f"></span><span class="f"></span><span class="f on"></span><span class="f"></span><span class="f"></span><span class="f on"></span>
+        <span class="f"></span><span class="f"></span><span class="f on"></span><span class="f"></span><span class="f"></span><span class="f"></span><span class="f on"></span><span class="f"></span>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:3cqw;padding:0 4cqw">
+        <div class="row" style="justify-content:space-between"><span class="lab" style="font-size:1.3cqw">.jpg</span><span class="lab" style="font-size:1.3cqw">.pdf</span><span class="lab" style="font-size:1.3cqw">.mp4</span><span class="lab" style="font-size:1.3cqw">.docx</span></div>
+        <div style="height:2px;background:var(--border);margin-top:1cqw"><div style="width:64%;height:2px;background:var(--accent)"></div></div>
+      </div>
+    </div>
+    <div class="labels"><span class="l">12 · Bài tập 2 — dọn file</span><span class="r">89.53–105.80</span></div>
+    <p class="note"><b>~120 ô file rải theo mảng toạ độ cố định, bay về 4 cụm theo đợt stagger.</b> Cảnh dài nhất (16.3s) và thuyết phục nhất — xem Agent dọn vài trăm file “giật mình” hơn mọi lời giải thích.</p>
+    <span class="chip">seam: cut</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-13">
+      <div class="split"><div class="half">
+        <div class="lab">ai chat</div>
+        <div class="col" style="margin-top:.8cqw">
+          <span class="box" style="font-size:1.6cqw">viết bài</span>
+          <span class="box" style="font-size:1.6cqw">làm ảnh</span>
+          <span class="box" style="font-size:1.6cqw">lập kế hoạch</span>
+          <div style="height:2px;background:var(--muted);margin-top:.6cqw"></div>
+        </div>
+      </div><div class="seam"></div><div class="half">
+        <div class="lab acc">ai agent</div>
+        <div class="col" style="margin-top:.8cqw">
+          <span class="box" style="font-size:1.6cqw">viết bài</span>
+          <span class="box" style="font-size:1.6cqw">làm ảnh</span>
+          <span class="box" style="font-size:1.6cqw">lập kế hoạch</span>
+          <span class="box on" style="font-size:1.6cqw">làm xong</span>
+        </div>
+      </div></div>
+    </div>
+    <div class="labels"><span class="l">13 · Khác biệt ở đâu</span><span class="r">105.80–123.48</span></div>
+    <p class="note"><b>Cột trái dựng ba việc rồi bị một đường gạch ngang chặn lại; cột phải đi tiếp xuống ô thứ tư sáng xanh.</b> Cùng ba việc, khác ở chỗ có hoàn thành hay không — đó là toàn bộ luận điểm của video.</p>
+    <span class="chip">seam: crossfade</span>
+  </div>
+
+  <div class="cell">
+    <div class="art" id="frame-14"><div class="pad" style="justify-content:center">
+      <div class="lab acc">2026</div>
+      <div class="row" style="align-items:flex-end;gap:3cqw;margin-top:1.5cqw">
+        <div><div class="stat acc" style="font-size:9cqw">10</div><div class="lab" style="font-size:1.2cqw">người</div></div>
+        <div class="dim" style="font-size:4cqw">→</div>
+        <div><div class="stat" style="font-size:9cqw">30–50</div><div class="lab" style="font-size:1.2cqw">khối lượng việc</div></div>
+      </div>
+      <div class="people" style="margin-top:1.8cqw">
+        <span class="p acc"></span><span class="p acc"></span><span class="p acc"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+      </div>
+    </div></div>
+    <div class="labels"><span class="l">14 · 2026 và con số</span><span class="r">123.48–144.74</span></div>
+    <p class="note"><b>Count-up 10 → 30 → 50 chạy theo thời gian tuyến tính của timeline</b>, không dùng Date.now(). Khung cuối xoá sạch về nền đen, chỉ còn “Đừng chỉ đứng nhìn.” rồi “Hãy tham gia cuộc chơi.”</p>
+    <span class="chip">seam: cut</span>
+  </div>
+</div>
+
+<div class="closing">
+  <div class="panel">
+    <h3>Seam map — 14 mối nối</h3>
+    <div class="strip">
+      <div class="cut">01</div><div class="cut">02</div><div>03</div><div class="cut">04</div><div class="cut">05</div>
+      <div class="cut">06</div><div>07</div><div class="cut">08</div><div class="cut">09</div><div class="cut">10</div>
+      <div class="cut">11</div><div class="cut">12</div><div>13</div><div class="cut">14</div>
+    </div>
+    <div class="seamlegend">
+      <span style="color:var(--accent)">■ cut — 11 mối</span>
+      <span>□ crossfade — 3 mối (03, 07, 13)</span>
+    </div>
+    <p class="note" style="margin-top:14px">Cut là mặc định — tông thực chiến, dứt khoát, không chuyển cảnh mềm.
+      Ba chỗ crossfade đều là lúc nhịp cần chùng: sau cú đập “quên hết” (03), vào hình ảnh chủ đạo
+      tờ giấy (07), và lúc rút ra kết luận (13).</p>
+    <p class="note"><b>Nhịp theo hồi:</b> hồi 1 cắt nhanh (6 cảnh / 42.8s) để giữ người xem;
+      hồi 2 giãn ra (4 cảnh / 37s) khi phải chỉ thao tác cụ thể; hồi 3 dài nhất
+      (4 cảnh / 64.9s) để bằng chứng có thời gian thở.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Tokens</h3>
+    <div class="sw"><span class="chipc" style="background:#000000"></span> #000000 · nền</div>
+    <div class="sw"><span class="chipc" style="background:#1877F2"></span> #1877F2 · nhấn, duy nhất</div>
+    <div class="sw"><span class="chipc" style="background:#FFFFFF"></span> #FFFFFF · chữ chính</div>
+    <div class="sw"><span class="chipc" style="background:#888880"></span> #888880 · chữ phụ / tiếng ồn</div>
+    <div class="sw"><span class="chipc" style="background:#282826"></span> #282826 · hairline</div>
+    <p class="note" style="margin-top:16px">
+      <b>Be Vietnam Pro</b> — display 900 lowercase · body 400<br>
+      <b>IBM Plex Mono</b> — chỉ cho nhãn viết hoa, tracking .14em
+    </p>
+    <div class="bans">
+      <p style="margin-bottom:12px"><b style="color:var(--ink)">Logo:</b> bản chính thức, lấy qua
+        <code>media-use resolve --type logo</code>, không vẽ lại.
+        Đổ về trắng đơn sắc để giữ hệ 3 màu — xanh <code>#1877F2</code> phải giữ
+        nghĩa riêng “Agent”, không chia cho logo.</p>
+      <b style="color:var(--ink)">Cấm:</b>
+      <ul>
+        <li>quá 6 chữ một màn hình</li>
+        <li>chữ sáng trên nền nhạt</li>
+        <li>quá 2 font</li>
+        <li>chữ đè lên logo</li>
+        <li><code>Math.random()</code> · <code>Date.now()</code></li>
+        <li>easing <code>linear</code></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

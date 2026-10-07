@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "youtube",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:26:57.119Z"
+    },
+    "aspect": {
+      "value": "1920x1080",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:26:57.353Z"
+    },
+    "language": {
+      "value": "vi",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:26:57.631Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:26:57.868Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:26:58.104Z"
+    },
+    "style_preset.product-launch-video": {
+      "value": "blue-professional",
+      "confirmed_in": [
+        "sirrok-agent-promo"
+      ],
+      "updated_at": "2026-10-06T08:32:05.748Z"
+    }
+  },
+  "sightings": {}
+}

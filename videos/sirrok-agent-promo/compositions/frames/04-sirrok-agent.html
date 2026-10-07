@@ -1,0 +1,136 @@
+<template>
+  <div data-hf-id="hf-eauk" id="root" data-composition-id="04-sirrok-agent" data-width="1920" data-height="1080" data-duration="6">
+    <style>
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+      #root{
+        position:relative; width:100%; height:100%;
+        container-type:size; overflow:hidden;
+        font-family:'Be Vietnam Pro',sans-serif; font-weight:500;
+        --bg:#FAFAF8; --text:#0A0A0A; --muted:#52525B;
+        --primary:#0E52B8; --fill:#1877F2;
+        --tint2:rgba(24,119,242,.15); --border:rgba(24,119,242,.2); --card:rgba(24,119,242,.04);
+      }
+      #root .f04-bg{position:absolute;inset:0;background:var(--bg);}
+
+      #root .f04-pieces{position:absolute;inset:0;}
+      #root .f04-piece{
+        position:absolute;background:var(--card);border:1.5px solid var(--border);
+        border-radius:12px;
+      }
+
+      /* handoff_out: mark centre (960,470), wordmark (960,640) */
+      #root .f04-line{
+        position:absolute;left:50%;top:15.63cqw;width:3.125cqw;height:.21cqw;
+        margin-left:-1.5625cqw;background:var(--fill);border-radius:.1cqw;
+      }
+      #root .f04-mark{
+        position:absolute;left:50%;top:18.07cqw;width:15cqw;height:auto;
+        margin-left:-7.5cqw;display:block;
+      }
+      #root .f04-word{
+        position:absolute;left:0;right:0;top:31.25cqw;text-align:center;
+        font-size:4.2cqw;font-weight:800;letter-spacing:-.03em;color:var(--text);line-height:1;
+      }
+      #root .f04-word span{display:inline-block;}
+      #root .f04-sub{
+        position:absolute;left:0;right:0;top:37.24cqw;text-align:center;
+        font-size:2cqw;font-weight:500;color:var(--muted);line-height:1.5;
+      }
+    </style>
+
+    <div data-hf-id="hf-nwmy" id="f04-ground" class="clip f04-bg" data-start="0" data-duration="6" data-track-index="0"></div>
+
+    <div data-hf-id="hf-mqcw" id="f04-assembly" class="clip f04-pieces" data-start="0" data-duration="2.0" data-track-index="1"></div>
+
+    <div data-hf-id="hf-vzs7" id="f04-lockup" class="clip f04-pieces" data-start="0" data-duration="6" data-track-index="2">
+      <div data-hf-id="hf-wjn5" class="f04-line"></div>
+      <img data-hf-id="hf-oii9" class="f04-mark" src="assets/sirrok-agent-icon.svg" alt="">
+      <div data-hf-id="hf-8epv" class="f04-word"></div>
+      <div data-hf-id="hf-b3w3" class="f04-sub">Một agent, gánh việc của cả ba mươi người.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var q = function (s) { return document.querySelector("#root " + s); };
+        var layer = q(".f04-pieces");
+
+        // The twelve pieces are the role cards from frame 02, carried over as the raw
+        // material the mark is built from. Fixed start table — no random, no Date.now.
+        var START = [
+          [96, 67, 268, 128], [1556, 48, 300, 134], [134, 712, 250, 126], [1498, 744, 262, 126],
+          [595, 19, 150, 82], [1150, 29, 140, 82], [595, 836, 158, 82], [1150, 826, 140, 82],
+          [19, 365, 150, 78], [1731, 403, 150, 78], [883, 10, 150, 78], [883, 845, 150, 78]
+        ];
+        var TARGET_X = 960, TARGET_Y = 470;
+
+        for (var i = 0; i < START.length; i++) {
+          var p = document.createElement("div");
+          p.className = "f04-piece";
+          p.setAttribute("data-layout-allow-overflow", "");
+          p.style.left = START[i][0] + "px";
+          p.style.top = START[i][1] + "px";
+          p.style.width = START[i][2] + "px";
+          p.style.height = START[i][3] + "px";
+          p.setAttribute("data-tx", TARGET_X - (START[i][0] + START[i][2] / 2));
+          p.setAttribute("data-ty", TARGET_Y - (START[i][1] + START[i][3] / 2));
+          layer.appendChild(p);
+        }
+        var pieces = document.querySelectorAll("#root .f04-piece");
+
+        var word = q(".f04-word");
+        word.innerHTML = '<span>Sirrok</span> <span>Agent</span>';
+        var wordParts = word.querySelectorAll("span");
+
+        var tl = gsap.timeline({ paused: true });
+
+        // Scene 1 (0.0-1.3) — SIGNATURE MOVE: piece-by-piece assembly. The twelve pieces
+        // rush the centre and compress into the mark, trailing a directional streak.
+        // Inner pieces arrive first so the mark reads as filling from the middle out.
+        tl.fromTo(pieces,
+          { opacity: 0.55, x: 0, y: 0, scale: 1, filter: "blur(0px)" },
+          {
+            opacity: 0, scale: 0.06, filter: "blur(5px)",
+            x: function (i, el) { return Number(el.getAttribute("data-tx")); },
+            y: function (i, el) { return Number(el.getAttribute("data-ty")); },
+            duration: 1.1, ease: "power3.in", stagger: { each: 0.035, from: "center" }
+          }, 0.08);
+
+        // Hero visibility: the mark is already forming while the pieces land, so the frame
+        // is never a blank stage, then it locks hard at 1.3s and never moves again.
+        tl.fromTo(q(".f04-mark"),
+          { opacity: 0, scale: 0.3 },
+          { opacity: 0.22, scale: 0.72, duration: 0.42, ease: "power2.out" }, 0.1);
+        tl.to(q(".f04-mark"),
+          { opacity: 1, scale: 1, duration: 0.56, ease: "power3.out" }, 1.18);
+
+        // Scene 2 (1.3-2.2) — the accent rule draws itself above the locked mark.
+        tl.fromTo(q(".f04-line"),
+          { scaleX: 0, opacity: 0, transformOrigin: "50% 50%" },
+          { scaleX: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 1.46);
+
+        // Scene 3 (2.2-3.4) — wordmark cascades in BELOW the mark. Never over it.
+        tl.fromTo(wordParts,
+          { opacity: 0, y: 34 },
+          { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.14 }, 2.22);
+
+        // Scene 4 (3.4-5.5) — the supporting line lands on its spoken cue, then the frame
+        // holds still for the last 0.9s.
+        tl.fromTo(q(".f04-sub"),
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 3.42);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["04-sirrok-agent"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

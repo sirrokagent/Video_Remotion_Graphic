@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      /* ===== Linh vat Agent — hien xuyen suot 0 -> 144.75s =====
+         Dat o dai duoi cung (84.5%), vung ma moi canh deu de trong. */
+      .mascot {
+        position: absolute;
+        left: 6%;
+        top: 84.5%;
+        width: 11.8%;
+        aspect-ratio: 1;
+      }
+      .mascot-food { position: absolute; left: 18%; top: 6%; width: 64%; height: 64%; }
+      .mascot-food svg { display: block; width: 100%; height: 100%; }
+      /* laptop linh vat om truoc nguoi */
+      .mascot-lap { position: absolute; left: 6%; top: 50%; width: 88%; height: 46%; }
+      .mascot-lap svg { display: block; width: 100%; height: 100%; }
+      .mascot-b { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .mascot-sh {
+        position: absolute; left: 12%; right: 12%; top: 89%; height: 8%;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at center, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0) 70%);
+      }
+      /* ===== Lop glitch chuyen canh =====
+         Ba dai ngang giat lech + mot nhay trang. Nam tren cung, khong chan chuot. */
+      .glitch { position: absolute; inset: 0; pointer-events: none; }
+      .gl-band { position: absolute; left: 0; right: 0; background: #1877f2; opacity: 0; }
+      .gl-b1 { top: 17%; height: 7.5%; }
+      .gl-b2 { top: 45%; height: 4.5%; }
+      .gl-b3 { top: 69%; height: 9%; }
+      .gl-flash { position: absolute; inset: 0; background: #ffffff; opacity: 0; }
+      /* man chap may anh: hai la chan den sap vao giua roi mo ra */
+      .shutter { position: absolute; inset: 0; pointer-events: none; }
+      .sh-bar { position: absolute; left: 0; right: 0; height: 51%; background: #000000; }
+      .sh-top { top: 0;    transform-origin: top center; }
+      .sh-bot { bottom: 0; transform-origin: bottom center; }
+      .sh-pop { position: absolute; inset: 0; background: #ffffff; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="144.75"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div
+        id="el-01-chao-va-ra-don"
+        class="scene"
+        data-composition-id="01-chao-va-ra-don"
+        data-composition-src="compositions/frames/01-chao-va-ra-don.html"
+        data-start="0"
+        data-duration="5"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-02-quen-het-di"
+        class="scene"
+        data-composition-id="02-quen-het-di"
+        data-composition-src="compositions/frames/02-quen-het-di.html"
+        data-start="5"
+        data-duration="6.8"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-03-nua-nam-ho-hao"
+        class="scene"
+        data-composition-id="03-nua-nam-ho-hao"
+        data-composition-src="compositions/frames/03-nua-nam-ho-hao.html"
+        data-start="11.3"
+        data-duration="5.15"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-04-nhung-loi-than-phien"
+        class="scene"
+        data-composition-id="04-nhung-loi-than-phien"
+        data-composition-src="compositions/frames/04-nhung-loi-than-phien.html"
+        data-start="16.450000000000003"
+        data-duration="8.85"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-05-do-chi-la-ai-chat"
+        class="scene"
+        data-composition-id="05-do-chi-la-ai-chat"
+        data-composition-src="compositions/frames/05-do-chi-la-ai-chat.html"
+        data-start="25.300000000000004"
+        data-duration="5.65"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-06-dung-mang-dinh-kien"
+        class="scene"
+        data-composition-id="06-dung-mang-dinh-kien"
+        data-composition-src="compositions/frames/06-dung-mang-dinh-kien.html"
+        data-start="30.950000000000003"
+        data-duration="8.15"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-07-mong-nhu-to-giay"
+        class="scene"
+        data-composition-id="07-mong-nhu-to-giay"
+        data-composition-src="compositions/frames/07-mong-nhu-to-giay.html"
+        data-start="38.6"
+        data-duration="6.7"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-08-chatgpt-codex"
+        class="scene"
+        data-composition-id="08-chatgpt-codex"
+        data-composition-src="compositions/frames/08-chatgpt-codex.html"
+        data-start="45.300000000000004"
+        data-duration="7.9"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-09-claude-nut-code"
+        class="scene"
+        data-composition-id="09-claude-nut-code"
+        data-composition-src="compositions/frames/09-claude-nut-code.html"
+        data-start="53.2"
+        data-duration="14.25"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-10-hai-bai-tap"
+        class="scene"
+        data-composition-id="10-hai-bai-tap"
+        data-composition-src="compositions/frames/10-hai-bai-tap.html"
+        data-start="67.45"
+        data-duration="3.75"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-11-bai-tap-1-co-caro"
+        class="scene"
+        data-composition-id="11-bai-tap-1-co-caro"
+        data-composition-src="compositions/frames/11-bai-tap-1-co-caro.html"
+        data-start="71.2"
+        data-duration="11.9"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-12-bai-tap-2-don-thu-muc"
+        class="scene"
+        data-composition-id="12-bai-tap-2-don-thu-muc"
+        data-composition-src="compositions/frames/12-bai-tap-2-don-thu-muc.html"
+        data-start="83.10000000000001"
+        data-duration="15.95"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-13-khac-biet-nam-o-dau"
+        class="scene"
+        data-composition-id="13-khac-biet-nam-o-dau"
+        data-composition-src="compositions/frames/13-khac-biet-nam-o-dau.html"
+        data-start="98.55000000000001"
+        data-duration="16.3"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-14-2026-va-con-so"
+        class="scene"
+        data-composition-id="14-2026-va-con-so"
+        data-composition-src="compositions/frames/14-2026-va-con-so.html"
+        data-start="114.85000000000001"
+        data-duration="21.95"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-15-de-lai-binh-luan"
+        class="scene"
+        data-composition-id="15-de-lai-binh-luan"
+        data-composition-src="compositions/frames/15-de-lai-binh-luan.html"
+        data-start="136.8"
+        data-duration="7.95"
+        data-track-index="0"
+      ></div>
+
+      <!-- Nhac nen: tong hop bang ffmpeg (ca hai duong API deu bi chan) -->
+      <audio id="el-bgm" src="public/audio/bgm.mp3" data-start="0" data-duration="144.75" data-track-index="12" data-volume="1"></audio>
+
+      <!-- Voiceover -->
+      <audio id="el-vo-0" src="public/audio/vo-01.mp3" data-start="0" data-duration="50.928" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-vo-1" src="public/audio/vo-02.mp3" data-start="50.928" data-duration="47.616" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-vo-2" src="public/audio/vo-03.mp3" data-start="98.544" data-duration="46.2" data-track-index="10" data-volume="1"></audio>
+
+      <!-- SFX -->
+      <audio
+        id="el-sfx-0"
+        src="assets/sfx/whoosh-short.mp3"
+        data-start="0"
+        data-duration="0.312"
+        data-track-index="20"
+        data-volume="0.26"
+      ></audio>
+      <audio
+        id="el-sfx-1"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="5"
+        data-duration="1.765"
+        data-track-index="21"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-2"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="5"
+        data-duration="0.312"
+        data-track-index="22"
+        data-volume="0.4"
+      ></audio>
+      <audio
+        id="el-sfx-3"
+        src="assets/sfx/click-soft.mp3"
+        data-start="11.3"
+        data-duration="0.312"
+        data-track-index="23"
+        data-volume="0.22"
+      ></audio>
+      <audio
+        id="el-sfx-4"
+        src="assets/sfx/click-soft.mp3"
+        data-start="16.45"
+        data-duration="0.312"
+        data-track-index="24"
+        data-volume="0.22"
+      ></audio>
+      <audio
+        id="el-sfx-5"
+        src="assets/sfx/impact-bass-2.mp3"
+        data-start="25.3"
+        data-duration="1.765"
+        data-track-index="25"
+        data-volume="0.38"
+      ></audio>
+      <audio
+        id="el-sfx-6"
+        src="assets/sfx/impact-bass-2.mp3"
+        data-start="25.3"
+        data-duration="0.312"
+        data-track-index="26"
+        data-volume="0.38"
+      ></audio>
+      <audio
+        id="el-sfx-7"
+        src="assets/sfx/ping.mp3"
+        data-start="30.95"
+        data-duration="0.312"
+        data-track-index="27"
+        data-volume="0.26"
+      ></audio>
+      <audio
+        id="el-sfx-8"
+        src="assets/sfx/whoosh-short.mp3"
+        data-start="38.6"
+        data-duration="0.312"
+        data-track-index="28"
+        data-volume="0.28"
+      ></audio>
+      <audio
+        id="el-sfx-9"
+        src="assets/sfx/click-soft.mp3"
+        data-start="45.3"
+        data-duration="0.576"
+        data-track-index="29"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-10"
+        src="assets/sfx/click-soft.mp3"
+        data-start="45.3"
+        data-duration="0.312"
+        data-track-index="30"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-11"
+        src="assets/sfx/click-soft.mp3"
+        data-start="53.2"
+        data-duration="0.576"
+        data-track-index="31"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-12"
+        src="assets/sfx/click-soft.mp3"
+        data-start="53.2"
+        data-duration="0.312"
+        data-track-index="32"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-13"
+        src="assets/sfx/ping.mp3"
+        data-start="67.45"
+        data-duration="0.312"
+        data-track-index="33"
+        data-volume="0.26"
+      ></audio>
+      <audio
+        id="el-sfx-14"
+        src="assets/sfx/typing.mp3"
+        data-start="71.2"
+        data-duration="0.576"
+        data-track-index="34"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-15"
+        src="assets/sfx/typing.mp3"
+        data-start="71.2"
+        data-duration="0.312"
+        data-track-index="35"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-16"
+        src="assets/sfx/whoosh-short.mp3"
+        data-start="83.1"
+        data-duration="1.285"
+        data-track-index="36"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-17"
+        src="assets/sfx/whoosh-short.mp3"
+        data-start="83.1"
+        data-duration="0.312"
+        data-track-index="37"
+        data-volume="0.24"
+      ></audio>
+      <audio
+        id="el-sfx-18"
+        src="assets/sfx/ping.mp3"
+        data-start="98.55"
+        data-duration="0.312"
+        data-track-index="38"
+        data-volume="0.26"
+      ></audio>
+      <audio
+        id="el-sfx-19"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="114.85"
+        data-duration="0.312"
+        data-track-index="39"
+        data-volume="0.3"
+      ></audio>
+      <audio
+        id="el-sfx-20"
+        src="assets/sfx/impact-bass-1.mp3"
+        data-start="114.85"
+        data-duration="1.765"
+        data-track-index="40"
+        data-volume="0.3"
+      ></audio>
+      <audio
+        id="el-sfx-21"
+        src="assets/sfx/chime.mp3"
+        data-start="136.8"
+        data-duration="0.576"
+        data-track-index="41"
+        data-volume="0.28"
+      ></audio>
+      <div class="mascot" id="el-mascot" data-start="0" data-duration="144.75" data-track-index="50">
+        <div class="mascot-sh" id="mas-sh"></div>
+        <svg class="mascot-b" id="mas-body" viewBox="250 291 1035 1035" role="img" aria-label="AI Agent" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="mas-grad" cx="34%" cy="22%" r="84%">
+              <stop offset="0%"   stop-color="#5c636f"/>
+              <stop offset="36%"  stop-color="#24272e"/>
+              <stop offset="100%" stop-color="#000000"/>
+            </radialGradient>
+            <radialGradient id="mas-spec" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.42"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path fill="url(#mas-grad)" fill-rule="evenodd" d="M 518.0,474.0 L 491.0,501.0 L 463.0,535.0 L 442.0,566.0 L 421.0,602.0 L 399.0,647.0 L 377.0,702.0 L 357.0,763.0 L 343.0,814.0 L 326.0,888.0 L 316.0,946.0 L 311.0,992.0 L 310.0,1035.0 L 314.0,1065.0 L 321.0,1089.0 L 337.0,1117.0 L 353.0,1133.0 L 373.0,1146.0 L 398.0,1156.0 L 423.0,1162.0 L 456.0,1166.0 L 1055.0,1167.0 L 1101.0,1164.0 L 1123.0,1160.0 L 1149.0,1152.0 L 1174.0,1139.0 L 1198.0,1117.0 L 1209.0,1100.0 L 1219.0,1074.0 L 1224.0,1046.0 L 1225.0,1010.0 L 1220.0,955.0 L 1213.0,910.0 L 1203.0,860.0 L 1186.0,791.0 L 1169.0,734.0 L 1149.0,678.0 L 1131.0,636.0 L 1114.0,602.0 L 1088.0,558.0 L 1072.0,535.0 L 1045.0,502.0 L 1016.0,473.0 L 991.0,452.0 L 952.0,426.0 L 919.0,409.0 L 892.0,398.0 L 859.0,388.0 L 825.0,381.0 L 786.0,377.0 L 752.0,377.0 L 712.0,381.0 L 682.0,387.0 L 624.0,406.0 L 596.0,419.0 L 569.0,435.0 L 538.0,457.0 Z"/>
+          <ellipse cx="505" cy="585" rx="145" ry="104" fill="url(#mas-spec)" transform="rotate(-20 505 585)"/>
+          <g id="mas-lid1" style="transform-box: fill-box; transform-origin: center center;"><path fill="#ffffff" d="M 714.0,503.0 L 723.0,501.0 L 734.0,501.0 L 744.0,503.0 L 761.0,512.0 L 773.0,524.0 L 784.0,545.0 L 790.0,560.0 L 793.0,564.0 L 799.0,579.0 L 820.0,622.0 L 823.0,637.0 L 822.0,648.0 L 820.0,655.0 L 811.0,669.0 L 806.0,674.0 L 793.0,682.0 L 783.0,685.0 L 766.0,685.0 L 754.0,681.0 L 744.0,675.0 L 733.0,664.0 L 725.0,650.0 L 725.0,648.0 L 714.0,627.0 L 702.0,599.0 L 686.0,567.0 L 682.0,554.0 L 682.0,540.0 L 685.0,530.0 L 690.0,521.0 L 698.0,512.0 Z"/></g>
+          <g id="mas-lid2" style="transform-box: fill-box; transform-origin: center center;"><path fill="#ffffff" d="M 909.0,471.0 L 916.0,468.0 L 921.0,468.0 L 922.0,467.0 L 929.0,467.0 L 942.0,470.0 L 954.0,476.0 L 961.0,481.0 L 974.0,494.0 L 979.0,501.0 L 1018.0,581.0 L 1022.0,593.0 L 1023.0,605.0 L 1021.0,614.0 L 1014.0,626.0 L 1007.0,632.0 L 999.0,636.0 L 990.0,638.0 L 979.0,637.0 L 972.0,635.0 L 955.0,625.0 L 941.0,609.0 L 897.0,517.0 L 894.0,507.0 L 894.0,492.0 L 899.0,480.0 Z"/></g>
+        </svg>
+        <div class="mascot-lap" id="mas-lap">
+          <svg viewBox="0 0 26 17" aria-hidden="true">
+            <path d="M5 1.5h16a1.3 1.3 0 0 1 1.3 1.3v8.5H3.7V2.8A1.3 1.3 0 0 1 5 1.5Z" fill="#1c1f25" stroke="#000000" stroke-width="0.8"/>
+            <rect x="5.1" y="2.9" width="15.8" height="7" rx="0.45" fill="#1877f2"/>
+            <path d="M1.9 11.3h22.2l1.3 3.1a0.8 0.8 0 0 1-0.74 1.11H1.34A0.8 0.8 0 0 1 0.6 14.4Z" fill="#2b3038" stroke="#000000" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div class="mascot-food" id="mas-food">
+          <svg viewBox="0 0 14 18" aria-hidden="true">
+            <path d="M2.2 0.9H7.8L13.1 6.2V17.1a1 1 0 0 1-1 1H2.2a1 1 0 0 1-1-1V1.9a1 1 0 0 1 1-1Z" fill="#ffffff" stroke="#000000" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M7.8 0.9V5.2a1 1 0 0 0 1 1h4.3" fill="none" stroke="#000000" stroke-width="1.35" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <audio
+        id="el-gl-0"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="5.00"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-1"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="11.30"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-2"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="25.30"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-3"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="30.95"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-4"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="38.60"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-5"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="45.30"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-6"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="53.20"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-7"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="67.45"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-8"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="83.10"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-9"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="98.55"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-10"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="114.85"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gl-11"
+        src="assets/sfx/glitch-burst.mp3"
+        data-start="136.80"
+        data-duration="0.46"
+        data-track-index="42"
+        data-volume="0.30"
+      ></audio>
+      <audio
+        id="el-gulp-0"
+        src="assets/sfx/gulp.mp3"
+        data-start="86.34"
+        data-duration="0.68"
+        data-track-index="43"
+        data-volume="0.34"
+      ></audio>
+      <audio
+        id="el-gulp-1"
+        src="assets/sfx/gulp.mp3"
+        data-start="89.64"
+        data-duration="0.68"
+        data-track-index="43"
+        data-volume="0.34"
+      ></audio>
+      <audio
+        id="el-gulp-2"
+        src="assets/sfx/gulp.mp3"
+        data-start="93.04"
+        data-duration="0.68"
+        data-track-index="43"
+        data-volume="0.34"
+      ></audio>
+      <div class="glitch" id="el-glitch" data-start="0" data-duration="144.75" data-track-index="51">
+        <div class="gl-band gl-b1" id="gl-b1"></div>
+        <div class="gl-band gl-b2" id="gl-b2"></div>
+        <div class="gl-band gl-b3" id="gl-b3"></div>
+        <div class="gl-flash" id="gl-flash"></div>
+      </div>
+      <div class="shutter" id="el-shutter" data-start="0" data-duration="144.75" data-track-index="52">
+        <div class="sh-bar sh-top" id="sh-top"></div>
+        <div class="sh-bar sh-bot" id="sh-bot"></div>
+        <div class="sh-pop" id="sh-pop"></div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-02-quen-het-di", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 11.3);
+        tl.fromTo("#el-03-nua-nam-ho-hao", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 11.3);
+        tl.addLabel("hf:transition:02-quen-het-di:03-nua-nam-ho-hao:crossfade", 11.3);
+        tl.to("#el-06-dung-mang-dinh-kien", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 38.6);
+        tl.fromTo("#el-07-mong-nhu-to-giay", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 38.6);
+        tl.addLabel("hf:transition:06-dung-mang-dinh-kien:07-mong-nhu-to-giay:crossfade", 38.6);
+        tl.to("#el-12-bai-tap-2-don-thu-muc", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 98.55);
+        tl.fromTo("#el-13-khac-biet-nam-o-dau", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 98.55);
+        tl.addLabel("hf:transition:12-bai-tap-2-don-thu-muc:13-khac-biet-nam-o-dau:crossfade", 98.55);
+      })();
+
+      // ── linh vat xuyen suot ──
+      (function () {
+        var tl = window.__timelines["main"];
+        var B = "#mas-body", S = "#mas-sh", W = "#el-mascot";
+        gsap.set(B, { transformOrigin: "50% 91%" });
+        gsap.set(S, { transformOrigin: "50% 50%" });
+        gsap.set(W, { opacity: 0, x: 0, y: 0, scale: 1 });
+        gsap.set("#mas-food", { opacity: 0 });
+        gsap.set("#mas-lap", { opacity: 0 });
+
+        var DX = 831, DY = -1582;
+
+        function blink(at) { ["#mas-lid1", "#mas-lid2"].forEach(function (l) {
+          tl.fromTo(l, { scaleY: 1 },    { scaleY: 0.06, duration: 0.09, ease: "power2.in",  immediateRender: false }, at);
+          tl.fromTo(l, { scaleY: 0.06 }, { scaleY: 1,    duration: 0.12, ease: "power2.out", immediateRender: false }, at + 0.09); }); }
+
+        // hien ra: bat len tu duoi, tiep dat nay lai
+        function pop(at, x, y) {
+          tl.fromTo(W, { opacity: 0, x: x, y: y + 120, scale: 0.55 },
+            { opacity: 1, x: x, y: y, scale: 1, duration: 0.40, ease: "back.out(2.0)", immediateRender: false }, at);
+          tl.fromTo(B, { scaleX: 1.22, scaleY: 0.80 }, { scaleX: 1, scaleY: 1, duration: 0.44, ease: "elastic.out(1,0.45)", immediateRender: false }, at + 0.26);
+          tl.fromTo(S, { opacity: 0, scaleX: 0.3 },    { opacity: 1, scaleX: 1, duration: 0.40, ease: "power2.out", immediateRender: false }, at);
+        }
+        // nay tai cho
+        function bounce(at, h) {
+          tl.fromTo(B, { scaleX: 1, scaleY: 1 },        { scaleX: 1.16, scaleY: 0.84, duration: 0.11, ease: "power2.in",  immediateRender: false }, at);
+          tl.fromTo(B, { y: 0 },                        { y: -h, duration: 0.22, ease: "power2.out", immediateRender: false }, at + 0.11);
+          tl.fromTo(B, { scaleX: 1.16, scaleY: 0.84 },  { scaleX: 0.90, scaleY: 1.14, duration: 0.22, ease: "power2.out", immediateRender: false }, at + 0.11);
+          tl.fromTo(B, { y: -h },                       { y: 0, duration: 0.20, ease: "power2.in",  immediateRender: false }, at + 0.33);
+          tl.fromTo(B, { scaleX: 0.90, scaleY: 1.14 },  { scaleX: 1.12, scaleY: 0.88, duration: 0.20, ease: "power2.in",  immediateRender: false }, at + 0.33);
+          tl.fromTo(B, { scaleX: 1.12, scaleY: 0.88 },  { scaleX: 1, scaleY: 1, duration: 0.34, ease: "elastic.out(1,0.5)", immediateRender: false }, at + 0.53);
+          tl.fromTo(S, { scaleX: 1, opacity: 1 },       { scaleX: 0.5, opacity: 0.3, duration: 0.22, ease: "power2.out", immediateRender: false }, at + 0.11);
+          tl.fromTo(S, { scaleX: 0.5, opacity: 0.3 },   { scaleX: 1, opacity: 1, duration: 0.20, ease: "power2.in", immediateRender: false }, at + 0.33);
+        }
+        // an di
+        function vanish(at) {
+          tl.fromTo(W, { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.5, duration: 0.30, ease: "back.in(1.8)", immediateRender: false }, at);
+        }
+        // vui mung: nhun hai nhip + mat nheo
+        function happy(at) {
+          [0, 0.34].forEach(function (d) {
+            tl.fromTo(B, { y: 0, scaleY: 1 },      { y: -28, scaleY: 1.07, duration: 0.17, ease: "power2.out", immediateRender: false }, at + d);
+            tl.fromTo(B, { y: -28, scaleY: 1.07 }, { y: 0, scaleY: 0.94, duration: 0.17, ease: "power2.in",  immediateRender: false }, at + d + 0.17);
+          });
+          tl.fromTo(B, { scaleY: 0.94 }, { scaleY: 1, duration: 0.26, ease: "power2.out", immediateRender: false }, at + 0.68);
+          tl.fromTo(B, { rotation: 0 },  { rotation: -9, duration: 0.18, ease: "power2.out",   immediateRender: false }, at + 0.70);
+          tl.fromTo(B, { rotation: -9 }, { rotation: 8,  duration: 0.26, ease: "power1.inOut", immediateRender: false }, at + 0.88);
+          tl.fromTo(B, { rotation: 8 },  { rotation: 0,  duration: 0.32, ease: "elastic.out(1,0.5)", immediateRender: false }, at + 1.14);
+          ["#mas-lid1", "#mas-lid2"].forEach(function (l) {
+            tl.fromTo(l, { scaleY: 1 },    { scaleY: 0.34, duration: 0.14, ease: "power2.out", immediateRender: false }, at);
+            tl.fromTo(l, { scaleY: 0.34 }, { scaleY: 1, duration: 0.22, ease: "power2.in", immediateRender: false }, at + 1.04);
+          });
+        }
+        // nuot file
+        function eat(at) {
+          tl.fromTo("#mas-food", { opacity: 0, x: 150, y: -90, scale: 0.8, rotation: -18 },
+            { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: 0.44, ease: "power2.in", immediateRender: false }, at);
+          tl.fromTo("#mas-food", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.25, duration: 0.16, ease: "power2.in", immediateRender: false }, at + 0.44);
+          tl.fromTo(B, { scaleX: 1, scaleY: 1 },       { scaleX: 1.20, scaleY: 1.14, duration: 0.16, ease: "power2.out", immediateRender: false }, at + 0.46);
+          tl.fromTo(B, { scaleX: 1.20, scaleY: 1.14 }, { scaleX: 1, scaleY: 1, duration: 0.52, ease: "elastic.out(1,0.4)", immediateRender: false }, at + 0.62);
+          ["#mas-lid1", "#mas-lid2"].forEach(function (l) {
+            tl.fromTo(l, { scaleY: 1 },   { scaleY: 0.2, duration: 0.10, ease: "power2.in", immediateRender: false }, at + 0.44);
+            tl.fromTo(l, { scaleY: 0.2 }, { scaleY: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, at + 0.56); });
+        }
+        function laptop(at, until) {
+          tl.fromTo("#mas-lap", { opacity: 0, y: 40, scale: 0.7 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(1.7)", immediateRender: false }, at);
+          tl.fromTo("#mas-lap", { opacity: 1, y: 0 }, { opacity: 0, y: 34, duration: 0.34, ease: "power2.in", immediateRender: false }, until);
+        }
+
+        // ===== Nhip chinh: cu 2-5 giay hien ra, nay, roi an =====
+        pop(0.25, 0, 0); bounce(0.75, 120); vanish(1.57);
+        pop(5.60, 630, 0); bounce(6.10, 120); vanish(6.92);
+        pop(9.00, 210, -1582); bounce(9.50, 120); bounce(10.20, 100); vanish(11.02);
+        pop(23.49, 831, 0); bounce(23.99, 120); vanish(24.81);
+        pop(26.39, 420, -1582); bounce(26.89, 120); bounce(27.59, 100); vanish(28.41);
+        pop(31.39, 210, 0); bounce(31.89, 120); vanish(32.71);
+        pop(34.59, 831, -1582); bounce(35.09, 120); vanish(35.91);
+        pop(39.20, 420, 0); bounce(39.70, 120); bounce(40.40, 100); vanish(41.22);
+        pop(43.20, 0, -1582); bounce(43.70, 120); vanish(44.52);
+        pop(45.80, 630, -1582); bounce(46.30, 120); vanish(47.12);
+        pop(49.20, 0, 0); bounce(49.70, 120); bounce(50.40, 100); vanish(51.22);
+        pop(67.05, 630, 0); bounce(67.55, 120); vanish(68.37);
+        pop(69.95, 210, -1582); bounce(70.45, 120); bounce(71.15, 100); vanish(71.97);
+        pop(74.95, 831, 0); bounce(75.45, 120); vanish(76.27);
+        pop(78.15, 420, -1582); bounce(78.65, 120); vanish(79.47);
+        pop(80.55, 210, 0); bounce(81.05, 120); bounce(81.75, 100); vanish(82.57);
+        pop(96.45, 831, -1582); bounce(96.95, 120); vanish(97.77);
+        pop(99.05, 420, 0); bounce(99.55, 120); vanish(100.37);
+        pop(105.37, 0, -1582); bounce(105.87, 120); bounce(106.57, 100); vanish(107.39);
+        pop(109.97, 630, -1582); bounce(110.47, 120); vanish(111.29);
+        pop(112.87, 0, 0); bounce(113.37, 120); bounce(114.07, 100); vanish(114.89);
+        pop(117.87, 630, 0); bounce(118.37, 120); vanish(119.19);
+        pop(124.22, 210, -1582); bounce(124.72, 120); vanish(125.54);
+        pop(126.62, 831, 0); bounce(127.12, 120); bounce(127.82, 100); vanish(128.64);
+        pop(130.62, 420, -1582); bounce(131.12, 120); vanish(131.94);
+        pop(133.22, 210, 0); bounce(133.72, 120); vanish(134.54);
+        pop(136.62, 831, -1582); bounce(137.12, 120); bounce(137.82, 100); vanish(138.64);
+
+        // --- hien va vui mung dung giay VO doc "Agent" ---
+        pop(15.47, 420, 0); happy(15.92); vanish(17.77);
+        pop(20.29, 420, 0); happy(20.74); vanish(22.59);
+        pop(51.69, 420, 0); happy(52.14); vanish(53.99);
+        pop(102.17, 210, -1582); happy(102.62); vanish(104.47);
+        pop(121.02, 210, -1582); happy(121.47); vanish(123.32);
+
+        // --- om laptop: doan noi ve app tren may tinh ---
+        pop(54.90, 420, 0); laptop(55.40, 65.40); bounce(58.00, 100); blink(61.00); bounce(63.40, 100); vanish(65.90);
+
+        // --- nuot file o canh 12 ---
+        pop(85.40, 420, DY); eat(86.30); eat(89.20); eat(92.60); happy(94.00); vanish(95.60);
+
+        // --- loi keu goi cuoi: hien va o lai den het ---
+        pop(139.90, 400, 0); bounce(140.70, 130); happy(141.90); blink(143.90);
+
+        // ===== glitch chuyen canh =====
+        // steps(1) la ease bac thang (giat dut doan) — khong phai linear.
+        ["#gl-b1", "#gl-b2", "#gl-b3", "#gl-flash"].forEach(function (e) { gsap.set(e, { opacity: 0 }); });
+        function glitch(at) {
+          [["#gl-b1", 30], ["#gl-b2", -38], ["#gl-b3", 22]].forEach(function (p, k) {
+            tl.fromTo(p[0], { opacity: 0, x: 0 },
+              { opacity: 0.8, x: p[1], duration: 0.05, ease: "steps(1)", immediateRender: false }, at + k * 0.035);
+            tl.fromTo(p[0], { opacity: 0.8, x: p[1] },
+              { opacity: 0, x: 0, duration: 0.09, ease: "power2.out", immediateRender: false }, at + k * 0.035 + 0.06);
+          });
+          tl.fromTo("#gl-flash", { opacity: 0 },    { opacity: 0.45, duration: 0.04, ease: "steps(1)", immediateRender: false }, at + 0.02);
+          tl.fromTo("#gl-flash", { opacity: 0.45 }, { opacity: 0, duration: 0.12, ease: "power2.out", immediateRender: false }, at + 0.06);
+        }
+        // ===== man chap may anh =====
+        gsap.set(["#sh-top", "#sh-bot"], { scaleY: 0 });
+        gsap.set("#sh-pop", { opacity: 0 });
+        function shutter(at) {
+          // la chan sap vao
+          tl.fromTo("#sh-top", { scaleY: 0 }, { scaleY: 1, duration: 0.09, ease: "power3.in", immediateRender: false }, at);
+          tl.fromTo("#sh-bot", { scaleY: 0 }, { scaleY: 1, duration: 0.09, ease: "power3.in", immediateRender: false }, at);
+          // nhay flash ngay luc dong kin
+          tl.fromTo("#sh-pop", { opacity: 0 },    { opacity: 0.92, duration: 0.03, ease: "power4.out", immediateRender: false }, at + 0.09);
+          tl.fromTo("#sh-pop", { opacity: 0.92 }, { opacity: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, at + 0.12);
+          // la chan mo ra
+          tl.fromTo("#sh-top", { scaleY: 1 }, { scaleY: 0, duration: 0.14, ease: "power3.out", immediateRender: false }, at + 0.12);
+          tl.fromTo("#sh-bot", { scaleY: 1 }, { scaleY: 0, duration: 0.14, ease: "power3.out", immediateRender: false }, at + 0.12);
+        }
+        function snap(at) { glitch(at); shutter(at + 0.08); }
+
+        snap(5.00);
+        snap(11.30);
+        snap(25.30);
+        snap(30.95);
+        snap(38.60);
+        snap(45.30);
+        snap(53.20);
+        snap(67.45);
+        snap(83.10);
+        snap(98.55);
+        snap(114.85);
+        snap(136.80);
+
+        // ===== dao mau linh vat tren nen toi/xanh =====
+        // Than linh vat mau den: tren nen den no bien mat, nen phai dao nguoc.
+        function inv(at, on) {
+          tl.fromTo("#el-mascot", { filter: on ? "invert(0)" : "invert(1)" },
+            { filter: on ? "invert(1)" : "invert(0)", duration: 0.28, ease: "power2.inOut", immediateRender: false }, at);
+        }
+        inv(5.00, true);   inv(11.30, false);   // canh 02 nen den
+        inv(30.95, true);  inv(38.60, false);   // canh 06 nen xanh
+        inv(98.55, true);  inv(114.85, false);  // canh 13 nen den
+        inv(136.80, true);                      // canh 15 nen xanh, giu den het
+
+        tl.to({}, { duration: 144.75 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
+    </script>
+  </body>
+</html>

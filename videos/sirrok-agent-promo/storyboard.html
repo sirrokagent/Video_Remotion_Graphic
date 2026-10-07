@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Sirrok Agent — Storyboard v1</title>
+<link rel="stylesheet" href="assets/fonts/be-vietnam-pro.css">
+<style>
+  :root{
+    --bg:#FAFAF8; --text:#0A0A0A; --muted:#52525B; --light:#6E6E76;
+    --primary:#0E52B8; --fill:#1877F2;
+    --tint:rgba(24,119,242,.08); --tint2:rgba(24,119,242,.15);
+    --border:rgba(24,119,242,.2); --card:rgba(24,119,242,.04);
+    --pos:#047857; --neg:#DC2626;
+    --sheet:#EFEEEA;
+    --sans:'Be Vietnam Pro','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--sheet);color:var(--text);font-family:var(--sans);font-weight:500;padding:40px 36px 80px;-webkit-font-smoothing:antialiased}
+  header{max-width:1640px;margin:0 auto 34px}
+  .hrow{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap}
+  h1{font-size:40px;font-weight:800;letter-spacing:-.025em;line-height:1}
+  .ver{font-size:13px;font-weight:800;color:var(--bg);background:var(--primary);padding:5px 13px;border-radius:100px;letter-spacing:.04em}
+  .dek{margin-top:12px;font-size:17px;color:var(--muted);max-width:76ch;line-height:1.55}
+  .tags{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:12px;font-weight:500;color:var(--primary);background:var(--tint);padding:6px 13px;border-radius:100px;border:1px solid var(--border)}
+  .notice{max-width:1640px;margin:0 auto 30px;background:var(--bg);border:1.5px solid var(--border);border-left:4px solid var(--fill);border-radius:12px;padding:18px 22px}
+  .notice h3{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:9px}
+  .notice p{font-size:14.5px;color:var(--muted);line-height:1.6;margin-bottom:7px}
+  .notice p:last-child{margin-bottom:0}
+  .notice b{color:var(--text);font-weight:800}
+
+  .grid{max-width:1640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media (max-width:1180px){.grid{grid-template-columns:repeat(2,1fr)}}
+  figure{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;overflow:hidden}
+  .cell{aspect-ratio:16/9;container-type:inline-size;background:var(--bg);position:relative;overflow:hidden;border-bottom:1.5px solid var(--border)}
+  .lbl{display:flex;justify-content:space-between;gap:10px;padding:11px 15px 0;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .lbl .r{color:var(--light);font-weight:500;letter-spacing:.03em;text-transform:none;white-space:nowrap}
+  .note{padding:8px 15px 13px;font-size:13px;color:var(--muted);line-height:1.55}
+  .note b{color:var(--text);font-weight:800}
+  .seam{display:inline-block;margin:0 15px 14px;font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--tint2);color:var(--primary)}
+  .seam.cut{background:rgba(10,10,10,.08);color:var(--text)}
+
+  /* ── frame-internal primitives, authored in cqw so the build inherits them ── */
+  .pad{position:absolute;inset:0;padding:5cqw}
+  .ctr{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .eyebrow{font-size:1.5cqw;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--primary)}
+  .hero{font-size:4.6cqw;font-weight:800;letter-spacing:-.03em;line-height:1.02;color:var(--text)}
+  .hero2{font-size:3.5cqw;font-weight:800;letter-spacing:-.025em;line-height:1.1;color:var(--text)}
+  .num{font-size:17cqw;font-weight:800;letter-spacing:-.045em;line-height:.86;color:var(--text);font-variant-numeric:tabular-nums}
+  .sub{font-size:1.75cqw;font-weight:500;color:var(--muted);line-height:1.5}
+  .aline{width:8cqw;height:.42cqw;border-radius:.2cqw;background:var(--fill)}
+  .pill{display:inline-flex;align-items:center;gap:.7cqw;border-radius:100px;background:var(--primary);color:var(--bg);font-size:1.6cqw;font-weight:800;padding:1.15cqw 2.4cqw}
+  .chip{display:inline-flex;align-items:center;gap:.5cqw;border-radius:100px;background:var(--tint);border:1px solid var(--border);color:var(--primary);font-size:1.15cqw;font-weight:800;padding:.5cqw 1.1cqw;letter-spacing:.03em}
+  .mark{display:block}
+
+  /* person glyph (frame 01) */
+  .pg{width:1.5cqw;height:3cqw;position:relative}
+  .pg::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1.15cqw;height:1.15cqw;border-radius:50%;background:currentColor}
+  .pg::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1.5cqw;height:1.55cqw;border-radius:.7cqw .7cqw .18cqw .18cqw;background:currentColor}
+
+  /* role card (frame 02) */
+  .rc{position:absolute;background:var(--card);border:1px solid var(--border);border-radius:.75cqw;padding:.85cqw 1.1cqw;display:flex;flex-direction:column;gap:.45cqw;min-width:9cqw}
+  .rc .n{font-size:1.25cqw;font-weight:800;color:var(--text);white-space:nowrap}
+  .rc .p{align-self:flex-start;font-size:.95cqw;font-weight:800;color:var(--primary);background:var(--tint2);border-radius:100px;padding:.22cqw .7cqw}
+  .rc.ghost{opacity:.3}
+  .rc.ghost .n{display:none}
+
+  /* mac window (frame 05) */
+  .win{position:absolute;inset:4cqw 5cqw;background:var(--bg);border:1px solid var(--border);border-radius:1cqw;overflow:hidden;display:flex;flex-direction:column}
+  .tbar{height:2.5cqw;flex:0 0 auto;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5cqw;padding:0 1cqw;background:var(--card)}
+  .dot{width:.68cqw;height:.68cqw;border-radius:50%;background:var(--light);opacity:.35}
+  .tbar .t{margin-left:.8cqw;font-size:.95cqw;font-weight:500;color:var(--light)}
+  .wbody{flex:1;display:flex;min-height:0}
+  .side{flex:0 0 13cqw;border-right:1px solid var(--border);padding:1cqw .9cqw;display:flex;flex-direction:column;gap:.7cqw;background:var(--card)}
+  .ag{display:flex;align-items:center;gap:.65cqw;font-size:1cqw;font-weight:500;color:var(--muted)}
+  .ag .av{flex:0 0 auto;width:1.7cqw;height:1.7cqw;border-radius:50%;background:var(--tint2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .ag .av img{width:72%;height:auto}
+  .ag.on{color:var(--text);font-weight:800}
+  .main{flex:1;padding:1.5cqw 1.6cqw;display:flex;flex-direction:column;gap:1.1cqw;min-width:0}
+  .wave{display:flex;align-items:center;gap:.26cqw;height:3.4cqw}
+  .wave i{width:.3cqw;border-radius:.15cqw;background:var(--fill)}
+  .task{display:flex;align-items:center;gap:.8cqw;font-size:1.25cqw;font-weight:500;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:.65cqw}
+  .task .ck{flex:0 0 auto;width:1.5cqw;height:1.5cqw;border-radius:50%;border:1.5px solid var(--border)}
+  .task.done .ck{background:var(--pos);border-color:var(--pos);position:relative}
+  .task.done .ck::after{content:'';position:absolute;left:.4cqw;top:.3cqw;width:.45cqw;height:.75cqw;border:.17cqw solid var(--bg);border-top:0;border-left:0;transform:rotate(42deg)}
+  .task.done{color:var(--light)}
+  .task .st{margin-left:auto;font-size:.95cqw;font-weight:800;color:var(--light);white-space:nowrap}
+
+  /* dynamic island (frame 06) */
+  .phonetop{position:absolute;left:50%;transform:translateX(-50%);top:9cqw;width:46cqw;height:30cqw;background:var(--text);border-radius:4cqw 4cqw 0 0;padding:1.6cqw}
+  .screen{position:absolute;inset:.9cqw .9cqw 0;background:#17181B;border-radius:3.3cqw 3.3cqw 0 0;overflow:hidden}
+  .island{position:absolute;left:50%;transform:translateX(-50%);top:1.6cqw;width:30cqw;background:#000;border-radius:2.6cqw;padding:1.5cqw 1.9cqw;display:flex;flex-direction:column;gap:1cqw}
+  .irow{display:flex;align-items:center;gap:1cqw}
+  .idisc{flex:0 0 auto;width:3.1cqw;height:3.1cqw;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .idisc img{width:70%;height:auto}
+  .ititle{font-size:1.35cqw;font-weight:800;color:var(--bg);line-height:1.25}
+  .isub{font-size:1.05cqw;font-weight:500;color:rgba(250,250,248,.62)}
+  .itrack{height:.5cqw;border-radius:.25cqw;background:rgba(250,250,248,.18);overflow:hidden}
+  .itrack span{display:block;height:100%;width:62%;background:var(--fill);border-radius:.25cqw}
+  .collapsed{position:absolute;left:50%;transform:translateX(-50%);top:1.6cqw;width:9cqw;height:2.7cqw;border-radius:100px;background:#000;display:flex;align-items:center;justify-content:center;gap:.6cqw;opacity:.28}
+  .collapsed i{width:.65cqw;height:.65cqw;border-radius:50%;background:var(--fill)}
+  .ghostlbl{position:absolute;left:50%;transform:translateX(-50%);top:4.9cqw;font-size:.95cqw;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--light);white-space:nowrap}
+
+  /* device splay (frame 07) */
+  .splay{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;gap:1.6cqw;padding:0 5cqw 7cqw}
+  .dv{position:relative;display:flex;flex-direction:column;align-items:center;gap:1cqw}
+  .dv .scr{background:var(--text);border-radius:1cqw;position:relative;overflow:hidden}
+  .dv .scr::after{content:'';position:absolute;inset:.5cqw;background:var(--bg);border-radius:.6cqw}
+  .dv.mac .scr{width:30cqw;height:19cqw;border-radius:1cqw}
+  .dv.tab .scr{width:14cqw;height:18.5cqw;border-radius:1.1cqw}
+  .dv.ph  .scr{width:8cqw;height:16.5cqw;border-radius:1.5cqw}
+  .dv .lab{font-size:1.15cqw;font-weight:800;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+  .macbase{width:34cqw;height:.75cqw;border-radius:0 0 .7cqw .7cqw;background:var(--text);opacity:.85}
+  .notchpill{position:absolute;left:50%;transform:translateX(-50%);top:1cqw;width:3.6cqw;height:.95cqw;border-radius:100px;background:#000;z-index:2}
+  .punch{position:absolute;left:50%;transform:translateX(-50%);top:1.1cqw;width:.8cqw;height:.8cqw;border-radius:50%;background:#000;z-index:2}
+  .tabbar{position:absolute;left:50%;transform:translateX(-50%);bottom:1.1cqw;width:5cqw;height:.5cqw;border-radius:100px;background:var(--text);opacity:.3;z-index:2}
+  .kebab{position:absolute;right:1.3cqw;top:1.4cqw;display:flex;flex-direction:column;gap:.22cqw;z-index:2}
+  .kebab i{width:.34cqw;height:.34cqw;border-radius:50%;background:var(--text);opacity:.35}
+
+  /* closing cells */
+  .wide{grid-column:1/-1}
+  .seammap{display:flex;align-items:stretch;width:100%;height:100%;padding:3cqw}
+  .sm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7cqw;border-right:1px dashed var(--border);padding:0 .4cqw}
+  .sm:last-child{border-right:0}
+  .sm .id{font-size:1.5cqw;font-weight:800;color:var(--text)}
+  .sm .ty{font-size:.85cqw;font-weight:500;color:var(--light);text-align:center;line-height:1.3}
+  .sm .sx{font-size:.78cqw;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.25cqw .6cqw;border-radius:100px}
+  .sm .sx.cf{background:var(--tint2);color:var(--primary)}
+  .sm .sx.ct{background:rgba(10,10,10,.1);color:var(--text)}
+  .sm .bar{width:100%;height:.5cqw;border-radius:.25cqw;background:var(--fill);opacity:.22}
+  .tok{padding:3cqw;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:2.4cqw;width:100%;height:100%}
+  .tok h4{font-size:1.1cqw;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--primary);margin-bottom:1.1cqw}
+  .sw{display:flex;align-items:center;gap:.8cqw;margin-bottom:.7cqw;font-size:1cqw;color:var(--muted);font-weight:500}
+  .sw b{color:var(--text);font-weight:800}
+  .sw .box{width:2.1cqw;height:2.1cqw;border-radius:.4cqw;border:1px solid var(--border);flex:0 0 auto}
+  .tline{font-size:1cqw;color:var(--muted);line-height:1.65;margin-bottom:.5cqw;font-weight:500}
+  .tline b{color:var(--text);font-weight:800}
+  .ban{font-size:1cqw;color:var(--neg);line-height:1.6;font-weight:500;margin-bottom:.5cqw}
+  footer{max-width:1640px;margin:38px auto 0;font-size:13.5px;color:var(--light);line-height:1.65}
+  footer b{color:var(--text);font-weight:800}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow"><h1>Sirrok Agent — Storyboard</h1><span class="ver">v1</span></div>
+  <p class="dek">Video quảng cáo thương hiệu cho app <b>Sirrok Agent</b>. Luận điểm duy nhất: một agent gánh được khối việc của cả team 20–30 người, và bạn ra lệnh cho nó bằng giọng nói. Arc PAS, look sáng theo tham chiếu <i>x.ai/bot</i>, bảng màu A Hít Official.</p>
+  <div class="tags">
+    <span class="tag">1920 × 1080 · 30 fps</span>
+    <span class="tag">48.0s · 8 beat</span>
+    <span class="tag">VO tiếng Việt 42.68s · ElevenLabs Daniel</span>
+    <span class="tag">Be Vietnam Pro 500 / 800 · self-host</span>
+    <span class="tag">preset blue-professional (remix brand)</span>
+  </div>
+</header>
+
+<div class="notice">
+  <h3>Hai chỗ tôi đọc lỏng luật “≤ 6 chữ một màn hình” — cần bạn chốt</h3>
+  <p><b>Frame 02</b> — cảnh bị vây có 4 thẻ hiện chữ cùng lúc (<i>Content · Quảng cáo · Báo cáo · Support</i> = 5 chữ) cộng 8 thẻ mờ chỉ còn pill lương, không chữ. Tôi coi cụm thẻ là <b>một khối hình</b>, không phải 5 chữ để đọc. Nếu bạn muốn chặt đúng luật, tôi hạ xuống 2 thẻ có chữ.</p>
+  <p><b>Frame 08</b> — khẩu hiệu <i>“Đừng chỉ đứng nhìn. Hãy tham gia cuộc chơi.”</i> là 9 chữ. Đây là câu brand brief quy định nguyên văn, nên tôi để nguyên. Nếu cần, cắt còn <i>“Hãy tham gia cuộc chơi.”</i> (4 chữ).</p>
+  <p><b>Frame 03</b> thì không vi phạm: hai câu <b>không</b> xuất hiện cùng lúc — câu 1 (4 chữ) đáp xuống, xoá hẳn, rồi câu 2 (6 chữ) mới vào. Ô dưới vẽ khoảnh khắc câu 2, câu 1 để mờ chỉ để bạn thấy trình tự.</p>
+</div>
+
+<div class="grid">
+
+  <!-- 01 -->
+  <figure>
+    <div class="cell" id="frame-01">
+      <div class="pad ctr" style="gap:1.6cqw">
+        <div class="eyebrow">Để một hệ thống chạy được</div>
+        <div style="display:flex;align-items:baseline;gap:1.6cqw">
+          <div class="num">28</div>
+          <div class="hero2" style="padding-bottom:1.6cqw">NGƯỜI</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(14,1fr);gap:.85cqw;color:var(--light);opacity:.55;margin-top:.6cqw">
+          <span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span>
+          <span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span>
+          <span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span>
+          <span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span><span class="pg"></span>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>01 · 20–30 NGƯỜI, HOẶC MỘT AGENT</span><span class="r">hook · 0.0–4.6s</span></div>
+    <p class="note"><b>Con số chạy trước, lưới mọc theo.</b> “28” đếm từ 0 trong 1.1s, lưới 28 glyph người mọc đồng bộ với bộ đếm. Ở 3.1s lời thoại hết; trong 1.54s nghỉ cuối, cả lưới <b>sụp vào giữa</b> và nén lại thành dome mark Sirrok — chỉ còn nó trên canvas khi cắt. Focal: <b>count-up</b> (registry).</p>
+    <span class="seam cut">vào: cut (mở lạnh)</span>
+  </figure>
+
+  <!-- 02 -->
+  <figure>
+    <div class="cell" id="frame-02">
+      <div class="pad">
+        <div class="rc" style="left:5cqw;top:7cqw"><span class="n">Content</span><span class="p">8 TR/TH</span></div>
+        <div class="rc" style="right:5cqw;top:5.5cqw"><span class="n">Quảng cáo</span><span class="p">14 TR/TH</span></div>
+        <div class="rc" style="left:7cqw;bottom:6cqw"><span class="n">Báo cáo</span><span class="p">9 TR/TH</span></div>
+        <div class="rc" style="right:6.5cqw;bottom:7cqw"><span class="n">Support</span><span class="p">7 TR/TH</span></div>
+        <div class="rc ghost" style="left:27cqw;top:3.5cqw;min-width:5.5cqw"><span class="p">11 TR</span></div>
+        <div class="rc ghost" style="right:26cqw;top:17cqw;min-width:5.5cqw"><span class="p">6 TR</span></div>
+        <div class="rc ghost" style="left:22cqw;bottom:3cqw;min-width:5.5cqw"><span class="p">12 TR</span></div>
+        <div class="rc ghost" style="right:20cqw;bottom:2.5cqw;min-width:5.5cqw"><span class="p">8 TR</span></div>
+        <div class="rc ghost" style="left:2.5cqw;top:24cqw;min-width:5.5cqw"><span class="p">10 TR</span></div>
+        <div class="rc ghost" style="right:2.5cqw;top:26cqw;min-width:5.5cqw"><span class="p">9 TR</span></div>
+        <div class="rc ghost" style="left:38cqw;top:1.5cqw;min-width:5.5cqw"><span class="p">15 TR</span></div>
+        <div class="rc ghost" style="right:38cqw;bottom:1cqw;min-width:5.5cqw"><span class="p">7 TR</span></div>
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:.9cqw">
+          <span class="pg" style="color:var(--text);width:3cqw;height:6cqw"></span>
+          <span class="chip">bạn</span>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>02 · MỖI ĐẦU VIỆC MỘT NGƯỜI</span><span class="r">pain_point · 4.6–11.5s</span></div>
+    <p class="note"><b>Thẻ bay vào từ ngoài khung, không fade.</b> Bốn thẻ có chữ vào trước theo đúng nhịp lời đọc (<i>Content → Quảng cáo → Báo cáo → Support</i>), rồi tám thẻ mờ dồn vào lấp kín. Từ 5.5s cả cụm <b>siết dần vào giữa</b> — vây, không zoom. Kết ở trạng thái chật nhất, không giải quyết. Focal: <b>overwhelm-surround</b> (registry, khớp đúng blueprint).</p>
+    <span class="seam">vào: crossfade (dome mark co về 0)</span>
+  </figure>
+
+  <!-- 03 -->
+  <figure>
+    <div class="cell" id="frame-03">
+      <div class="pad ctr" style="gap:2.2cqw">
+        <div class="hero2" style="opacity:.16">Bạn không thiếu người.</div>
+        <div class="hero">Thiếu một thứ<br>biết tự làm.</div>
+      </div>
+    </div>
+    <div class="lbl"><span>03 · BẠN KHÔNG THIẾU NGƯỜI</span><span class="r">pain_point · 11.5–16.2s</span></div>
+    <p class="note"><b>Khoảng trắng là đòn, không phải chữ.</b> Cắt khô từ cảnh chật nhất sang khung trống trơn. Câu 1 <b>đáp xuống</b> (không trôi vào), giữ 1.3s, xoá hẳn; câu 2 đáp xuống nặng hơn và giữ tới hết. Ô này vẽ khoảnh khắc câu 2 — câu 1 để mờ chỉ để thấy trình tự, <b>trong video hai câu không bao giờ cùng xuất hiện</b>. Beat duy nhất không có hình.</p>
+    <span class="seam cut">vào: cut (chật → trống)</span>
+  </figure>
+
+  <!-- 04 -->
+  <figure>
+    <div class="cell" id="frame-04">
+      <div class="pad ctr" style="gap:1.5cqw">
+        <div class="aline"></div>
+        <img class="mark" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTM2IiBoZWlnaHQ9IjE1MzYiIHZpZXdCb3g9IjAgMCAxNTM2IDE1MzYiPgogIDx0aXRsZT5TaXJyb2sgQWdlbnQgbWFzY290IGljb248L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSA1MTguMCw0NzQuMCBMIDQ5MS4wLDUwMS4wIEwgNDYzLjAsNTM1LjAgTCA0NDIuMCw1NjYuMCBMIDQyMS4wLDYwMi4wIEwgMzk5LjAsNjQ3LjAgTCAzNzcuMCw3MDIuMCBMIDM1Ny4wLDc2My4wIEwgMzQzLjAsODE0LjAgTCAzMjYuMCw4ODguMCBMIDMxNi4wLDk0Ni4wIEwgMzExLjAsOTkyLjAgTCAzMTAuMCwxMDM1LjAgTCAzMTQuMCwxMDY1LjAgTCAzMjEuMCwxMDg5LjAgTCAzMzcuMCwxMTE3LjAgTCAzNTMuMCwxMTMzLjAgTCAzNzMuMCwxMTQ2LjAgTCAzOTguMCwxMTU2LjAgTCA0MjMuMCwxMTYyLjAgTCA0NTYuMCwxMTY2LjAgTCAxMDU1LjAsMTE2Ny4wIEwgMTEwMS4wLDExNjQuMCBMIDExMjMuMCwxMTYwLjAgTCAxMTQ5LjAsMTE1Mi4wIEwgMTE3NC4wLDExMzkuMCBMIDExOTguMCwxMTE3LjAgTCAxMjA5LjAsMTEwMC4wIEwgMTIxOS4wLDEwNzQuMCBMIDEyMjQuMCwxMDQ2LjAgTCAxMjI1LjAsMTAxMC4wIEwgMTIyMC4wLDk1NS4wIEwgMTIxMy4wLDkxMC4wIEwgMTIwMy4wLDg2MC4wIEwgMTE4Ni4wLDc5MS4wIEwgMTE2OS4wLDczNC4wIEwgMTE0OS4wLDY3OC4wIEwgMTEzMS4wLDYzNi4wIEwgMTExNC4wLDYwMi4wIEwgMTA4OC4wLDU1OC4wIEwgMTA3Mi4wLDUzNS4wIEwgMTA0NS4wLDUwMi4wIEwgMTAxNi4wLDQ3My4wIEwgOTkxLjAsNDUyLjAgTCA5NTIuMCw0MjYuMCBMIDkxOS4wLDQwOS4wIEwgODkyLjAsMzk4LjAgTCA4NTkuMCwzODguMCBMIDgyNS4wLDM4MS4wIEwgNzg2LjAsMzc3LjAgTCA3NTIuMCwzNzcuMCBMIDcxMi4wLDM4MS4wIEwgNjgyLjAsMzg3LjAgTCA2MjQuMCw0MDYuMCBMIDU5Ni4wLDQxOS4wIEwgNTY5LjAsNDM1LjAgTCA1MzguMCw0NTcuMCBaIi8+CiAgPGcgZmlsbD0iI0ZGRkZGRiI+CiAgICA8cGF0aCBkPSJNIDcxNC4wLDUwMy4wIEwgNzIzLjAsNTAxLjAgTCA3MzQuMCw1MDEuMCBMIDc0NC4wLDUwMy4wIEwgNzYxLjAsNTEyLjAgTCA3NzMuMCw1MjQuMCBMIDc4NC4wLDU0NS4wIEwgNzkwLjAsNTYwLjAgTCA3OTMuMCw1NjQuMCBMIDc5OS4wLDU3OS4wIEwgODIwLjAsNjIyLjAgTCA4MjMuMCw2MzcuMCBMIDgyMi4wLDY0OC4wIEwgODIwLjAsNjU1LjAgTCA4MTEuMCw2NjkuMCBMIDgwNi4wLDY3NC4wIEwgNzkzLjAsNjgyLjAgTCA3ODMuMCw2ODUuMCBMIDc2Ni4wLDY4NS4wIEwgNzU0LjAsNjgxLjAgTCA3NDQuMCw2NzUuMCBMIDczMy4wLDY2NC4wIEwgNzI1LjAsNjUwLjAgTCA3MjUuMCw2NDguMCBMIDcxNC4wLDYyNy4wIEwgNzAyLjAsNTk5LjAgTCA2ODYuMCw1NjcuMCBMIDY4Mi4wLDU1NC4wIEwgNjgyLjAsNTQwLjAgTCA2ODUuMCw1MzAuMCBMIDY5MC4wLDUyMS4wIEwgNjk4LjAsNTEyLjAgWiIvPjxwYXRoIGQ9Ik0gOTA5LjAsNDcxLjAgTCA5MTYuMCw0NjguMCBMIDkyMS4wLDQ2OC4wIEwgOTIyLjAsNDY3LjAgTCA5MjkuMCw0NjcuMCBMIDk0Mi4wLDQ3MC4wIEwgOTU0LjAsNDc2LjAgTCA5NjEuMCw0ODEuMCBMIDk3NC4wLDQ5NC4wIEwgOTc5LjAsNTAxLjAgTCAxMDE4LjAsNTgxLjAgTCAxMDIyLjAsNTkzLjAgTCAxMDIzLjAsNjA1LjAgTCAxMDIxLjAsNjE0LjAgTCAxMDE0LjAsNjI2LjAgTCAxMDA3LjAsNjMyLjAgTCA5OTkuMCw2MzYuMCBMIDk5MC4wLDYzOC4wIEwgOTc5LjAsNjM3LjAgTCA5NzIuMCw2MzUuMCBMIDk1NS4wLDYyNS4wIEwgOTQxLjAsNjA5LjAgTCA4OTcuMCw1MTcuMCBMIDg5NC4wLDUwNy4wIEwgODk0LjAsNDkyLjAgTCA4OTkuMCw0ODAuMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" alt="Sirrok Agent" style="width:17cqw;height:auto">
+        <div class="hero2" style="letter-spacing:-.03em">Sirrok Agent</div>
+        <div class="sub" style="max-width:48cqw">Một agent, gánh việc của cả ba mươi người.</div>
+      </div>
+    </div>
+    <div class="lbl"><span>04 · SIRROK AGENT</span><span class="r">product_intro · 16.2–21.7s</span></div>
+    <p class="note"><b>Logo dựng từ chính vật liệu của pain.</b> Mười hai thẻ vai trò ở frame 02 <b>không tan ra</b> — chúng bay về giữa và nén thành dome mark, nên frame này phải crossfade chứ không cắt. Wordmark cascade từng chữ sau khi mark đứng yên; <b>chữ không bao giờ đè lên mark</b>. Focal: <b>logo-outro</b> (registry) — đã tắt glow bloom vì preset này zero-shadow.</p>
+    <span class="seam">vào: crossfade (thẻ → mark)</span>
+  </figure>
+
+  <!-- 05 -->
+  <figure>
+    <div class="cell" id="frame-05">
+      <div class="win">
+        <div class="tbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="t">Sirrok Agent — Hôm nay</span></div>
+        <div class="wbody">
+          <div class="side">
+            <div class="ag on"><span class="av"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTM2IiBoZWlnaHQ9IjE1MzYiIHZpZXdCb3g9IjAgMCAxNTM2IDE1MzYiPgogIDx0aXRsZT5TaXJyb2sgQWdlbnQgbWFzY290IGljb248L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSA1MTguMCw0NzQuMCBMIDQ5MS4wLDUwMS4wIEwgNDYzLjAsNTM1LjAgTCA0NDIuMCw1NjYuMCBMIDQyMS4wLDYwMi4wIEwgMzk5LjAsNjQ3LjAgTCAzNzcuMCw3MDIuMCBMIDM1Ny4wLDc2My4wIEwgMzQzLjAsODE0LjAgTCAzMjYuMCw4ODguMCBMIDMxNi4wLDk0Ni4wIEwgMzExLjAsOTkyLjAgTCAzMTAuMCwxMDM1LjAgTCAzMTQuMCwxMDY1LjAgTCAzMjEuMCwxMDg5LjAgTCAzMzcuMCwxMTE3LjAgTCAzNTMuMCwxMTMzLjAgTCAzNzMuMCwxMTQ2LjAgTCAzOTguMCwxMTU2LjAgTCA0MjMuMCwxMTYyLjAgTCA0NTYuMCwxMTY2LjAgTCAxMDU1LjAsMTE2Ny4wIEwgMTEwMS4wLDExNjQuMCBMIDExMjMuMCwxMTYwLjAgTCAxMTQ5LjAsMTE1Mi4wIEwgMTE3NC4wLDExMzkuMCBMIDExOTguMCwxMTE3LjAgTCAxMjA5LjAsMTEwMC4wIEwgMTIxOS4wLDEwNzQuMCBMIDEyMjQuMCwxMDQ2LjAgTCAxMjI1LjAsMTAxMC4wIEwgMTIyMC4wLDk1NS4wIEwgMTIxMy4wLDkxMC4wIEwgMTIwMy4wLDg2MC4wIEwgMTE4Ni4wLDc5MS4wIEwgMTE2OS4wLDczNC4wIEwgMTE0OS4wLDY3OC4wIEwgMTEzMS4wLDYzNi4wIEwgMTExNC4wLDYwMi4wIEwgMTA4OC4wLDU1OC4wIEwgMTA3Mi4wLDUzNS4wIEwgMTA0NS4wLDUwMi4wIEwgMTAxNi4wLDQ3My4wIEwgOTkxLjAsNDUyLjAgTCA5NTIuMCw0MjYuMCBMIDkxOS4wLDQwOS4wIEwgODkyLjAsMzk4LjAgTCA4NTkuMCwzODguMCBMIDgyNS4wLDM4MS4wIEwgNzg2LjAsMzc3LjAgTCA3NTIuMCwzNzcuMCBMIDcxMi4wLDM4MS4wIEwgNjgyLjAsMzg3LjAgTCA2MjQuMCw0MDYuMCBMIDU5Ni4wLDQxOS4wIEwgNTY5LjAsNDM1LjAgTCA1MzguMCw0NTcuMCBaIi8+CiAgPGcgZmlsbD0iI0ZGRkZGRiI+CiAgICA8cGF0aCBkPSJNIDcxNC4wLDUwMy4wIEwgNzIzLjAsNTAxLjAgTCA3MzQuMCw1MDEuMCBMIDc0NC4wLDUwMy4wIEwgNzYxLjAsNTEyLjAgTCA3NzMuMCw1MjQuMCBMIDc4NC4wLDU0NS4wIEwgNzkwLjAsNTYwLjAgTCA3OTMuMCw1NjQuMCBMIDc5OS4wLDU3OS4wIEwgODIwLjAsNjIyLjAgTCA4MjMuMCw2MzcuMCBMIDgyMi4wLDY0OC4wIEwgODIwLjAsNjU1LjAgTCA4MTEuMCw2NjkuMCBMIDgwNi4wLDY3NC4wIEwgNzkzLjAsNjgyLjAgTCA3ODMuMCw2ODUuMCBMIDc2Ni4wLDY4NS4wIEwgNzU0LjAsNjgxLjAgTCA3NDQuMCw2NzUuMCBMIDczMy4wLDY2NC4wIEwgNzI1LjAsNjUwLjAgTCA3MjUuMCw2NDguMCBMIDcxNC4wLDYyNy4wIEwgNzAyLjAsNTk5LjAgTCA2ODYuMCw1NjcuMCBMIDY4Mi4wLDU1NC4wIEwgNjgyLjAsNTQwLjAgTCA2ODUuMCw1MzAuMCBMIDY5MC4wLDUyMS4wIEwgNjk4LjAsNTEyLjAgWiIvPjxwYXRoIGQ9Ik0gOTA5LjAsNDcxLjAgTCA5MTYuMCw0NjguMCBMIDkyMS4wLDQ2OC4wIEwgOTIyLjAsNDY3LjAgTCA5MjkuMCw0NjcuMCBMIDk0Mi4wLDQ3MC4wIEwgOTU0LjAsNDc2LjAgTCA5NjEuMCw0ODEuMCBMIDk3NC4wLDQ5NC4wIEwgOTc5LjAsNTAxLjAgTCAxMDE4LjAsNTgxLjAgTCAxMDIyLjAsNTkzLjAgTCAxMDIzLjAsNjA1LjAgTCAxMDIxLjAsNjE0LjAgTCAxMDE0LjAsNjI2LjAgTCAxMDA3LjAsNjMyLjAgTCA5OTkuMCw2MzYuMCBMIDk5MC4wLDYzOC4wIEwgOTc5LjAsNjM3LjAgTCA5NzIuMCw2MzUuMCBMIDk1NS4wLDYyNS4wIEwgOTQxLjAsNjA5LjAgTCA4OTcuMCw1MTcuMCBMIDg5NC4wLDUwNy4wIEwgODk0LjAsNDkyLjAgTCA4OTkuMCw0ODAuMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" alt=""></span>Sirrok</div>
+            <div class="ag"><span class="av"></span>Content</div>
+            <div class="ag"><span class="av"></span>Ads</div>
+            <div class="ag"><span class="av"></span>Support</div>
+          </div>
+          <div class="main">
+            <div class="wave">
+              <i style="height:18%"></i><i style="height:34%"></i><i style="height:62%"></i><i style="height:88%"></i><i style="height:54%"></i><i style="height:96%"></i><i style="height:40%"></i><i style="height:72%"></i><i style="height:26%"></i><i style="height:58%"></i><i style="height:100%"></i><i style="height:44%"></i><i style="height:80%"></i><i style="height:30%"></i><i style="height:66%"></i><i style="height:22%"></i><i style="height:50%"></i><i style="height:84%"></i><i style="height:36%"></i><i style="height:60%"></i><i style="height:28%"></i><i style="height:74%"></i><i style="height:46%"></i><i style="height:16%"></i>
+            </div>
+            <div class="task done"><span class="ck"></span>Soạn 20 email<span class="st">xong</span></div>
+            <div class="task done"><span class="ck"></span>Dựng báo cáo tuần<span class="st">xong</span></div>
+            <div class="task"><span class="ck"></span>Trả 14 ticket<span class="st">đang chạy</span></div>
+            <div class="task" style="opacity:.42;border-bottom:0"><span class="ck"></span>Lên 6 post<span class="st">chờ</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>05 · BẠN KHÔNG GÕ. BẠN NÓI.</span><span class="r">feature_showcase · 21.7–29.9s</span></div>
+    <p class="note"><b>Dạng sóng phản ứng theo lời, rồi máy làm việc.</b> Dome mark bay từ frame 04 vào ô avatar sidebar. Sóng 24 thanh chạy theo <b>mảng envelope cố định</b> (không <code>Math.random()</code>) suốt câu “Bạn nói”. Bốn dòng tác vụ vào <b>đúng lúc lời thoại gọi tên</b>: nghe → chia việc → làm xong → trả kết quả; mỗi dòng tick ✓ riêng. Frame dài nhất vì đây là cơ chế bán sản phẩm. Focal: <b>browser-device-stage</b> + <b>mk-specs-list</b> + <b>success-check</b>; sóng tự dựng (search không ra).</p>
+    <span class="seam">vào: crossfade (mark → avatar)</span>
+  </figure>
+
+  <!-- 06 -->
+  <figure>
+    <div class="cell" id="frame-06">
+      <div class="pad" style="padding:0">
+        <div class="eyebrow" style="position:absolute;left:5cqw;top:4cqw">Dynamic Island</div>
+        <div class="phonetop">
+          <div class="screen">
+            <div class="collapsed"><i></i></div>
+            <div class="ghostlbl">trước · thu gọn</div>
+            <div class="island" style="top:7.4cqw">
+              <div class="irow">
+                <span class="idisc"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTM2IiBoZWlnaHQ9IjE1MzYiIHZpZXdCb3g9IjAgMCAxNTM2IDE1MzYiPgogIDx0aXRsZT5TaXJyb2sgQWdlbnQgbWFzY290IGljb248L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSA1MTguMCw0NzQuMCBMIDQ5MS4wLDUwMS4wIEwgNDYzLjAsNTM1LjAgTCA0NDIuMCw1NjYuMCBMIDQyMS4wLDYwMi4wIEwgMzk5LjAsNjQ3LjAgTCAzNzcuMCw3MDIuMCBMIDM1Ny4wLDc2My4wIEwgMzQzLjAsODE0LjAgTCAzMjYuMCw4ODguMCBMIDMxNi4wLDk0Ni4wIEwgMzExLjAsOTkyLjAgTCAzMTAuMCwxMDM1LjAgTCAzMTQuMCwxMDY1LjAgTCAzMjEuMCwxMDg5LjAgTCAzMzcuMCwxMTE3LjAgTCAzNTMuMCwxMTMzLjAgTCAzNzMuMCwxMTQ2LjAgTCAzOTguMCwxMTU2LjAgTCA0MjMuMCwxMTYyLjAgTCA0NTYuMCwxMTY2LjAgTCAxMDU1LjAsMTE2Ny4wIEwgMTEwMS4wLDExNjQuMCBMIDExMjMuMCwxMTYwLjAgTCAxMTQ5LjAsMTE1Mi4wIEwgMTE3NC4wLDExMzkuMCBMIDExOTguMCwxMTE3LjAgTCAxMjA5LjAsMTEwMC4wIEwgMTIxOS4wLDEwNzQuMCBMIDEyMjQuMCwxMDQ2LjAgTCAxMjI1LjAsMTAxMC4wIEwgMTIyMC4wLDk1NS4wIEwgMTIxMy4wLDkxMC4wIEwgMTIwMy4wLDg2MC4wIEwgMTE4Ni4wLDc5MS4wIEwgMTE2OS4wLDczNC4wIEwgMTE0OS4wLDY3OC4wIEwgMTEzMS4wLDYzNi4wIEwgMTExNC4wLDYwMi4wIEwgMTA4OC4wLDU1OC4wIEwgMTA3Mi4wLDUzNS4wIEwgMTA0NS4wLDUwMi4wIEwgMTAxNi4wLDQ3My4wIEwgOTkxLjAsNDUyLjAgTCA5NTIuMCw0MjYuMCBMIDkxOS4wLDQwOS4wIEwgODkyLjAsMzk4LjAgTCA4NTkuMCwzODguMCBMIDgyNS4wLDM4MS4wIEwgNzg2LjAsMzc3LjAgTCA3NTIuMCwzNzcuMCBMIDcxMi4wLDM4MS4wIEwgNjgyLjAsMzg3LjAgTCA2MjQuMCw0MDYuMCBMIDU5Ni4wLDQxOS4wIEwgNTY5LjAsNDM1LjAgTCA1MzguMCw0NTcuMCBaIi8+CiAgPGcgZmlsbD0iI0ZGRkZGRiI+CiAgICA8cGF0aCBkPSJNIDcxNC4wLDUwMy4wIEwgNzIzLjAsNTAxLjAgTCA3MzQuMCw1MDEuMCBMIDc0NC4wLDUwMy4wIEwgNzYxLjAsNTEyLjAgTCA3NzMuMCw1MjQuMCBMIDc4NC4wLDU0NS4wIEwgNzkwLjAsNTYwLjAgTCA3OTMuMCw1NjQuMCBMIDc5OS4wLDU3OS4wIEwgODIwLjAsNjIyLjAgTCA4MjMuMCw2MzcuMCBMIDgyMi4wLDY0OC4wIEwgODIwLjAsNjU1LjAgTCA4MTEuMCw2NjkuMCBMIDgwNi4wLDY3NC4wIEwgNzkzLjAsNjgyLjAgTCA3ODMuMCw2ODUuMCBMIDc2Ni4wLDY4NS4wIEwgNzU0LjAsNjgxLjAgTCA3NDQuMCw2NzUuMCBMIDczMy4wLDY2NC4wIEwgNzI1LjAsNjUwLjAgTCA3MjUuMCw2NDguMCBMIDcxNC4wLDYyNy4wIEwgNzAyLjAsNTk5LjAgTCA2ODYuMCw1NjcuMCBMIDY4Mi4wLDU1NC4wIEwgNjgyLjAsNTQwLjAgTCA2ODUuMCw1MzAuMCBMIDY5MC4wLDUyMS4wIEwgNjk4LjAsNTEyLjAgWiIvPjxwYXRoIGQ9Ik0gOTA5LjAsNDcxLjAgTCA5MTYuMCw0NjguMCBMIDkyMS4wLDQ2OC4wIEwgOTIyLjAsNDY3LjAgTCA5MjkuMCw0NjcuMCBMIDk0Mi4wLDQ3MC4wIEwgOTU0LjAsNDc2LjAgTCA5NjEuMCw0ODEuMCBMIDk3NC4wLDQ5NC4wIEwgOTc5LjAsNTAxLjAgTCAxMDE4LjAsNTgxLjAgTCAxMDIyLjAsNTkzLjAgTCAxMDIzLjAsNjA1LjAgTCAxMDIxLjAsNjE0LjAgTCAxMDE0LjAsNjI2LjAgTCAxMDA3LjAsNjMyLjAgTCA5OTkuMCw2MzYuMCBMIDk5MC4wLDYzOC4wIEwgOTc5LjAsNjM3LjAgTCA5NzIuMCw2MzUuMCBMIDk1NS4wLDYyNS4wIEwgOTQxLjAsNjA5LjAgTCA4OTcuMCw1MTcuMCBMIDg5NC4wLDUwNy4wIEwgODk0LjAsNDkyLjAgTCA4OTkuMCw0ODAuMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" alt=""></span>
+                <span>
+                  <span class="ititle" style="display:block">Trả 14 ticket</span>
+                  <span class="isub">Sirrok · 9 / 14 xong</span>
+                </span>
+              </div>
+              <div class="itrack"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>06 · NGAY TRÊN DYNAMIC ISLAND</span><span class="r">feature_showcase · 29.9–35.7s</span></div>
+    <p class="note"><b>Một element biến hình, không phải hai element cắt qua nhau.</b> Pill thu gọn (ô mờ phía trên) <b>morph</b> ra kích thước nở — width, height và border-radius tween cùng lúc, nội dung mờ vào sau khi hộp đã tới đích. Thanh progress bò tới 62% rồi dừng. Chữ trên pill tối dùng màu <code>bg</code> (19:1). Tự dựng: search device/pill/mockup không ra cái nào làm được morph này.</p>
+    <span class="seam cut">vào: cut (thẳng vào close-up)</span>
+  </figure>
+
+  <!-- 07 -->
+  <figure>
+    <div class="cell" id="frame-07">
+      <div class="splay">
+        <div class="dv tab">
+          <div class="scr"><span class="tabbar"></span></div>
+          <span class="lab">iPad</span>
+        </div>
+        <div class="dv mac">
+          <div class="scr"></div>
+          <div class="macbase"></div>
+          <span class="lab">macOS</span>
+        </div>
+        <div class="dv ph">
+          <div class="scr"><span class="punch"></span><span class="kebab"><i></i><i></i><i></i></span></div>
+          <span class="lab">Android</span>
+        </div>
+        <div class="dv ph">
+          <div class="scr"><span class="notchpill"></span></div>
+          <span class="lab">iPhone</span>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>07 · Ở ĐÂU BẠN LÀM VIỆC</span><span class="r">benefit_highlight · 35.7–42.3s</span></div>
+    <p class="note"><b>Camera pull back liên tục, không cắt.</b> Chiếc iPhone bên phải <b>chính là</b> máy vừa close-up ở frame 06: pill nở co về scale 0.18 và neo vào đỉnh nó trong lúc camera lùi. Ba máy còn lại xếp vào <b>lệch nhau</b> theo đúng nhịp đọc từng nền tảng. iPad và tablet Android dùng chung khung, phân biệt bằng UI trong máy (iPad: tab bar pill dưới; Android: 3 chấm overflow + punch-hole). Focal: <b>multi-device-splay</b> (registry).</p>
+    <span class="seam">vào: crossfade (pull back liên tục)</span>
+  </figure>
+
+  <!-- 08 -->
+  <figure>
+    <div class="cell" id="frame-08">
+      <div class="pad ctr" style="gap:1.4cqw">
+        <img class="mark" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTM2IiBoZWlnaHQ9IjE1MzYiIHZpZXdCb3g9IjAgMCAxNTM2IDE1MzYiPgogIDx0aXRsZT5TaXJyb2sgQWdlbnQgbWFzY290IGljb248L3RpdGxlPgogIDxwYXRoIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSA1MTguMCw0NzQuMCBMIDQ5MS4wLDUwMS4wIEwgNDYzLjAsNTM1LjAgTCA0NDIuMCw1NjYuMCBMIDQyMS4wLDYwMi4wIEwgMzk5LjAsNjQ3LjAgTCAzNzcuMCw3MDIuMCBMIDM1Ny4wLDc2My4wIEwgMzQzLjAsODE0LjAgTCAzMjYuMCw4ODguMCBMIDMxNi4wLDk0Ni4wIEwgMzExLjAsOTkyLjAgTCAzMTAuMCwxMDM1LjAgTCAzMTQuMCwxMDY1LjAgTCAzMjEuMCwxMDg5LjAgTCAzMzcuMCwxMTE3LjAgTCAzNTMuMCwxMTMzLjAgTCAzNzMuMCwxMTQ2LjAgTCAzOTguMCwxMTU2LjAgTCA0MjMuMCwxMTYyLjAgTCA0NTYuMCwxMTY2LjAgTCAxMDU1LjAsMTE2Ny4wIEwgMTEwMS4wLDExNjQuMCBMIDExMjMuMCwxMTYwLjAgTCAxMTQ5LjAsMTE1Mi4wIEwgMTE3NC4wLDExMzkuMCBMIDExOTguMCwxMTE3LjAgTCAxMjA5LjAsMTEwMC4wIEwgMTIxOS4wLDEwNzQuMCBMIDEyMjQuMCwxMDQ2LjAgTCAxMjI1LjAsMTAxMC4wIEwgMTIyMC4wLDk1NS4wIEwgMTIxMy4wLDkxMC4wIEwgMTIwMy4wLDg2MC4wIEwgMTE4Ni4wLDc5MS4wIEwgMTE2OS4wLDczNC4wIEwgMTE0OS4wLDY3OC4wIEwgMTEzMS4wLDYzNi4wIEwgMTExNC4wLDYwMi4wIEwgMTA4OC4wLDU1OC4wIEwgMTA3Mi4wLDUzNS4wIEwgMTA0NS4wLDUwMi4wIEwgMTAxNi4wLDQ3My4wIEwgOTkxLjAsNDUyLjAgTCA5NTIuMCw0MjYuMCBMIDkxOS4wLDQwOS4wIEwgODkyLjAsMzk4LjAgTCA4NTkuMCwzODguMCBMIDgyNS4wLDM4MS4wIEwgNzg2LjAsMzc3LjAgTCA3NTIuMCwzNzcuMCBMIDcxMi4wLDM4MS4wIEwgNjgyLjAsMzg3LjAgTCA2MjQuMCw0MDYuMCBMIDU5Ni4wLDQxOS4wIEwgNTY5LjAsNDM1LjAgTCA1MzguMCw0NTcuMCBaIi8+CiAgPGcgZmlsbD0iI0ZGRkZGRiI+CiAgICA8cGF0aCBkPSJNIDcxNC4wLDUwMy4wIEwgNzIzLjAsNTAxLjAgTCA3MzQuMCw1MDEuMCBMIDc0NC4wLDUwMy4wIEwgNzYxLjAsNTEyLjAgTCA3NzMuMCw1MjQuMCBMIDc4NC4wLDU0NS4wIEwgNzkwLjAsNTYwLjAgTCA3OTMuMCw1NjQuMCBMIDc5OS4wLDU3OS4wIEwgODIwLjAsNjIyLjAgTCA4MjMuMCw2MzcuMCBMIDgyMi4wLDY0OC4wIEwgODIwLjAsNjU1LjAgTCA4MTEuMCw2NjkuMCBMIDgwNi4wLDY3NC4wIEwgNzkzLjAsNjgyLjAgTCA3ODMuMCw2ODUuMCBMIDc2Ni4wLDY4NS4wIEwgNzU0LjAsNjgxLjAgTCA3NDQuMCw2NzUuMCBMIDczMy4wLDY2NC4wIEwgNzI1LjAsNjUwLjAgTCA3MjUuMCw2NDguMCBMIDcxNC4wLDYyNy4wIEwgNzAyLjAsNTk5LjAgTCA2ODYuMCw1NjcuMCBMIDY4Mi4wLDU1NC4wIEwgNjgyLjAsNTQwLjAgTCA2ODUuMCw1MzAuMCBMIDY5MC4wLDUyMS4wIEwgNjk4LjAsNTEyLjAgWiIvPjxwYXRoIGQ9Ik0gOTA5LjAsNDcxLjAgTCA5MTYuMCw0NjguMCBMIDkyMS4wLDQ2OC4wIEwgOTIyLjAsNDY3LjAgTCA5MjkuMCw0NjcuMCBMIDk0Mi4wLDQ3MC4wIEwgOTU0LjAsNDc2LjAgTCA5NjEuMCw0ODEuMCBMIDk3NC4wLDQ5NC4wIEwgOTc5LjAsNTAxLjAgTCAxMDE4LjAsNTgxLjAgTCAxMDIyLjAsNTkzLjAgTCAxMDIzLjAsNjA1LjAgTCAxMDIxLjAsNjE0LjAgTCAxMDE0LjAsNjI2LjAgTCAxMDA3LjAsNjMyLjAgTCA5OTkuMCw2MzYuMCBMIDk5MC4wLDYzOC4wIEwgOTc5LjAsNjM3LjAgTCA5NzIuMCw2MzUuMCBMIDk1NS4wLDYyNS4wIEwgOTQxLjAsNjA5LjAgTCA4OTcuMCw1MTcuMCBMIDg5NC4wLDUwNy4wIEwgODk0LjAsNDkyLjAgTCA4OTkuMCw0ODAuMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" alt="Sirrok Agent" style="width:13cqw;height:auto">
+        <div class="hero2" style="font-size:3cqw">Sirrok Agent</div>
+        <div class="sub" style="font-size:1.95cqw;color:var(--text);font-weight:800;max-width:56cqw">Đừng chỉ đứng nhìn.<br>Hãy tham gia cuộc chơi.</div>
+        <div class="pill" style="margin-top:.8cqw">Tải Sirrok Agent</div>
+      </div>
+    </div>
+    <div class="lbl"><span>08 · HÃY THAM GIA CUỘC CHƠI</span><span class="r">cta · 42.3–48.0s</span></div>
+    <p class="note"><b>Một chuyển động duy nhất, rồi giữ yên.</b> Bốn thiết bị cùng mờ về 0 trong 0.6s; mark fade vào đúng tâm và <b>không di chuyển nữa</b>. Khẩu hiệu lên theo hai dòng, nút pill pop cuối. Low motion chính là nội dung — 0.96s cuối là hold tĩnh hoàn toàn. Nút dùng fill <code>primary</code> #0E52B8 với chữ <code>bg</code> = 6.9:1, hợp lệ. Focal: <b>cta-lockup</b> (registry).</p>
+    <span class="seam">vào: crossfade (thiết bị mờ đi)</span>
+  </figure>
+
+  <!-- seam map -->
+  <figure class="wide">
+    <div class="cell" style="aspect-ratio:auto;height:230px">
+      <div class="seammap">
+        <div class="sm"><span class="id">01</span><span class="ty">hook<br>count-up</span><span class="sx ct">cut</span><span class="bar" style="opacity:.1"></span></div>
+        <div class="sm"><span class="id">02</span><span class="ty">pain<br>bị vây</span><span class="sx cf">crossfade</span><span class="bar" style="opacity:.16"></span></div>
+        <div class="sm"><span class="id">03</span><span class="ty">pain<br>chữ trống</span><span class="sx ct">cut</span><span class="bar" style="opacity:.1"></span></div>
+        <div class="sm"><span class="id">04</span><span class="ty">product<br>lockup</span><span class="sx cf">crossfade</span><span class="bar" style="opacity:.3"></span></div>
+        <div class="sm"><span class="id">05</span><span class="ty">feature<br>giọng nói</span><span class="sx cf">crossfade</span><span class="bar" style="opacity:.55"></span></div>
+        <div class="sm"><span class="id">06</span><span class="ty">feature<br>island</span><span class="sx ct">cut</span><span class="bar" style="opacity:.7"></span></div>
+        <div class="sm"><span class="id">07</span><span class="ty">benefit<br>đa thiết bị</span><span class="sx cf">crossfade</span><span class="bar" style="opacity:.85"></span></div>
+        <div class="sm"><span class="id">08</span><span class="ty">cta<br>khẩu hiệu</span><span class="sx cf">crossfade</span><span class="bar" style="opacity:1"></span></div>
+      </div>
+    </div>
+    <div class="lbl"><span>SEAM MAP · 8 BEAT · 48.0s</span><span class="r">2 cut · 6 crossfade</span></div>
+    <p class="note"><b>Chỉ hai chỗ cắt khô, và cả hai đều có lý do.</b> Cut vào 03 là đòn chuyển từ chật sang trống. Cut vào 06 là để close-up Dynamic Island vào thẳng, không mang rác từ frame 05. Sáu seam còn lại crossfade vì <b>có element đi xuyên qua</b> (dome mark 01→02→04→05, pill 06→07, thiết bị 07→08) — mọi seam đó đã ghi toạ độ/scale/opacity hai đầu trong <code>STORYBOARD.md</code> để worker song song không dựng ra hai phiên bản khác nhau của cùng một chỗ nối. Thanh dưới là cường độ chuyển động tích luỹ: thấp ở pain, cao nhất ở 06–07, về tĩnh ở 08.</p>
+  </figure>
+
+  <!-- tokens -->
+  <figure class="wide">
+    <div class="cell" style="aspect-ratio:auto;height:330px">
+      <div class="tok">
+        <div>
+          <h4>Màu · tỷ lệ tương phản trên #FAFAF8</h4>
+          <div class="sw"><span class="box" style="background:#FAFAF8"></span><b>#FAFAF8</b> canvas</div>
+          <div class="sw"><span class="box" style="background:#0A0A0A"></span><b>#0A0A0A</b> text · 19.1:1</div>
+          <div class="sw"><span class="box" style="background:#52525B"></span><b>#52525B</b> muted · 7.4:1</div>
+          <div class="sw"><span class="box" style="background:#6E6E76"></span><b>#6E6E76</b> light · 4.9:1</div>
+          <div class="sw"><span class="box" style="background:#0E52B8"></span><b>#0E52B8</b> primary · 6.9:1 — xanh duy nhất được làm chữ</div>
+          <div class="sw"><span class="box" style="background:#1877F2"></span><b>#1877F2</b> accent-fill · 4.1:1 — CHỈ fill, không bao giờ chữ</div>
+          <div class="sw"><span class="box" style="background:#047857"></span><b>#047857</b> positive · 5.3:1</div>
+        </div>
+        <div>
+          <h4>Chữ</h4>
+          <div class="tline"><b>Be Vietnam Pro</b> — một font duy nhất, weight <b>800</b> (tiêu đề) và <b>500</b> (chữ thường). Self-host 6 subset woff2, 108 KB, có dải tiếng Việt.</div>
+          <div class="tline"><b>hero</b> 4.6cqw ≈ 88px · <b>hero2</b> 3.5cqw ≈ 67px · <b>num</b> 17cqw ≈ 326px</div>
+          <div class="tline"><b>sub</b> 1.75cqw ≈ 34px · <b>eyebrow</b> 1.5cqw ≈ 29px uppercase 0.09em</div>
+          <div class="tline">Tiêu đề ≥ 64px, chữ phụ ≥ 36px. Mọi đơn vị là <code>cqw</code> trên <code>container-type: size</code> — không dùng <code>vw</code>.</div>
+          <div class="tline">Bo góc: pill <b>100px</b>, card <b>10–14px</b>. <b>Zero box-shadow</b> — độ nổi đến từ fill 4% + viền 20%.</div>
+        </div>
+        <div>
+          <h4>Điều cấm</h4>
+          <div class="ban">✗ <b>#1877F2 làm màu chữ</b> (4.1:1) — dùng #0E52B8</div>
+          <div class="ban">✗ <b>Chữ trắng trên #1877F2</b> (4.2:1) — pill xanh đậm thì chữ trắng, pill xanh tươi thì chữ #0A0A0A</div>
+          <div class="ban">✗ <code>Math.random()</code> / <code>Date.now()</code> — sóng giọng nói dùng mảng envelope cố định</div>
+          <div class="ban">✗ Easing <code>linear</code> ở bất kỳ tween nào</div>
+          <div class="ban">✗ Chữ đè lên logo · quá 2 font · box-shadow trên content</div>
+          <div class="ban">✗ Đặt mark đen lên nền tối — phải lót đĩa <code>bg</code> trước (xem pill ở frame 06)</div>
+          <div class="ban">✗ Vẽ lại / đổi màu <code>sirrok-agent-icon.svg</code> — hai vệt trắng là highlight, không phải mắt</div>
+        </div>
+      </div>
+    </div>
+    <div class="lbl"><span>TOKENS · frame.md</span><span class="r">blue-professional remix · brand A Hít Official</span></div>
+    <p class="note"><b>Ba token của preset đã bị sửa tay vì không đạt 4.5:1.</b> <code>text-light</code> gốc #9A9A9A chỉ 2.7:1, <code>positive</code> gốc #059669 chỉ 3.6:1, và remix đã gán #1877F2 cho <code>primary</code> — vốn là màu chữ của eyebrow/numeral/tag trong preset này. Đã tách thành <code>primary</code> #0E52B8 cho chữ và <code>accent-fill</code> #1877F2 cho fill, nên xanh thương hiệu vẫn hiện khắp video mà không có chữ nào dưới ngưỡng.</p>
+  </figure>
+
+</div>
+
+<footer>
+  <b>Sketch, không phải bản dựng.</b> Không có chuyển động, không script, không asset ngoài — mở được trực tiếp bằng <code>file://</code>. Layout, chữ và màu trong các ô này là bản chốt; bước build sẽ <b>mặc chuyển động lên đúng layout này</b>, không vẽ lại. Mọi ô dùng <code>cqw</code> trên <code>container-type: inline-size</code> nên tỷ lệ khớp bản 1920×1080 thật.
+</footer>
+
+</body>
+</html>

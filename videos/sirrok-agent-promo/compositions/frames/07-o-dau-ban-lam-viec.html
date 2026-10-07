@@ -1,0 +1,186 @@
+<template>
+  <div data-hf-id="hf-27g6" id="root" data-composition-id="07-o-dau-ban-lam-viec" data-width="1920" data-height="1080" data-duration="7.1">
+    <style>
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:block;src:url(assets/fonts/bvp-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+      @font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:800;font-display:block;src:url(assets/fonts/bvp-800-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+      #root{
+        position:relative; width:100%; height:100%;
+        container-type:size; overflow:hidden;
+        font-family:'Be Vietnam Pro',sans-serif; font-weight:500;
+        --bg:#FAFAF8; --text:#0A0A0A; --muted:#52525B; --light:#6E6E76;
+        --primary:#0E52B8; --fill:#1877F2;
+        --tint:rgba(24,119,242,.08); --border:rgba(24,119,242,.2); --card:rgba(24,119,242,.04);
+      }
+      #root .f07-bg{position:absolute;inset:0;background:var(--bg);}
+
+      /* The camera. Origin is pinned to the iPhone's island so the pull-back leaves that
+         one point fixed — that is what makes the seam from frame 06 invisible. */
+      #root .f07-world{position:absolute;inset:0;transform-origin:1628px 427px;}
+
+      #root .f07-dev{position:absolute;}
+      #root .f07-shell{
+        background:var(--text);position:relative;overflow:hidden;
+      }
+      #root .f07-scr{position:absolute;background:#17181B;overflow:hidden;}
+      #root .f07-lab{
+        position:absolute;left:0;right:0;text-align:center;
+        font-size:2cqw;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+      }
+      #root .f07-base{position:absolute;background:var(--text);border-radius:0 0 10px 10px;}
+
+      /* surface inside every screen — the same Sirrok rows on each device */
+      #root .f07-surface{position:absolute;inset:0;padding:14px;display:flex;flex-direction:column;gap:9px;}
+      #root .f07-surface b{display:block;height:11px;border-radius:6px;background:var(--fill);}
+      #root .f07-surface i{display:block;height:9px;border-radius:5px;background:var(--border);}
+
+      #root .f07-punch{position:absolute;left:50%;margin-left:-8px;top:14px;width:16px;height:16px;border-radius:50%;background:#000;z-index:3;}
+      #root .f07-kebab{position:absolute;right:16px;top:18px;display:flex;flex-direction:column;gap:4px;z-index:3;}
+      #root .f07-kebab i{width:7px;height:7px;border-radius:50%;background:var(--light);display:block;}
+      #root .f07-tabbar{position:absolute;left:50%;margin-left:-46px;bottom:14px;width:92px;height:9px;border-radius:6px;background:var(--light);opacity:.45;z-index:3;}
+
+      /* handoff_in: this is the SAME pill as frame 06, authored at its anchored size. */
+      #root .f07-pill{
+        position:absolute;left:1584px;top:413.5px;width:88px;height:27px;
+        background:#000;border-radius:14px;z-index:4;
+        display:flex;align-items:center;justify-content:center;
+      }
+      #root .f07-pill span{width:7px;height:7px;border-radius:50%;background:var(--fill);display:block;}
+    </style>
+
+    <div data-hf-id="hf-9tk0" id="f07-ground" class="clip f07-bg" data-start="0" data-duration="7.1" data-track-index="0"></div>
+
+    <div data-hf-id="hf-tb06" id="f07-splay" class="clip f07-world" data-start="0" data-duration="7.1" data-track-index="1">
+
+      <!-- iPad -->
+      <div data-hf-id="hf-jrao" class="f07-dev f07-ipad" style="left:250px;top:380px;width:300px;height:395px;">
+        <div data-hf-id="hf-feax" class="f07-shell" style="width:300px;height:395px;border-radius:24px;">
+          <div data-hf-id="hf-3clg" class="f07-scr" style="inset:12px;border-radius:14px;">
+            <div data-hf-id="hf-aklf" class="f07-surface"><b data-hf-id="hf-6q93" style="width:62%"></b><i data-hf-id="hf-iy4w" style="width:88%"></i><i data-hf-id="hf-eklv" style="width:74%"></i><i data-hf-id="hf-1rpm" style="width:82%"></i><i data-hf-id="hf-fbml" style="width:58%"></i></div>
+          </div>
+          <span data-hf-id="hf-zz4j" class="f07-tabbar"></span>
+        </div>
+        <div data-hf-id="hf-c6t2" class="f07-lab" style="top:410px;">iPad</div>
+      </div>
+
+      <!-- MacBook, the hero of the group -->
+      <div data-hf-id="hf-0dt9" class="f07-dev f07-mac" style="left:600px;top:362px;width:660px;height:412px;">
+        <div data-hf-id="hf-owgj" class="f07-shell" style="width:660px;height:412px;border-radius:18px;">
+          <div data-hf-id="hf-lt39" class="f07-scr" style="inset:13px;border-radius:9px;">
+            <div data-hf-id="hf-ewjn" class="f07-surface"><b data-hf-id="hf-nx1j" style="width:44%"></b><i data-hf-id="hf-aaqn" style="width:92%"></i><i data-hf-id="hf-kq1r" style="width:78%"></i><i data-hf-id="hf-6f8m" style="width:86%"></i><i data-hf-id="hf-amuq" style="width:64%"></i><i data-hf-id="hf-zb6o" style="width:71%"></i></div>
+          </div>
+        </div>
+        <div data-hf-id="hf-vrum" class="f07-base" style="left:-44px;top:412px;width:748px;height:18px;"></div>
+        <div data-hf-id="hf-k52r" class="f07-lab" style="top:443px;">macOS</div>
+      </div>
+
+      <!-- Android phone: punch-hole + overflow -->
+      <div data-hf-id="hf-y11u" class="f07-dev f07-droid" style="left:1300px;top:385px;width:196px;height:392px;">
+        <div data-hf-id="hf-41gi" class="f07-shell" style="width:196px;height:392px;border-radius:30px;">
+          <div data-hf-id="hf-syad" class="f07-scr" style="inset:9px;border-radius:19px;">
+            <div data-hf-id="hf-ei8m" class="f07-surface"><b data-hf-id="hf-fd09" style="width:68%"></b><i data-hf-id="hf-qvqx" style="width:90%"></i><i data-hf-id="hf-vowx" style="width:72%"></i><i data-hf-id="hf-13t0" style="width:84%"></i></div>
+          </div>
+          <span data-hf-id="hf-vp4h" class="f07-punch"></span>
+          <span data-hf-id="hf-8pty" class="f07-kebab"><i data-hf-id="hf-wt6k"></i><i data-hf-id="hf-zeb8"></i><i data-hf-id="hf-y7e5"></i></span>
+        </div>
+        <div data-hf-id="hf-fnxp" class="f07-lab" style="top:407px;">Android</div>
+      </div>
+
+      <!-- iPhone: the very device frame 06 was a close-up of -->
+      <div data-hf-id="hf-h2q6" class="f07-dev f07-iphone" style="left:1530px;top:385px;width:196px;height:392px;">
+        <div data-hf-id="hf-ahc6" class="f07-shell" style="width:196px;height:392px;border-radius:30px;">
+          <div data-hf-id="hf-ukeh" class="f07-scr" style="inset:9px;border-radius:19px;">
+            <div data-hf-id="hf-e3xl" class="f07-surface"><b data-hf-id="hf-jywd" style="width:68%"></b><i data-hf-id="hf-amtp" style="width:90%"></i><i data-hf-id="hf-87at" style="width:72%"></i><i data-hf-id="hf-tccc" style="width:84%"></i></div>
+          </div>
+        </div>
+        <div data-hf-id="hf-je7j" class="f07-lab" style="top:407px;">iPhone</div>
+      </div>
+
+      <div data-hf-id="hf-epen" class="f07-pill"><span data-hf-id="hf-uckh"></span></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var q = function (s) { return document.querySelector("#root " + s); };
+        var qa = function (s) { return document.querySelectorAll("#root " + s); };
+
+        var world = q(".f07-world");
+        var pill = q(".f07-pill");
+        // 560px (frame 06's expanded pill) / 88px (its anchored size here) = 6.364.
+        // Starting the camera there makes the pill render at exactly frame 06's size.
+        var ZOOM = 6.3636;
+
+        var devs = [q(".f07-mac"), q(".f07-ipad"), q(".f07-droid"), q(".f07-iphone")];
+        var surfaces = qa(".f07-surface");
+        var labels = qa(".f07-lab");
+
+        var tl = gsap.timeline({ paused: true });
+
+        // Scene 1 (0.0-1.0) — handoff_in: one continuous camera pull-back. The island stays
+        // nailed to the same screen point the whole way, so the cut from frame 06 reads as
+        // a move, not a jump.
+        tl.fromTo(world,
+          { scale: ZOOM, x: -668, y: -127 },
+          { scale: 1, x: 0, y: 0, duration: 1.02, ease: "power3.inOut" }, 0);
+
+        // The iPhone is NOT an arrival — it is the device frame 06 was a close-up of, so it
+        // is on screen from the first frame and the camera simply pulls away from it.
+        // Without this the shot opens on an empty canvas for ~0.9s, right after the film's
+        // strongest beat. Only its label waits for its spoken cue.
+        var arriving = [devs[0], devs[1], devs[2]]; // mac, ipad, android
+        tl.set(arriving, { opacity: 0 }, 0);
+        tl.set(surfaces, { opacity: 0 }, 0);
+        tl.set(labels, { opacity: 0 }, 0);
+
+        // Scene 2 (1.0-3.4) — SIGNATURE MOVE: the splay fans out around the device already
+        // in frame, one arrival per spoken platform name.
+        var cue = [0.94, 1.52, 2.1, 2.66];
+        var from = [
+          { x: 0, y: 40, s: 0.86 },
+          { x: 190, y: 26, s: 0.84 },
+          { x: -120, y: 30, s: 0.84 }
+        ];
+        for (var i = 0; i < arriving.length; i++) {
+          tl.fromTo(arriving[i],
+            { opacity: 0, x: from[i].x, y: from[i].y, scale: from[i].s },
+            { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.62, ease: "power3.out" }, cue[i]);
+        }
+        for (var L = 0; L < labels.length; L++) {
+          tl.fromTo(labels[L],
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.36, ease: "power3.out" }, cue[L] + 0.15);
+        }
+
+        // Scene 3 (3.4-5.2) — "Bạn ở đâu, nó ở đó": every screen lights at ONCE, not in a
+        // stagger. Simultaneity is the point of the line.
+        // Every screen starts DARK, matching the state frame 06 handed over, then all four
+        // wake together on one beat. No stagger — "wherever you are, it is there" is a
+        // statement about simultaneity.
+        tl.fromTo(qa(".f07-scr"),
+          { backgroundColor: "#17181B" },
+          { backgroundColor: "#FAFAF8", duration: 0.52, ease: "power2.out" }, 3.42);
+        tl.fromTo(surfaces,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.5, ease: "power2.out" }, 3.5);
+        tl.fromTo([q(".f07-ipad"), q(".f07-droid"), q(".f07-iphone")],
+          { filter: "blur(0px)" },
+          { filter: "blur(1.6px)", duration: 0.9, ease: "power2.inOut" }, 4.3);
+
+        // Scene 4 (5.2-6.6) — held. Only the island's live dot keeps breathing.
+        tl.fromTo(pill.querySelector("span"),
+          { opacity: 0.5, scale: 0.7 },
+          { opacity: 1, scale: 1, duration: 0.7, ease: "power2.inOut" }, 5.2);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["07-o-dau-ban-lam-viec"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

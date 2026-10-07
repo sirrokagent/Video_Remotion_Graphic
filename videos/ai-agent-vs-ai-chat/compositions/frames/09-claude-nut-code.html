@@ -1,0 +1,211 @@
+<template>
+  <div id="root" data-composition-id="09-claude-nut-code" data-width="1080" data-height="1920">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f09-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+      .f09-stage { position:absolute; left:0; right:0; top:12%; height:71%; }
+
+      /* (a) anh chup THAT cua chatgpt.com — noi tiep canh 08 */
+      .f09-prev {
+        position:absolute; left:6cqw; top:24%; width:88cqw; height:33.6%;
+        border:1px solid #d0d3d9; border-radius:1.2cqw;
+        overflow:hidden; background:#ffffff; transform-origin:center center;
+      }
+      .f09-prev img { width:100%; height:100%; object-fit:cover; object-position:left top; display:block; }
+
+      .f09-note {
+        position:absolute; left:0; right:0; top:68%;
+        text-align:center;
+        font-size:5.78cqw; font-weight:700; line-height:1.1;
+        letter-spacing:-0.02em; color:#000000; text-transform:lowercase;
+      }
+
+      /* (b) anh chup THAT cua claude.ai — co nut "Download desktop app" */
+      .f09-dl {
+        position:absolute; left:20cqw; top:16%; width:60cqw; height:44%;
+        border:1px solid #d0d3d9; border-radius:1.2cqw;
+        overflow:hidden; background:#ffffff; transform-origin:center center;
+      }
+      .f09-dl img { width:100%; height:100%; object-fit:cover; object-position:left top; display:block; }
+
+      .f09-ring {
+        position:absolute; left:44.3cqw; top:50%; width:18.4cqw; height:2.6%;
+        border:0.2cqw solid #1877f2; border-radius:0.7cqw;
+      }
+      .f09-badge {
+        position:absolute; left:26cqw; top:56%;
+        background:#0b5ed7; color:#ffffff; border-radius:0.6cqw;
+        padding:1.27cqw 1.62cqw;
+        font-family:"IBM Plex Mono",monospace; font-size:1.87cqw; font-weight:500;
+        letter-spacing:0.12em; text-transform:uppercase; white-space:nowrap;
+      }
+
+      /* (c) khung dung — phan ben trong app khong chup duoc vi can dang nhap */
+      .f09-win {
+        position:absolute; left:6cqw; top:22%; width:88cqw; height:40%;
+        border:1px solid #d0d3d9; border-radius:1.2cqw;
+        display:flex; overflow:hidden; transform-origin:center center;
+      }
+      .f09-side { width:30cqw; border-right:1px solid #d0d3d9; padding:2.55cqw 1.49cqw; }
+      .f09-top { display:flex; align-items:center; gap:0.94cqw; margin-bottom:2.03cqw; }
+      .f09-mark { width:2.03cqw; height:2.03cqw; color:#000000; flex:none; }
+      .f09-wordmark { font-size:2.38cqw; font-weight:700; color:#000000; letter-spacing:-0.01em; }
+      .f09-toggles { margin-left:auto; display:flex; gap:0.54cqw; }
+      .f09-tg {
+        width:2.84cqw; height:2.43cqw; border:1px solid #d0d3d9; border-radius:0.5cqw;
+        display:flex; align-items:center; justify-content:center;
+        font-family:"IBM Plex Mono",monospace; font-size:1.33cqw; font-weight:500; color:#000000;
+      }
+      .f09-tg.on { border-color:#0b5ed7; color:#0b5ed7; }
+      .f09-item {
+        display:flex; align-items:center; gap:1.08cqw; border-radius:0.6cqw;
+        padding:0.94cqw 0.94cqw;
+        font-size:1.78cqw; font-weight:500; color:#000000; white-space:nowrap;
+      }
+      .f09-item .dot { border-radius:0.2cqw; width:1.15cqw; height:1.15cqw; border:1px solid #c3c7ce; flex:none; }
+      .f09-body { flex:1; position:relative; padding:2.97cqw; display:flex; flex-direction:column; gap:1.49cqw; }
+      .f09-bub { border:1px solid #d0d3d9; border-radius:0.8cqw; height:2.2cqw; }
+      .f09-bub.me { align-self:flex-end; border-color:#dadde1; }
+      .f09-ask {
+        position:absolute; left:2.2cqw; right:2.2cqw; bottom:2.2cqw;
+        border:1px solid #d0d3d9; border-radius:0.9cqw; height:3.4cqw;
+      }
+
+      .f09-cursor { position:absolute; left:0; top:0; width:4.05cqw; height:4.05cqw; color:#000000; }
+      .f09-ripple {
+        position:absolute; width:5.94cqw; height:5.94cqw; border:0.14cqw solid #1877f2;
+        border-radius:50%; left:0; top:0;
+      }
+      /* lop camera: zoom / lia. Dat trong .clip chu khong phai chinh .clip */
+      .f09-cam { position:absolute; inset:0; transform-origin:center center; }
+    </style>
+
+    <div id="f09-ground" class="clip f09-ground" data-start="0" data-duration="14.25" data-track-index="0"></div>
+
+    <div id="f09-stage" class="clip f09-stage" data-start="0" data-duration="14.25" data-track-index="1">
+      <div class="f09-cam" id="f09-cam">
+      <div class="f09-prev" id="f09-prev"><img src="public/shots/chatgpt.png" alt="ChatGPT"></div>
+      <div class="f09-note" id="f09-note">giao diện giống. lõi khác.</div>
+
+      <div class="f09-dl" id="f09-dl"><img src="public/shots/claude-download.png" alt="Claude"></div>
+      <div class="f09-ring" id="f09-ring"></div>
+      <div class="f09-badge" id="f09-badge">tải app về máy</div>
+
+      <div class="f09-win" id="f09-win">
+        <div class="f09-side">
+          <div class="f09-top">
+            <svg class="f09-mark" viewBox="0 0 256 257" aria-hidden="true"><path fill="currentColor" d="m50.228 170.321 50.357-28.257.843-2.463-.843-1.361h-2.462l-8.426-.518-28.775-.778-24.952-1.037-24.175-1.296-6.092-1.297L0 125.796l.583-3.759 5.12-3.434 7.324.648 16.202 1.101 24.304 1.685 17.629 1.037 26.118 2.722h4.148l.583-1.685-1.426-1.037-1.101-1.037-25.147-17.045-27.22-18.017-14.258-10.37-7.713-5.25-3.888-4.925-1.685-10.758 7-7.713 9.397.649 2.398.648 9.527 7.323 20.35 15.75L94.817 91.9l3.889 3.24 1.555-1.102.195-.777-1.75-2.917-14.453-26.118-15.425-26.572-6.87-11.018-1.814-6.61c-.648-2.723-1.102-4.991-1.102-7.778l7.972-10.823L71.42 0 82.05 1.426l4.472 3.888 6.61 15.101 10.694 23.786 16.591 32.34 4.861 9.592 2.592 8.879.973 2.722h1.685v-1.556l1.36-18.211 2.528-22.36 2.463-28.776.843-8.1 4.018-9.722 7.971-5.25 6.222 2.981 5.12 7.324-.713 4.73-3.046 19.768-5.962 30.98-3.889 20.739h2.268l2.593-2.593 10.499-13.934 17.628-22.036 7.778-8.749 9.073-9.657 5.833-4.601h11.018l8.1 12.055-3.628 12.443-11.342 14.388-9.398 12.184-13.48 18.147-8.426 14.518.778 1.166 2.01-.194 30.46-6.481 16.462-2.982 19.637-3.37 8.88 4.148.971 4.213-3.5 8.62-20.998 5.184-24.628 4.926-36.682 8.685-.454.324.519.648 16.526 1.555 7.065.389h17.304l32.21 2.398 8.426 5.574 5.055 6.805-.843 5.184-12.962 6.611-17.498-4.148-40.83-9.721-14-3.5h-1.944v1.167l11.666 11.406 21.387 19.314 26.767 24.887 1.36 6.157-3.434 4.86-3.63-.518-23.526-17.693-9.073-7.972-20.545-17.304h-1.36v1.814l4.73 6.935 25.017 37.59 1.296 11.536-1.814 3.76-6.481 2.268-7.13-1.297-14.647-20.544-15.1-23.138-12.185-20.739-1.49.843-7.194 77.448-3.37 3.953-7.778 2.981-6.48-4.925-3.436-7.972 3.435-15.749 4.148-20.544 3.37-16.333 3.046-20.285 1.815-6.74-.13-.454-1.49.194-15.295 20.999-23.267 31.433-18.406 19.702-4.407 1.75-7.648-3.954.713-7.064 4.277-6.286 25.47-32.405 15.36-20.092 9.917-11.6-.065-1.686h-.583L44.07 198.125l-12.055 1.555-5.185-4.86.648-7.972 2.463-2.593 20.35-13.999-.064.065Z"/></svg>
+            <span class="f09-wordmark">Claude</span>
+            <div class="f09-toggles">
+              <div class="f09-tg" id="f09-tgchat">···</div>
+              <div class="f09-tg" id="f09-tgcode">&lt;/&gt;</div>
+            </div>
+          </div>
+          <div class="f09-item" id="f09-i0"><span class="dot"></span>New</div>
+          <div class="f09-item" id="f09-i1"><span class="dot"></span>Projects</div>
+          <div class="f09-item" id="f09-i2"><span class="dot"></span>Artifacts</div>
+          <div class="f09-item" id="f09-i3"><span class="dot"></span>Scheduled</div>
+          <div class="f09-item" id="f09-i4"><span class="dot"></span>Customize</div>
+        </div>
+        <div class="f09-body">
+          <div class="f09-bub me" style="width:46%"></div>
+          <div class="f09-bub"    style="width:78%"></div>
+          <div class="f09-bub me" style="width:38%"></div>
+          <div class="f09-bub"    style="width:64%"></div>
+          <div class="f09-ask" id="f09-ask"></div>
+        </div>
+      </div>
+
+      <div class="f09-ripple" id="f09-ripple"></div>
+      <svg class="f09-cursor" id="f09-cursor" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" stroke="#ffffff" stroke-width="1" d="M5.5 2.5 19 13.2h-6.3l3.2 6.6-2.6 1.2-3.2-6.6-4.6 4.2z"/>
+      </svg>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        // Camera: dam vao nut Code khi VO doc "bam vao nut Code", roi lui ra.
+        gsap.set("#f09-cam", { scale: 1, x: 0, y: 0 });
+        tl.fromTo("#f09-cam", { scale: 1, x: 0, y: 0 },
+          { scale: 1.55, x: -24, y: 30, duration: 1.0, ease: "power2.inOut", immediateRender: false }, 9.40);
+        tl.fromTo("#f09-cam", { scale: 1.55, x: -24, y: 30 },
+          { scale: 1, x: 0, y: 0, duration: 0.9, ease: "power2.inOut", immediateRender: false }, 13.20);
+
+        const FROM = { x: 900, y: 1500 };
+        const TO   = { x: 300, y: 470 };   // tip dap vao nut </> cua khung dung
+
+        gsap.set("#f09-cursor", { x: FROM.x, y: FROM.y, opacity: 0 });
+        gsap.set("#f09-ripple", { x: TO.x - 22, y: TO.y - 22, scale: 0, opacity: 0 });
+        gsap.set("#f09-note", { opacity: 0 });
+        gsap.set("#f09-dl", { opacity: 0 });
+        gsap.set("#f09-ring", { opacity: 0 });
+        gsap.set("#f09-badge", { opacity: 0 });
+        gsap.set("#f09-win", { opacity: 0 });
+        gsap.set("#f09-tgchat", { opacity: 0 });
+        gsap.set("#f09-tgcode", { opacity: 0 });
+
+        // ---- Moc theo tung tu: 3.75 "Neu dung Claude" · 10.09 "nut Code" ----
+
+        // Scene 1 (0.25–3.4s): VO con noi ve cua so truoc — giu ANH CHUP THAT cua ChatGPT.
+        tl.fromTo("#f09-prev", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.25);
+        tl.fromTo("#f09-note", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 1.60);
+
+        // Scene 2 (3.75–5.2s): "Neu dung Claude" — doi sang ANH CHUP THAT cua claude.ai.
+        tl.fromTo("#f09-prev", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.94, duration: 0.45, ease: "power2.in", immediateRender: false }, 3.45);
+        tl.fromTo("#f09-note", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 3.45);
+        tl.fromTo("#f09-dl", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, 3.75);
+
+        // Scene 3 (5.4–7.0s): "tai ung dung Claude ve may tinh" — vong nhan manh
+        // dung vao nut "Download desktop app" CO THAT tren trang.
+        tl.fromTo("#f09-ring", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(1.6)" }, 5.40);
+        tl.fromTo("#f09-badge", { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, 5.65);
+
+        // Scene 4 (7.2–8.2s): "Thay vi dung Claude Chat" — vao ben trong app.
+        // Phan nay KHONG chup duoc vi can dang nhap, nen dung bang hinh khoi.
+        tl.fromTo("#f09-dl", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.94, duration: 0.45, ease: "power2.in", immediateRender: false }, 7.00);
+        tl.fromTo("#f09-ring", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 7.00);
+        tl.fromTo("#f09-badge", { opacity: 1 }, { opacity: 0, duration: 0.35, ease: "power2.in", immediateRender: false }, 7.00);
+        tl.fromTo("#f09-win", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, 7.25);
+        tl.fromTo("#f09-tgchat", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.80);
+        tl.fromTo("#f09-tgcode", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 8.10);
+
+        // Scene 5 (8.6–10.1s): con tro vao theo nudge-curve, dung o nut </>.
+        tl.fromTo("#f09-cursor", { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power2.out" }, 8.60);
+        tl.fromTo("#f09-cursor", { x: FROM.x, y: FROM.y }, { x: TO.x + 60, y: TO.y + 90, duration: 0.95, ease: "power2.inOut", immediateRender: false }, 8.60);
+        tl.fromTo("#f09-cursor", { x: TO.x + 60, y: TO.y + 90 }, { x: TO.x, y: TO.y, duration: 0.5, ease: "power3.out", immediateRender: false }, 9.55);
+
+        // Scene 6 (10.09–11.2s): "bam vao NUT CODE" — click va sang xanh.
+        tl.fromTo("#f09-ripple", { scale: 0.2, opacity: 0.9 }, { scale: 1.5, opacity: 0, duration: 0.6, ease: "power2.out" }, 10.09);
+        tl.call(function () {
+          const e = document.querySelector("#root #f09-tgcode");
+          if (e) e.classList.add("on");
+        }, null, 10.30);
+        tl.fromTo("#f09-tgchat", { opacity: 1 }, { opacity: 0.4, duration: 0.6, ease: "power2.out", immediateRender: false }, 10.45);
+        tl.fromTo("#f09-ask", { borderColor: "#d0d3d9" }, { borderColor: "#1877f2", duration: 0.8, ease: "power2.out" }, 10.80);
+
+        // Scene 7 (12.4–14.25s): giu tinh, con tro roi khung.
+        tl.fromTo("#f09-cursor", { opacity: 1 }, { opacity: 0, duration: 0.65, ease: "power2.out", immediateRender: false }, 12.40);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["09-claude-nut-code"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

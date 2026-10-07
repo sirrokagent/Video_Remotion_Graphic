@@ -1,0 +1,113 @@
+<template>
+  <div id="root" data-composition-id="10-hai-bai-tap" data-width="1080" data-height="1920">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f10-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+      .f10-stage {
+        position:absolute; left:5.5cqw; right:5.5cqw; top:12%; height:71%;
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+      }
+
+      .f10-cards { display:flex; flex-direction:column; gap:4cqw; align-items:stretch; width:76cqw; }
+
+      .f10-card {
+        width:100%; border:1px solid #d0d3d9; border-radius:1.2cqw;
+        padding:4.37cqw 3.51cqw;
+        display:flex; flex-direction:column; gap:1.89cqw;
+        transform-origin:center center; background:#ffffff; }
+      .f10-card.on { border-color:#0b5ed7; }
+
+      .f10-num {
+        font-size:9.35cqw; font-weight:900; line-height:1; letter-spacing:-0.04em;
+      }
+      .f10-n1 { color:#000000; }
+      .f10-n2 { color:#0b5ed7; }
+
+      .f10-icon { width:8.10cqw; height:8.10cqw; }
+      .f10-icon rect, .f10-icon line, .f10-icon path { vector-effect:non-scaling-stroke; }
+
+      .f10-lab {
+        font-family:"IBM Plex Mono",monospace; font-size:1.87cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000;
+      }
+
+      .f10-foot {
+        margin-top:4.05cqw;
+        font-family:"IBM Plex Mono",monospace; font-size:2.04cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000;
+      }
+    </style>
+
+    <div id="f10-ground" class="clip f10-ground" data-start="0" data-duration="3.75" data-track-index="0"></div>
+
+    <div id="f10-stage" class="clip f10-stage" data-start="0" data-duration="3.75" data-track-index="1">
+      <div class="f10-cards">
+        <div class="f10-card" id="f10-c1">
+          <div class="f10-num f10-n1">01</div>
+          <svg class="f10-icon" viewBox="0 0 48 48" fill="none" stroke="#6b6f76" stroke-width="2" aria-hidden="true">
+            <line x1="16" y1="4" x2="16" y2="44"/><line x1="32" y1="4" x2="32" y2="44"/>
+            <line x1="4" y1="16" x2="44" y2="16"/><line x1="4" y1="32" x2="44" y2="32"/>
+            <line x1="38" y1="6" x2="44" y2="12" stroke="#1877f2"/><line x1="44" y1="6" x2="38" y2="12" stroke="#1877f2"/>
+            <circle cx="24" cy="24" r="4" stroke="#6b6f76"/>
+          </svg>
+          <div class="f10-lab" id="f10-l1">cờ caro</div>
+        </div>
+
+        <div class="f10-card" id="f10-c2">
+          <div class="f10-num f10-n2">02</div>
+          <svg class="f10-icon" viewBox="0 0 48 48" fill="none" stroke="#6b6f76" stroke-width="2" aria-hidden="true">
+            <path d="M4 12h14l4 5h22v24H4z" stroke="#1877f2"/>
+            <line x1="10" y1="24" x2="20" y2="24"/><line x1="10" y1="31" x2="26" y2="31"/>
+            <rect x="30" y="21" width="6" height="6" rx="1"/>
+            <rect x="30" y="30" width="6" height="6" rx="1"/>
+          </svg>
+          <div class="f10-lab" id="f10-l2">dọn file</div>
+        </div>
+      </div>
+
+      <div class="f10-foot" id="f10-foot">2 bài tập</div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set("#f10-foot", { opacity: 0 });
+        gsap.set("#f10-c2", { opacity: 0, y: 60, scale: 0.94 });
+
+        // Scene 1 (0–1.1s): the bai tap 01 truot vao tu trai.
+        tl.fromTo("#f10-c1", { opacity: 0, y: -60, scale: 0.94 },
+                             { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" }, 0.40);
+
+        // Scene 2 (1.1–2.2s): the 02 truot vao tu phai, vien sang xanh.
+        tl.fromTo("#f10-c2", { opacity: 0, y: 60, scale: 0.94 },
+                             { opacity: 1, y: 0, scale: 1, duration: 0.62, ease: "power3.out", immediateRender: false }, 1.55);
+        tl.call(function () {
+          const e = document.querySelector("#root #f10-c2");
+          if (e) e.classList.add("on");
+        }, null, 1.95);
+
+        // Scene 3 (2.2–3.75s): nhan duoi hien, roi ca khung giu tinh.
+        // Beat tho co chu dich truoc hai canh demo dai.
+        tl.fromTo("#f10-foot", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 2.85);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["10-hai-bai-tap"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

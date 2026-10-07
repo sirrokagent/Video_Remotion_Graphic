@@ -1,0 +1,145 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.9,
+    "query": "restrained minimal electronic underscore, low tension build, modern tech, no vocals, steady pulse",
+    "duration_s": 80
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "public/audio/vo-01.mp3",
+      "duration_s": 3.065,
+      "words": []
+    },
+    {
+      "frame": 2,
+      "path": "public/audio/vo-02.mp3",
+      "duration_s": 6.548,
+      "words": []
+    },
+    {
+      "frame": 3,
+      "path": "public/audio/vo-03.mp3",
+      "duration_s": 3.994,
+      "words": []
+    },
+    {
+      "frame": 4,
+      "path": "public/audio/vo-04.mp3",
+      "duration_s": 4.644,
+      "words": []
+    },
+    {
+      "frame": 5,
+      "path": "public/audio/vo-05.mp3",
+      "duration_s": 7.895,
+      "words": []
+    },
+    {
+      "frame": 6,
+      "path": "public/audio/vo-06.mp3",
+      "duration_s": 5.48,
+      "words": []
+    },
+    {
+      "frame": 7,
+      "path": "public/audio/vo-07.mp3",
+      "duration_s": 6.316,
+      "words": []
+    },
+    {
+      "frame": 8,
+      "path": "public/audio/vo-08.mp3",
+      "duration_s": 4.737,
+      "words": []
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/soft-digital-tick.mp3",
+      "offset_s": 0,
+      "duration_s": 0.144,
+      "volume": 0.35
+    },
+    {
+      "frame": 1,
+      "file": "assets/sfx/low-impact-hit.mp3",
+      "offset_s": 0,
+      "duration_s": 0.696,
+      "volume": 0.35
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/layered-paper-whoosh.mp3",
+      "offset_s": 0,
+      "duration_s": 1.423,
+      "volume": 0.35
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/rising-density.mp3",
+      "offset_s": 0,
+      "duration_s": 5.708,
+      "volume": 0.35
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/hard-cut-stab-x2.mp3",
+      "offset_s": 0,
+      "duration_s": 2.672,
+      "volume": 0.35
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/assemble-swoosh-into-soft-brand-chime.mp3",
+      "offset_s": 0,
+      "duration_s": 7.315,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/mic-open-blip.mp3",
+      "offset_s": 0,
+      "duration_s": 1.515,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/four-soft-task-complete-ticks.mp3",
+      "offset_s": 0,
+      "duration_s": 0.768,
+      "volume": 0.35
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/subtle-haptic-pop.mp3",
+      "offset_s": 0,
+      "duration_s": 0.576,
+      "volume": 0.35
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/progress-whirr.mp3",
+      "offset_s": 0,
+      "duration_s": 4.364,
+      "volume": 0.35
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/staggered-soft-snaps-x4.mp3",
+      "offset_s": 0,
+      "duration_s": 0.672,
+      "volume": 0.35
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/final-brand-chime.mp3",
+      "offset_s": 0,
+      "duration_s": 4.755,
+      "volume": 0.35
+    }
+  ]
+}

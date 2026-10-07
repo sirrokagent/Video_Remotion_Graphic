@@ -1,0 +1,104 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "deep impact hit",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "deep impact hit",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "07",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "08",
+      "sfx": [
+        "UI click tick",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "09",
+      "sfx": [
+        "UI click tick",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "10",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "11",
+      "sfx": [
+        "UI click tick",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "12",
+      "sfx": [
+        "soft whoosh transition",
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "13",
+      "sfx": [
+        "subtle pop blip"
+      ]
+    },
+    {
+      "id": "14",
+      "sfx": [
+        "subtle pop blip",
+        "deep impact hit"
+      ]
+    },
+    {
+      "id": "15",
+      "sfx": [
+        "bubble pop ui"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "soft digital tick",
+        "low impact hit"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "layered paper whoosh",
+        "rising density"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "hard cut stab x2"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "assemble swoosh into soft brand chime"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "mic open blip",
+        "four soft task-complete ticks"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "subtle haptic pop",
+        "progress whirr"
+      ]
+    },
+    {
+      "id": "07",
+      "sfx": [
+        "staggered soft snaps x4"
+      ]
+    },
+    {
+      "id": "08",
+      "sfx": [
+        "final brand chime"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

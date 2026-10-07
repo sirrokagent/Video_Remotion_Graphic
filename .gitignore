@@ -1,0 +1,34 @@
+# ===== Nang: khong bao gio day len GitHub =====
+# repo tham khao da clone (1 GB) — ai can thi tu clone lai tu nguon
+repos/
+
+# ban render (169 MB) — san pham dau ra, khong phai ma nguon
+**/renders/
+EXPORT/
+
+# anh chup trung gian va snapshot kiem tra
+**/snapshots*/
+**/capture/
+**/capture-*/
+thumbnails/out/
+**/public/shots/_*
+
+# ===== File tam =====
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+D:/Temp/
+
+# ===== Giu lai co chu dich =====
+# assets/fonts/*.woff2      <- GIU: font da subset, nho, can de render lai dung
+# public/audio/*.mp3        <- GIU: giong doc goc + nhac nen
+# assets/sfx/*.mp3          <- GIU: hieu ung am thanh
+# thumbnails/final/*.png    <- GIU: thumbnail da duyet
+
+# ===== Ung dung desktop cai san trong thu muc du an =====
+# VoiceStudio la phan mem cai dat (app.asar 470 MB, .exe 240 MB) — khong phai ma nguon du an
+VoiceStudio/
+
+# nhac nen cua du an khac, dung lai tu nguon goc khi can
+videos/*/assets/bgm/

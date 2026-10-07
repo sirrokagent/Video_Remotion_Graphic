@@ -1,0 +1,215 @@
+{
+  "tts_provider": null,
+  "voice_id": null,
+  "bgm": null,
+  "bgm_pending": false,
+  "bgm_provider": null,
+  "bgm_pid": null,
+  "bgm_log": null,
+  "bgm_mode": null,
+  "bgm_target_duration_s": null,
+  "bgm_seed_duration_s": null,
+  "bgm_loop_count": null,
+  "voices": [],
+  "sfx": [
+    {
+      "id": "01",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "02",
+      "name": "deep impact hit",
+      "file": "assets/sfx/deep-impact-hit.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.765,
+      "volume": 0.35
+    },
+    {
+      "id": "02",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "03",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "04",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "05",
+      "name": "deep impact hit",
+      "file": "assets/sfx/deep-impact-hit.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.765,
+      "volume": 0.35
+    },
+    {
+      "id": "05",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "06",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "07",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "08",
+      "name": "UI click tick",
+      "file": "assets/sfx/ui-click-tick.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.576,
+      "volume": 0.35
+    },
+    {
+      "id": "08",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "09",
+      "name": "UI click tick",
+      "file": "assets/sfx/ui-click-tick.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.576,
+      "volume": 0.35
+    },
+    {
+      "id": "09",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "10",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "11",
+      "name": "UI click tick",
+      "file": "assets/sfx/ui-click-tick.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.576,
+      "volume": 0.35
+    },
+    {
+      "id": "11",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "12",
+      "name": "soft whoosh transition",
+      "file": "assets/sfx/soft-whoosh-transition.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.285,
+      "volume": 0.35
+    },
+    {
+      "id": "12",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "13",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "14",
+      "name": "subtle pop blip",
+      "file": "assets/sfx/subtle-pop-blip.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.312,
+      "volume": 0.35
+    },
+    {
+      "id": "14",
+      "name": "deep impact hit",
+      "file": "assets/sfx/deep-impact-hit.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.765,
+      "volume": 0.35
+    },
+    {
+      "id": "15",
+      "name": "bubble pop ui",
+      "file": "assets/sfx/bubble-pop-ui.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.576,
+      "volume": 0.35
+    }
+  ],
+  "total_duration_s": 0
+}

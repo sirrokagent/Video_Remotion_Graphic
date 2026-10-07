@@ -1,0 +1,140 @@
+<template>
+  <div id="root" data-composition-id="08-chatgpt-codex" data-width="1080" data-height="1920">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f08-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+      .f08-stage { position:absolute; left:0; right:0; top:12%; height:71%; }
+
+      /* ANH CHUP THAT cua chatgpt.com, dat trong khung bo tron */
+      .f08-win {
+        position:absolute; left:6cqw; top:26%; width:88cqw; height:33.6%;
+        border:1px solid #d0d3d9; border-radius:1.2cqw;
+        overflow:hidden; transform-origin:center center; background:#ffffff; }
+      .f08-shot { width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+
+      /* Lop CHU THICH do minh ve de len anh — khong phai phan cua anh chup */
+      .f08-ring {
+        position:absolute; left:6.4cqw; top:27.6%; width:11.6cqw; height:8.2%;
+        border:0.2cqw solid #1877f2; border-radius:0.9cqw;
+      }
+      .f08-callout {
+        position:absolute; left:19cqw; top:29%;
+        display:flex; align-items:center; gap:1.22cqw;
+      }
+      .f08-arrow {
+        width:0; height:0;
+        border-top:0.7cqw solid transparent; border-bottom:0.7cqw solid transparent;
+        border-right:1.1cqw solid #1877f2;
+      }
+      .f08-badge {
+        background:#0b5ed7; color:#ffffff; border-radius:0.6cqw;
+        padding:1.27cqw 1.62cqw;
+        font-family:"IBM Plex Mono",monospace; font-size:1.95cqw; font-weight:500;
+        letter-spacing:0.12em; text-transform:uppercase; white-space:nowrap;
+      }
+
+      /* U+2192 khong nam trong unicode-range cua Google Sans Flex -> ve bang SVG */
+      .f08-arw { width:1.7em; height:0.8em; margin:0 0.3em; vertical-align:-0.04em; }
+      .f08-arw path { stroke:currentColor; stroke-width:1.7; fill:none;
+        stroke-linecap:round; stroke-linejoin:round; }
+
+      .f08-note {
+        position:absolute; left:0; right:0; top:66%;
+        text-align:center;
+        font-size:5.78cqw; font-weight:700; line-height:1.1;
+        letter-spacing:-0.02em; color:#000000; text-transform:lowercase;
+      }
+
+      .f08-cursor { position:absolute; left:0; top:0; width:4.05cqw; height:4.05cqw; color:#000000; }
+      .f08-ripple {
+        position:absolute; width:5.94cqw; height:5.94cqw; border:0.14cqw solid #1877f2;
+        border-radius:50%; left:0; top:0;
+      }
+      /* lop camera: zoom / lia. Dat trong .clip chu khong phai chinh .clip */
+      .f08-cam { position:absolute; inset:0; transform-origin:center center; }
+    </style>
+
+    <div id="f08-ground" class="clip f08-ground" data-start="0" data-duration="7.90" data-track-index="0"></div>
+
+    <div id="f08-stage" class="clip f08-stage" data-start="0" data-duration="7.90" data-track-index="1">
+      <div class="f08-cam" id="f08-cam">
+      <div class="f08-win" id="f08-win">
+        <img class="f08-shot" id="f08-shot" src="public/shots/chatgpt.png" alt="ChatGPT">
+      </div>
+
+      <div class="f08-ring" id="f08-ring"></div>
+      <div class="f08-callout" id="f08-callout">
+        <div class="f08-arrow"></div>
+        <div class="f08-badge">góc trên trái<svg class="f08-arw" viewBox="0 0 24 12" aria-hidden="true"><path d="M1 6h19M15.5 1.5 20 6l-4.5 4.5"/></svg>codex</div>
+      </div>
+
+      <div class="f08-note" id="f08-note">đó chính là agent</div>
+
+      <div class="f08-ripple" id="f08-ripple"></div>
+      <svg class="f08-cursor" id="f08-cursor" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" stroke="#ffffff" stroke-width="1" d="M5.5 2.5 19 13.2h-6.3l3.2 6.6-2.6 1.2-3.2-6.6-4.6 4.2z"/>
+      </svg>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+
+        // Camera: VO doc "bam vao GOC TREN BEN TRAI" -> dam vao dung goc do, roi lui ra.
+        gsap.set("#f08-cam", { scale: 1, x: 0, y: 0 });
+        tl.fromTo("#f08-cam", { scale: 1, x: 0, y: 0 },
+          { scale: 1.45, x: 180, y: 140, duration: 0.95, ease: "power2.inOut", immediateRender: false }, 2.80);
+        tl.fromTo("#f08-cam", { scale: 1.45, x: 180, y: 140 },
+          { scale: 1, x: 0, y: 0, duration: 0.85, ease: "power2.inOut", immediateRender: false }, 6.55);
+
+        const FROM = { x: 880, y: 1500 };
+        const TO   = { x: 150, y: 560 };   // tip dap vao vung sidebar cua anh chup
+
+        gsap.set("#f08-cursor", { x: FROM.x, y: FROM.y, opacity: 0 });
+        gsap.set("#f08-ripple", { x: TO.x - 22, y: TO.y - 22, scale: 0, opacity: 0 });
+        gsap.set("#f08-ring", { opacity: 0 });
+        gsap.set("#f08-callout", { opacity: 0 });
+        gsap.set("#f08-note", { opacity: 0 });
+
+        // ---- Moc theo tung tu: 0.64 "Neu dung ChatGPT" · 4.49 "chon tinh nang Codex" ----
+
+        // Scene 1 (0.25–2.4s): "mo ung dung len" — anh chup THAT cua ChatGPT vao khung.
+        tl.fromTo("#f08-win", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.25);
+
+        // Scene 2 (2.4–4.3s): con tro bay vao, len goc tren ben trai theo nudge-curve.
+        tl.fromTo("#f08-cursor", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out" }, 2.40);
+        tl.fromTo("#f08-cursor", { x: FROM.x, y: FROM.y }, { x: TO.x + 70, y: TO.y + 60, duration: 1.0, ease: "power2.inOut", immediateRender: false }, 2.40);
+        tl.fromTo("#f08-cursor", { x: TO.x + 70, y: TO.y + 60 }, { x: TO.x, y: TO.y, duration: 0.5, ease: "power3.out", immediateRender: false }, 3.45);
+
+        // Scene 3 (4.49–5.6s): "chon tinh nang Codex" — vong nhan manh + the chu thich.
+        // Anh chup la trang thai CHUA DANG NHAP nen khong co muc Codex that;
+        // the chu thich la lop phu chi duong, khong gia lam giao dien.
+        tl.fromTo("#f08-ripple", { scale: 0.2, opacity: 0.9 }, { scale: 1.5, opacity: 0, duration: 0.55, ease: "power2.out" }, 4.49);
+        tl.fromTo("#f08-ring", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 4.55);
+        tl.fromTo("#f08-callout", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 4.80);
+
+        // Scene 4 (6.3–7.9s): "Do chinh la Agent".
+        tl.fromTo("#f08-cursor", { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, 6.10);
+        tl.fromTo("#f08-note", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 6.30);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["08-chatgpt-codex"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>

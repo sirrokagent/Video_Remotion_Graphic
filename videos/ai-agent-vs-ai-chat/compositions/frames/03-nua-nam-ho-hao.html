@@ -1,0 +1,106 @@
+<template>
+  <div id="root" data-composition-id="03-nua-nam-ho-hao" data-width="1080" data-height="1920">
+    <style>
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-vietnamese.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin-ext.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "Google Sans Flex"; src: url("assets/fonts/gsflex-latin.woff2") format("woff2"); font-weight: 100 1000; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-vietnamese.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin-ext.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/plexmono-500-latin.woff2") format("woff2"); font-weight: 500; font-display: block; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+      #root { width:100%; height:100%; position:relative; container-type:inline-size; font-family:"Google Sans Flex",sans-serif; }
+
+      .f03-ground {
+        position:absolute; inset:0;
+        background:
+          radial-gradient(circle at center, rgba(0,0,0,0.085) 1.25px, transparent 1.35px) 0 0 / 34px 34px,
+          #ffffff;
+      }
+
+      .f03-stage { position:absolute; left:0; right:0; top:12%; height:71%; overflow:hidden; }
+      .f03-cam { position:absolute; inset:0; }
+
+      .f03-label {
+        position:absolute; left:6cqw; top:38%;
+        font-size:7.65cqw; font-weight:700; line-height:1.1;
+        letter-spacing:-0.02em; color:#000000; text-transform:lowercase; white-space:nowrap;
+      }
+      .f03-word { display:inline-block; }
+
+      .f03-axis {
+        position:absolute; left:6cqw; right:6cqw; top:54%;
+        height:0.12cqw; background:#d0d3d9; transform-origin:left center;
+      }
+      .f03-tick { border-radius:0.25cqw;
+        position:absolute; top:calc(54% - 1.1cqw);
+        width:2.16cqw; height:2.16cqw; background:#1877f2;
+      }
+      .f03-tickcap {
+        position:absolute; top:calc(54% + 3.2cqw);
+        font-family:"IBM Plex Mono",monospace; font-size:1.22cqw; font-weight:500;
+        letter-spacing:0.14em; text-transform:uppercase; color:#000000; white-space:nowrap;
+      }
+    </style>
+
+    <div id="f03-ground" class="clip f03-ground" data-start="0" data-duration="5.15" data-track-index="0"></div>
+
+    <div id="f03-stage" class="clip f03-stage" data-start="0" data-duration="5.15" data-track-index="1">
+      <div class="f03-cam" id="f03-cam">
+        <div class="f03-label" id="f03-label">
+          <span class="f03-word">hơn</span>
+          <span class="f03-word">nửa</span>
+          <span class="f03-word">năm</span>
+        </div>
+        <div class="f03-axis" id="f03-axis"></div>
+        <div class="f03-tick" style="left:14cqw"></div>
+        <div class="f03-tick" style="left:34cqw"></div>
+        <div class="f03-tick" style="left:54cqw"></div>
+        <div class="f03-tick" style="left:74cqw"></div>
+        <div class="f03-tickcap" style="left:14cqw">thang 04</div>
+        <div class="f03-tickcap" style="left:34cqw">thang 06</div>
+        <div class="f03-tickcap" style="left:54cqw">thang 08</div>
+        <div class="f03-tickcap" style="left:74cqw">thang 10</div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+        const ticks = gsap.utils.toArray("#root .f03-tick");
+        const caps = gsap.utils.toArray("#root .f03-tickcap");
+
+        // Scene 1 (0–1.2s): truc hairline svg-path-draw tu trai sang.
+        tl.fromTo("#f03-axis", { scaleX: 0 }, { scaleX: 1, duration: 0.713, ease: "power3.out" }, 0.068);
+
+        // Scene 2 (1.2–2.6s): nhan per-word reveal phia tren truc.
+        tl.fromTo(
+          "#root .f03-word",
+          { yPercent: 60, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 0.408, ease: "power3.out", stagger: 0.16 }, 0.55);
+
+        // Scene 3 (2.6–5.4s): camera pan ngang cham; 4 moc sang lan luot theo index co dinh.
+        tl.fromTo("#f03-cam", { x: 0 }, { x: -60, duration: 1.902, ease: "power1.inOut" }, 1.766);
+        ticks.forEach(function (t, i) {
+          tl.fromTo(
+            t,
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.285, ease: "back.out(2)" }, 1.766 + i * 0.4077);
+          tl.fromTo(
+            caps[i],
+            { opacity: 0, y: 6 },
+            { opacity: 1, y: 0, duration: 0.272, ease: "power2.out" }, 1.848 + i * 0.4077);
+        });
+
+        // Scene 4 (5.4–7.58s): pan dung, giu tinh. Moc cuoi giu glow nhe.
+        tl.fromTo(
+          ticks[3],
+          { boxShadow: "0 0 0px rgba(24,119,242,0)" },
+          { boxShadow: "0 0 2.4cqw rgba(24,119,242,0.55)", duration: 0.611, ease: "power2.out" }, 3.669);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["03-nua-nam-ho-hao"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </div>
+</template>
