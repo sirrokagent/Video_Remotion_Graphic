@@ -64,7 +64,7 @@ const VBubble: React.FC<{f: number; p: Phrase; level: number}> = ({f, p, level})
         [isA ? 'borderBottomLeftRadius' : 'borderBottomRightRadius']: 12,
         background: bg,
         opacity: ev(f, [at, at + 8], [0, 1], E.out) * fade,
-        marginTop: -level * SLOT + (1 - pop) * 40,
+        marginTop: -level * SLOT + (1 - pop) * 30,
         scale: String((0.9 + 0.1 * pop) * (1 - 0.05 * Math.min(1, level))),
         transformOrigin: isA ? 'bottom left' : 'bottom right',
         boxShadow: p.hi ? '0 18px 40px rgba(11,87,208,0.28)' : isA ? '0 16px 36px rgba(0,0,0,0.16)' : 'none',
@@ -89,8 +89,8 @@ const VBubble: React.FC<{f: number; p: Phrase; level: number}> = ({f, p, level})
 const Thread: React.FC<{f: number; out: number}> = ({f, out}) => (
   <div style={{position: 'absolute', inset: 0, opacity: 1 - out, translate: `0px ${-out * 30}px`, filter: `blur(${out * 10}px)`}}>
     {PHRASES.map((p, i) => {
-      // mỗi câu mới (bất kể ai nói) đẩy các câu cũ lên một bậc
-      const level = PHRASES.slice(i + 1).reduce((s, q) => s + ev(f, [appearAt(q) - 4, appearAt(q) + 12], [0, 1], E.inOut), 0);
+      // mỗi câu mới (bất kể ai nói) đẩy các câu cũ lên một bậc — đẩy trước khi câu mới hiện để không chồng nhau
+      const level = PHRASES.slice(i + 1).reduce((s, q) => s + ev(f, [appearAt(q) - 10, appearAt(q) + 4], [0, 1], E.inOut), 0);
       if (f < appearAt(p) || level >= 2.6) return null;
       return <VBubble key={i} f={f} p={p} level={level} />;
     })}

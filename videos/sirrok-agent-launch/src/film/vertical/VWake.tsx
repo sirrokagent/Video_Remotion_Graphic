@@ -147,6 +147,8 @@ export const VWake: React.FC = () => {
 
   /* --- pha 4: gửi --- */
   const out = ev(f, [SEND + 4, SEND + 20], [0, 1], E.inOut);
+  // bong bóng vào khi chữ lớn đã tan gần hết — không chồng lên câu lệnh còn nét
+  const bubble = ev(f, [SEND + 12, SEND + 24], [0, 1], E.out);
   const reply = ev(f, [SEND + 18, SEND + 30], [0, 1], E.out);
 
   return (
@@ -193,7 +195,7 @@ export const VWake: React.FC = () => {
         style={{
           position: 'absolute',
           right: SAFE.side,
-          top: BUBBLE_TOP + (1 - out) * 140,
+          top: BUBBLE_TOP + (1 - bubble) * 120,
           padding: '34px 48px',
           borderRadius: 48,
           borderBottomRightRadius: 14,
@@ -202,8 +204,8 @@ export const VWake: React.FC = () => {
           fontSize: 54,
           fontWeight: 500,
           letterSpacing: '-0.01em',
-          opacity: out,
-          scale: String(0.86 + 0.14 * out),
+          opacity: bubble,
+          scale: String(0.86 + 0.14 * bubble),
           transformOrigin: '100% 100%',
           whiteSpace: 'nowrap',
         }}

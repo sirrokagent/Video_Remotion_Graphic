@@ -33,7 +33,9 @@ const cardPt = (x: number, y: number) => ({x: COMP.x + (x - CARD.x) * CK, y: COM
 /** Thẻ giữ nguyên cỡ gốc 280×560 để chữ mockup ≥ 24 px. */
 const TK = 1;
 const COL_GAP = 300; // khoảng cách tâm hai cột
-const ROW_Y = [650, 1240]; // tâm hai hàng — lưới nằm gọn trong vùng an toàn
+const ROW_Y = [641, 1246]; // tâm hai hàng — lưới nằm gọn trong vùng an toàn
+/** Con dấu nhích vào trong thẻ (vào phần đệm đáy 52 px) để hàng dưới không lấn vùng an toàn. */
+const STAMP_UP = 14;
 const GRID_C = {x: VW / 2, y: (ROW_Y[0] + ROW_Y[1]) / 2};
 
 /**
@@ -55,7 +57,7 @@ const gridPos = (i: number) => {
 const stampPos = (i: number) => {
   const p = gridPos(i);
   const r = (p.rot * Math.PI) / 180;
-  const d = (TILE.h / 2 - 6) * TK;
+  const d = (TILE.h / 2 - STAMP_UP - 6) * TK;
   return {x: p.x - Math.sin(r) * d, y: p.y + Math.cos(r) * d};
 };
 
@@ -106,7 +108,9 @@ const Grid: React.FC<{f: number}> = ({f}) => {
               <Platform brand={b} f={f} s={stamps[i]} />
             </div>
             <AppTile brand={b} size={68} style={{position: 'absolute', right: -20, top: -24}} />
-            <Stamp f={f} s={stamps[i]} />
+            <div style={{position: 'absolute', inset: 0, translate: `0 ${-STAMP_UP}px`}}>
+              <Stamp f={f} s={stamps[i]} />
+            </div>
           </div>
         );
       })}
@@ -147,7 +151,7 @@ export const VSocial: React.FC = () => {
   const f = useCurrentFrame();
   const composerIn = ev(f, [0, 18], [0, 1], E.out);
   const exit = ev(f, [78, 100], [0, 1], E.inOut);
-  const drift = ev(f, [100, 330], [1, 1.012], E.inOut);
+  const drift = ev(f, [100, 330], [1, 1.008], E.inOut);
   const click = cardPt(CARD.x + CARD.w - CARD.pad - 80, CARD.y + 672);
   return (
     <AbsoluteFill style={{background: C.bg, overflow: 'hidden'}}>

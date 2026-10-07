@@ -48,7 +48,7 @@ const Tag: React.FC<{f: number; text: string; at: number; cx: number; cy: number
         whiteSpace: 'nowrap',
       }}
     >
-      <Kinetic text={text} f={f} start={at} size={64} color={C.white} variant="rise" by="char" stagger={1.6} />
+      <Kinetic text={text} f={f} start={at} size={64} color={C.white} variant="rise" by="char" stagger={1.6} style={{flexWrap: 'nowrap', whiteSpace: 'nowrap'}} />
     </div>
   );
 };
@@ -76,14 +76,14 @@ export const VIsland: React.FC = () => {
       {/* ---- pha 1: macOS ---- */}
       {f < 126 && (
         <AbsoluteFill style={{translate: `${-push1 * VW}px 0px`}}>
-          <Place cx={VW / 2} top={250} s={macZoom} w={LID_W}>
+          <Place cx={VW / 2} top={300} s={macZoom} w={LID_W}>
             <Mac f={f} />
           </Place>
-          <div style={{position: 'absolute', left: SAFE.side, right: SAFE.side, top: 640}}>
+          <div style={{position: 'absolute', left: SAFE.side, right: SAFE.side, top: 700}}>
             <VoiceText id="n5" f={f} start={N5} size={116} pick={[0, 1, 2]} out={ev(f, [86, 96], [0, 1], E.in)} />
             <VoiceText id="n5" f={f} start={N5} size={116} pick={[3, 4]} replace={{4: 'ngay.'}} out={ev(f, [86, 96], [0, 1], E.in)} />
           </div>
-          <div style={{position: 'absolute', left: 0, right: 0, top: 690}}>
+          <div style={{position: 'absolute', left: 0, right: 0, top: 750}}>
             <VoiceText id="n5" f={f} start={N5} size={200} pick={[10]} replace={{10: 'Mac'}} variant="scale" />
           </div>
         </AbsoluteFill>
