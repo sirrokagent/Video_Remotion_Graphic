@@ -81,7 +81,7 @@ const IconHandset: React.FC<{size: number; color: string; rotate?: number}> = ({
 /* ---------------- Dynamic Island: live activity cuộc gọi ---------------- */
 const CallIsland: React.FC<{f: number}> = ({f}) => {
   const grow = Math.min(ev(f, [20, 36], [0, 1], E.back), 1 - ev(f, [HANGUP + 2, HANGUP + 14], [0, 1], E.inOut));
-  const w = 160 + (250 - 160) * grow;
+  const w = 160 + (204 - 160) * grow; // vừa khít giữa giờ và pin của thanh trạng thái
   const h = 46 + (54 - 46) * grow;
   const show = ev(f, [28, 38], [0, 1], E.out) * (1 - ev(f, [HANGUP, HANGUP + 8], [0, 1], E.in));
   const live = ev(f, [CONNECT, CONNECT + 10], [0, 1], E.out);
@@ -100,7 +100,7 @@ const CallIsland: React.FC<{f: number}> = ({f}) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 18px 0 16px',
+        padding: '0 16px 0 14px',
         overflow: 'hidden',
       }}
     >
@@ -109,7 +109,7 @@ const CallIsland: React.FC<{f: number}> = ({f}) => {
         <EyePair logoWidth={62} color={C.white} blink={blinkAt(f, AGENT_BLINKS)} style={{left: 22, top: 15}} />
       </div>
       {/* phải: đang đổ chuông → chấm xanh + đồng hồ */}
-      <div style={{position: 'relative', height: 30, width: 96, opacity: show}}>
+      <div style={{position: 'relative', height: 30, width: 84, opacity: show}}>
         <div style={{position: 'absolute', right: 0, top: 9, display: 'flex', gap: 7, opacity: 1 - live}}>
           {[0, 1, 2].map((i) => {
             const t = ((f + 30 - i * 6) % 30) / 30;

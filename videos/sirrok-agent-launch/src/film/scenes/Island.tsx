@@ -142,7 +142,7 @@ const PhoneActivity: React.FC<{f: number; app: string}> = ({f, app}) => (
       <div style={{flex: 1, fontSize: 32, fontWeight: 600, color: GRAY, whiteSpace: 'nowrap'}}>{app}</div>
       <Percent f={f} size={34} />
     </div>
-    <Title f={f} size={34} />
+    <Title f={f} size={32} />
     <Bar f={f} h={12} />
     <StepLine f={f} size={32} />
   </div>
@@ -206,7 +206,58 @@ const Battery: React.FC<{w: number}> = ({w}) => (
   </div>
 );
 
-const Mac: React.FC<{f: number}> = ({f}) => (
+/** Cửa sổ Sirrok trên Mac: 4 bước, tích dần theo đúng nhịp của đảo (chỉ hiện ở bộ ba). */
+const TaskWindow: React.FC<{f: number}> = ({f}) => (
+  <div
+    style={{
+      position: 'absolute',
+      left: '50%',
+      top: 178,
+      translate: '-50% 0',
+      width: 540,
+      borderRadius: 22,
+      background: C.white,
+      border: `1px solid ${C.hairline}`,
+      boxShadow: '0 24px 60px rgba(16,24,40,0.14)',
+      overflow: 'hidden',
+    }}
+  >
+    <div style={{height: 40, display: 'flex', alignItems: 'center', gap: 9, padding: '0 18px', background: '#F6F7F9', borderBottom: `1px solid ${C.hairline}`}}>
+      {['#FF5F57', '#FEBC2E', '#28C840'].map((c) => (
+        <div key={c} style={{width: 14, height: 14, borderRadius: 7, background: c}} />
+      ))}
+    </div>
+    <div style={{padding: '18px 30px 22px', display: 'flex', flexDirection: 'column', gap: 10}}>
+      <div style={{fontSize: 30, fontWeight: 800, color: C.ink, marginBottom: 4}}>Gửi báo giá cho khách</div>
+      {STEPS.map((s, i) => {
+        const end = STEP_AT[i + 1];
+        const doneK = ev(f, [end, end + 10], [0, 1], E.out);
+        const active = f >= STEP_AT[i] && f < end;
+        return (
+          <div key={s} style={{display: 'flex', alignItems: 'center', gap: 16, fontSize: 28, fontWeight: 500, color: active || doneK > 0 ? C.text : C.muted}}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 18,
+                border: `2.5px solid ${doneK > 0 ? C.ok : active ? C.sparkle : C.field}`,
+                background: doneK > 0 ? C.ok : 'transparent',
+                display: 'grid',
+                placeItems: 'center',
+                scale: String(1 + 0.15 * ev(f, [end, end + 5], [0, 1], E.out) * (1 - ev(f, [end + 5, end + 14], [0, 1], E.inOut))),
+              }}
+            >
+              <IconCheck size={24} color={C.white} stroke={3} progress={doneK} />
+            </div>
+            {s}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
   <div style={{position: 'relative', width: LID_W, height: LID_H + MAC.baseH}}>
     <div
       style={{
@@ -254,13 +305,10 @@ const Mac: React.FC<{f: number}> = ({f}) => (
               <Ghost width={30} />
             </div>
             <span style={{fontWeight: 700}}>Sirrok</span>
-            <span>Tệp</span>
-            <span>Sửa</span>
           </div>
           <div style={{display: 'flex', alignItems: 'center', gap: 20}}>
-            <Wifi size={26} />
             <Battery w={38} />
-            <span>Th 4 · 9:41</span>
+            <span>9:41</span>
           </div>
         </div>
         {/* dock */}
@@ -285,6 +333,7 @@ const Mac: React.FC<{f: number}> = ({f}) => (
             <AppTile key={b} brand={b} size={64} />
           ))}
         </div>
+        {win && <TaskWindow f={f} />}
         <MacIsland f={f} />
       </div>
     </div>
@@ -408,7 +457,7 @@ const AndroidLive: React.FC<{f: number}> = ({f}) => {
         }}
       >
         <div style={{position: 'absolute', left: 0, top: 0, width: 432, opacity: show}}>
-          <PhoneActivity f={f} app="Sirrok · đang chạy" />
+          <PhoneActivity f={f} app="Sirrok" />
         </div>
       </div>
     </>
@@ -494,7 +543,7 @@ export const Island: React.FC = () => {
   const drift = ev(f, [196, 306], [0, 1], E.inOut); // máy quay tiến rất nhẹ
 
   // pha 1: cận cảnh mép trên MacBook
-  const macZoom = 1.75 + 0.1 * (1 - ev(f, [0, 44], [0, 1], E.out));
+  const macZoom = 1.6 + 0.1 * (1 - ev(f, [0, 44], [0, 1], E.out));
 
   // Android: từ vị trí đơn → vị trí bộ ba
   const andCx = 600 + (TRI.and.cx - 600) * asm;
@@ -522,7 +571,7 @@ export const Island: React.FC = () => {
       {f >= 166 && (
         <AbsoluteFill style={{scale: String(1 + 0.035 * drift)}}>
           <Place cx={TRI.mac.cx} top={TRI.mac.top + (1 - macIn) * 120} s={TRI.mac.s + 0.08 * (1 - macIn)} w={LID_W} o={macIn}>
-            <Mac f={f} />
+            <Mac f={f} win />
           </Place>
           <Place cx={TRI.ios.cx - (1 - iosIn) * 640} top={TRI.ios.top} s={TRI.ios.s} w={PHONE.w} o={iosIn}>
             <IPhone f={f} />

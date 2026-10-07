@@ -105,8 +105,8 @@ const BrandImage: React.FC<{w: number; h: number; gen?: number; label?: number; 
         <div
           style={{
             position: 'absolute',
-            left: vertical ? w * 0.42 : label ? w * 0.27 : w / 2,
-            top: vertical ? h * 0.42 : h / 2,
+            left: vertical ? w * 0.4 : label ? w * 0.27 : w / 2,
+            top: vertical ? h * 0.36 : h / 2,
             width: gw * 2.2,
             height: gw * 2.2,
             translate: '-50% -50%',
@@ -119,14 +119,14 @@ const BrandImage: React.FC<{w: number; h: number; gen?: number; label?: number; 
           bodyColor={C.white}
           eyeColor={C.send}
           style={{
-            left: (vertical ? w * 0.42 : label ? w * 0.27 : w / 2) - gw / 2,
-            top: (vertical ? h * 0.42 : h / 2) - (gw * LOGO_H) / 200,
+            left: (vertical ? w * 0.4 : label ? w * 0.27 : w / 2) - gw / 2,
+            top: (vertical ? h * 0.36 : h / 2) - (gw * LOGO_H) / 200,
           }}
         />
         <Sparkle
           size={gw * 0.32}
           color={C.white}
-          style={{left: (vertical ? w * 0.42 : label ? w * 0.27 : w / 2) + gw * 0.42, top: (vertical ? h * 0.42 : h / 2) - gw * 0.62}}
+          style={{left: (vertical ? w * 0.4 : label ? w * 0.27 : w / 2) + gw * 0.42, top: (vertical ? h * 0.36 : h / 2) - gw * 0.62}}
         />
         {label ? (
           <div
@@ -495,6 +495,8 @@ const Fan: React.FC<{f: number}> = ({f}) => {
               rotate: `${tp.rot * p}deg`,
               scale: String(lerp(0.4, 1, p)),
               opacity: ev(f, [s0, s0 + 8], [0, 1], E.out),
+              // thẻ giữa nằm trên, thẻ ngoài trượt ra từ phía sau
+              zIndex: 10 - Math.round(Math.abs(i - 2.5) * 2),
               fontFamily: FONT,
             }}
           >
