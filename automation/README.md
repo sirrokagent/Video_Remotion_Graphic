@@ -241,3 +241,19 @@ Biến `CLAUDE_ARGS` (tuỳ chọn) để thêm cờ cho lệnh `claude` mà kh�
   và không đưa `transcripts.json` (phụ đề của người khác) lên.
 - **Hỏng thì nhắn Telegram** — cron hỏng mà im lặng thì vài tuần sau mới phát hiện.
 - **`concurrency: reel`** — hai lần chạy chồng nhau sẽ ghi đè cùng thư mục `runs/`.
+
+---
+
+## Gửi một kịch bản có sẵn vào Telegram
+
+Khi kịch bản đã viết xong rồi, chỉ còn thiếu mỗi bước gửi — ví dụ nó được viết ở
+máy khác, hoặc bước 4 của `reel.mjs` dừng giữa chừng:
+
+```bash
+node automation/send.mjs automation/runs/<slug>/reel.md
+node automation/send.mjs <file.md> --dry-run      # xem trước, không gửi
+```
+
+Chỉ cần `TELEGRAM_BOT_TOKEN` và chat id (lấy từ `telegram.chatId` trong config,
+hoặc biến `TELEGRAM_CHAT_ID`). Không cần `config.json` — thiếu nó vẫn chạy được
+miễn là có đủ biến môi trường.
