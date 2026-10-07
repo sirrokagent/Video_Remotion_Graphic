@@ -32,3 +32,8 @@ VoiceStudio/
 
 # nhac nen cua du an khac, dung lai tu nguon goc khi can
 videos/*/assets/bgm/
+
+# ===== Day chuyen tu dong =====
+automation/config.json      # chua cau hinh rieng
+automation/runs/            # ket qua tung lan chay
+automation/inbox/           # file giong doc ban bo vao
