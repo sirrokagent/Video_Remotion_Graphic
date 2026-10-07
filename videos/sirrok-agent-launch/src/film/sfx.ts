@@ -7,6 +7,10 @@ export const SFX: {at: number; file: string; vol: number}[] = [
   // chuyển cảnh: tiếng vệt quét ngay trước mỗi wipe
   ...(['work', 'call', 'island', 'social', 'connect', 'everywhere', 'meet'] as const).map((k) => ({at: START[k] - 4, file: 'layered-paper-whoosh', vol: 0.4})),
 
+  // mở đầu: ghost bị hút về giữa hai mắt, mắt nhắm
+  {at: START.intro + 176, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.intro + 272, file: 'soft-digital-tick', vol: 0.35},
+
   // "Hey Sirrok" + câu lệnh
   {at: START.wake + 84, file: 'layered-paper-whoosh', vol: 0.3},
   {at: START.wake + 114, file: 'mic-open-blip', vol: 0.45},

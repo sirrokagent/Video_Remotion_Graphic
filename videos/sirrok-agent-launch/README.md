@@ -122,3 +122,27 @@ xanh dương, chữ sans, wordmark "Sirrok" viết hoa chữ đầu, lockup trê
 cũng dặn **"giữ đúng UI và logo trong ảnh, lấy màu chính xác từ ảnh"** — nên phim theo
 **ảnh**. Brief còn gọi sản phẩm là "nash" ở một chỗ; mọi ảnh đều là Sirrok Agent nên phim
 dùng Sirrok Agent.
+
+## Phim 90 giây — `SirrokFilm`
+
+Composition `SirrokFilm` (2700 frame) trong `src/film/`. Mọi mốc ở `src/film/timeline.ts`.
+
+| Cảnh | File |
+|---|---|
+| Ghost nhiều hiệu ứng (montage) | `src/film/scenes/Intro.tsx` + `src/film/ghostfx.tsx` |
+| "Hey Sirrok" ra lệnh bằng giọng nói | `src/scenes/S1Wake.tsx` |
+| Agent tự làm trên desktop | `src/scenes/S2Work.tsx` |
+| Agent gọi điện cho khách | `src/film/scenes/Call.tsx` |
+| Dynamic Island — macOS, iOS, Android | `src/film/scenes/Island.tsx` |
+| Tự viết & đăng mạng xã hội | `src/film/scenes/Social.tsx` |
+| Kết nối công cụ bên thứ ba | `src/film/scenes/Connect.tsx` (logo ở `src/brands.tsx`) |
+| Ở mọi nơi, mọi lúc · Hé lộ logo | `src/scenes/S4Everywhere.tsx`, `S5Reveal.tsx` |
+| "Gặp Sirrok Agent" | `src/film/scenes/Meet.tsx` |
+
+- **12 hiệu ứng ghost** (`FX` trong `src/film/ghostfx.tsx`): nét vẽ, chất lỏng, nhiễu số, hạt tụ, đèn neon,
+  chấm lưới, dư ảnh, mảnh ghép, khối 3D, hologram, sóng lắng nghe, điểm ảnh. Composition `GhostFX` trưng bày cả 12.
+- **Giọng**: dẫn chuyện Brian (trầm, điện ảnh), agent Sarah, khách Eric (vidIQ / ElevenLabs).
+  `scripts/analyze_lines.py` cắt từng câu và đo mốc từng chữ → `src/voice.json`, `public/voice/*.mp3`.
+- **Chữ chuyển động**: `src/film/text.tsx` — `VoiceText` (chữ hiện đúng lúc được đọc), `Kinetic` (blur / rise / track / scale).
+- **Nhạc**: `scripts/make_music_film.py` → `public/music/film.mp3`. SFX: `src/film/sfx.ts`.
+- Logo bên thứ ba là nhãn hiệu của các công ty đó, vẽ giản lược — chỉ giữ dịch vụ Sirrok thật sự kết nối khi phát hành.

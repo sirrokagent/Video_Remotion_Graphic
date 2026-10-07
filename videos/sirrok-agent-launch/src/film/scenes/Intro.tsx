@@ -6,6 +6,7 @@ import {C, E, FONT} from '../../theme';
 import {eyeSegs, FX, FxKey} from '../ghostfx';
 import {VoiceText} from '../text';
 import {VO} from '../timeline';
+import {VOICE, VoiceWave} from '../../voice';
 
 /**
  * Cảnh mở phim (290 frame).
@@ -39,7 +40,7 @@ const GHOST_CY = 372; // tâm dọc của ghost trong montage — nửa trên kh
 const EYE = {x: 960, y: 372};
 const LW = 700;
 const KK = LW / 100;
-const COLLAPSE: [number, number] = [182, 206];
+const COLLAPSE: [number, number] = [176, 197];
 const CLOSE: [number, number] = [272, 279];
 
 const Montage: React.FC<{f: number}> = ({f}) => {
@@ -74,11 +75,12 @@ const Calm: React.FC<{f: number}> = ({f}) => {
   const id = React.useId().replace(/:/g, '');
   const settle = ev(f, [CALM_AT, CALM_AT + 16], [0, 1], E.out);
   const scale = 1.045 - 0.045 * settle;
-  const collapse = ev(f, COLLAPSE, [0, 1], E.inOut);
+  // tăng tốc dần như bị hút về điểm giữa hai mắt — không lưu lại chấm đen nhỏ
+  const collapse = ev(f, COLLAPSE, [0, 1], E.in);
   const r = 112 * (1 - collapse);
   // mắt liếc xuống chữ rồi trở về chính giữa trước khi nhắm
   const look = {x: 0, y: keys(f, [206, 216, 250, 262], [0, 1.3, 1.3, 0], E.inOut)};
-  const blink = Math.max(blinkAt(f, [176, 232]), ev(f, CLOSE, [0, 1], E.snap));
+  const blink = Math.max(blinkAt(f, [168, 232]), ev(f, CLOSE, [0, 1], E.snap));
   const k = 1 - 0.86 * blink;
   return (
     <AbsoluteFill style={{background: C.bg, fontFamily: FONT}}>
@@ -107,6 +109,12 @@ const Calm: React.FC<{f: number}> = ({f}) => {
           </svg>
         ) : null}
       </div>
+      {/* hàng chấm sóng âm đang nghỉ — S1Wake frame 0 có sẵn hàng này (top 530), hiện dần để cắt cảnh liền mạch */}
+      {f >= 260 ? (
+        <div style={{position: 'absolute', left: 0, right: 0, top: 530, display: 'flex', justifyContent: 'center', opacity: ev(f, [262, 282], [0, 1], E.inOut)}}>
+          <VoiceWave clip={VOICE.hey} f={-22} scene={0} width={720} height={110} bars={44} on={0} />
+        </div>
+      ) : null}
       <div style={{position: 'absolute', left: 0, right: 0, top: 600}}>
         <VoiceText id="n2" f={f} start={VO.n2.at} size={104} pick={[2, 3, 4, 5, 6]} variant="blur" out={ev(f, [254, 270], [0, 1], E.in)} />
       </div>
