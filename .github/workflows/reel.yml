@@ -1,0 +1,138 @@
+name: Kich ban reel hang tuan
+
+# Tim video AI view cao -> lay phu de -> viet kich ban reel -> gui Telegram.
+#
+# DOC TRUOC KHI BAT: runner hosted cua GitHub dung IP trung tam du lieu, ma
+# YouTube chan manh IP loai do. Buoc lay phu de (yt-dlp) gan nhu chac chan hong
+# o day, nen workflow bat san che do rut gon: khong co phu de thi van viet kich
+# ban tu tieu de + mo ta, va dan nhan canh bao vao dau tin Telegram.
+#
+# Muon co phu de that thi phai chay tu IP nha dan:
+#   - dat bien repo RUNNER = self-hosted roi cai runner len may minh, HOAC
+#   - chay tay tren may: node automation/reel.mjs
+
+on:
+  schedule:
+    # 00:23 UTC thu Hai = 07:23 gio Viet Nam.
+    # Phut le co chu dich: cron cua GitHub hay tre vao cac moc tron.
+    - cron: "23 0 * * 1"
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Chu de (de trong thi dung reel.defaultTopic trong config)"
+        required: false
+        type: string
+      min_views:
+        description: "Nguong view toi thieu"
+        required: false
+        default: "10000"
+        type: string
+      dry_run:
+        description: "Chay het nhung KHONG gui Telegram"
+        required: false
+        default: false
+        type: boolean
+
+# Hai lan chay chong nhau se ghi de len cung thu muc runs/ — chan lai.
+concurrency:
+  group: reel
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  reel:
+    # Doi sang may minh bang cach dat bien repo RUNNER (Settings -> Variables).
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 30
+
+    # bash o moi buoc de self-hosted tren Windows van chay duoc (qua Git Bash).
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Kiem secret truoc khi lam gi
+        run: |
+          # Chi bao CO hay KHONG, khong in gia tri — log Actions ai doc duoc repo cung xem duoc.
+          miss=0
+          for v in YOUTUBE_API_KEY TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID; do
+            if [ -z "${!v}" ]; then echo "::error::thieu secret $v"; miss=1; else echo "$v: da co"; fi
+          done
+          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::can mot trong hai: CLAUDE_CODE_OAUTH_TOKEN hoac ANTHROPIC_API_KEY"
+            miss=1
+          else
+            echo "Claude auth: da co"
+          fi
+          exit $miss
+
+      - name: Tu kiem tra phan logic
+        run: node automation/test.mjs
+
+      - name: Cai yt-dlp
+        # Khong bat buoc: thieu no thi pipeline chay o che do rut gon, khong chet.
+        continue-on-error: true
+        run: |
+          pipx install yt-dlp || pip install --user --break-system-packages -U yt-dlp || pip install --user -U yt-dlp
+          yt-dlp --version || echo "::warning::khong cai duoc yt-dlp — se chay o che do rut gon"
+
+      - name: Cai Claude Code CLI
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+
+      - name: Dung config cho lan chay nay
+        env:
+          REEL_TOPIC: ${{ inputs.topic }}
+          REEL_MIN_VIEWS: ${{ inputs.min_views }}
+          # Runner hosted bi YouTube chan IP -> cho phep chay tiep o che do rut gon.
+          # Tren may minh (IP nha dan) thi tat di: khong lay duoc phu de la co van de that, phai bao.
+          REEL_ALLOW_NO_TRANSCRIPT: ${{ vars.RUNNER && '0' || '1' }}
+        run: node automation/ci-config.mjs
+
+      - name: Chay day chuyen reel
+        env:
+          # Loi thoat de them co cho 'claude' ma khong phai sua code (vi du --allowedTools).
+          CLAUDE_ARGS: ${{ vars.CLAUDE_ARGS }}
+        run: node automation/reel.mjs ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Luu kich ban lam ban sao
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ github.run_number }}
+          # CHI kich ban va bao cao kiem tra. Khong dua config.json (chua chat id)
+          # va khong dua transcripts.json (phu de cua nguoi khac) len artifact.
+          path: |
+            automation/runs/*/reel.md
+            automation/runs/*/reel-check.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Bao Telegram khi chay hong
+        # Cron hong ma im lang thi vai tuan sau moi phat hien. Bao ngay.
+        if: failure() && !inputs.dry_run
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || exit 0
+          msg="Day chuyen reel chay HONG. Khong co kich ban tuan nay.
+          Xem log: $RUN_URL"
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${msg}" -o /dev/null

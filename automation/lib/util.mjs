@@ -64,13 +64,22 @@ export function sh(cmd, args, opts = {}) {
   return r;
 }
 
-/** Goi Claude Code o che do khong tuong tac. Day la "bo nao" cua pipeline. */
+/**
+ * Goi Claude Code o che do khong tuong tac. Day la "bo nao" cua pipeline.
+ *
+ * CLAUDE_ARGS la loi thoat cho CI: them co dong lenh ma khong phai sua code
+ * (vi du --allowedTools de khoa cong cu lai). Cat theo khoang trang, nen dung
+ * cho co don gian thoi — co nao can dau ngoac thi sua thang o day.
+ */
 export function claude(prompt, { cwd = ROOT, timeoutMs = 15 * 60 * 1000 } = {}) {
-  const r = spawnSync("claude", ["-p", prompt], {
+  const extra = (process.env.CLAUDE_ARGS || "").split(/\s+/).filter(Boolean);
+  const r = spawnSync("claude", [...extra, "-p", prompt], {
     cwd, encoding: "utf8", timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024,
   });
   if (r.error) throw new Blocked("Khong goi duoc Claude CLI: " + r.error.message,
-    "Kiem tra 'claude --version'. Pipeline dung 'claude -p' lam buoc sang tao.");
+    "Kiem tra 'claude --version'. Pipeline dung 'claude -p' lam buoc sang tao.\n" +
+    "    Tren CI can mot trong hai: CLAUDE_CODE_OAUTH_TOKEN (chay 'claude setup-token'\n" +
+    "    tren may co trinh duyet, can goi Pro/Max) hoac ANTHROPIC_API_KEY (tra theo luot goi).");
   if (r.status !== 0) throw new Error("claude -p that bai:\n" + (r.stderr || r.stdout || "").slice(0, 2000));
   return (r.stdout || "").trim();
 }
