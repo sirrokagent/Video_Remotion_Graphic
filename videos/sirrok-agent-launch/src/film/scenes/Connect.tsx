@@ -181,8 +181,6 @@ export const Connect: React.FC = () => {
               strokeWidth={2}
               strokeDasharray={perim}
               strokeDashoffset={perim * (1 - ringDraw(i))}
-              transform={`rotate(-90 ${CENTER.x} ${CENTER.y})`}
-              style={{transformBox: 'view-box'}}
             />
           );
         })}
