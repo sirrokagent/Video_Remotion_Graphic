@@ -23,7 +23,7 @@ const rnd = (i: number) => {
 };
 
 const CENTER = {x: 960, y: 430};
-const GHOST_W = 230;
+export const GHOST_W = 230;
 
 /**
  * Hai vòng quỹ đạo, mỗi vòng 7 ứng dụng; vòng ngoài lệch nửa bước so với vòng trong
@@ -31,17 +31,17 @@ const GHOST_W = 230;
  */
 const INNER: BrandKey[] = ['gmail', 'calendar', 'sheets', 'drive', 'notion', 'slack', 'telegram'];
 const OUTER: BrandKey[] = ['facebook', 'zalo', 'instagram', 'tiktok', 'linkedin', 'youtube', 'x'];
-const STEP = 360 / 7;
+export const STEP = 360 / 7;
 const RING = [
   {rx: 370, ry: 225, size: 100, base: -90, drift: 20},
   {rx: 700, ry: 330, size: 92, base: -90 + STEP / 2, drift: 15},
 ];
 
-type Node = {brand: BrandKey; ring: 0 | 1; k: number; idx: number; start: number};
+export type Node = {brand: BrandKey; ring: 0 | 1; k: number; idx: number; start: number};
 
 // Thứ tự bay vào: xen kẽ trong/ngoài, nhảy gần nửa vòng mỗi lần để vòng tròn
 // được lấp đều; rải theo lời đọc (Kết≈19 … dùng≈70).
-const NODES: Node[] = (() => {
+export const NODES: Node[] = (() => {
   const ks = [0, 4, 1, 5, 2, 6, 3];
   const out: Node[] = [];
   ks.forEach((k) => {
@@ -52,7 +52,7 @@ const NODES: Node[] = (() => {
   return out.map((o, idx) => ({...o, idx, start: Math.round(14 + idx * 4.3)}));
 })();
 
-const FLY = 22; // số frame bay vào
+export const FLY = 22; // số frame bay vào
 export const CONNECT_MARKS = {
   ghostIn: 2,
   /** frame từng logo chạm vị trí trên quỹ đạo (đặt tiếng "tách" nhẹ) */

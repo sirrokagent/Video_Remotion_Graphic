@@ -14,7 +14,7 @@ import {IconCheck} from '../ui';
  * lại đường đôi. Cuối cảnh mọi thứ thu về tâm — chuẩn bị cho logo.
  */
 
-const SPOTS = [
+export const SPOTS = [
   {x: 330, y: 230, time: '07:00', title: 'Báo cáo sáng', kind: 'laptop' as const},
   {x: 1590, y: 230, time: '13:30', title: 'Trả lời khách', kind: 'phone' as const},
   {x: 360, y: 860, time: '18:15', title: 'Đối soát đơn', kind: 'desktop' as const},
@@ -34,9 +34,9 @@ const KEYS: Key[] = [
   {f: 172, x: SPOTS[3].x - 170, y: SPOTS[3].y - 50},
   {f: 204, x: 960, y: 520},
 ];
-const ARRIVE = [40, 80, 120, 160];
+export const ARRIVE = [40, 80, 120, 160];
 
-const Device: React.FC<{kind: (typeof SPOTS)[number]['kind']}> = ({kind}) => {
+export const Device: React.FC<{kind: (typeof SPOTS)[number]['kind']}> = ({kind}) => {
   const frame: Record<string, React.CSSProperties> = {
     laptop: {width: 250, height: 160, borderRadius: 16},
     desktop: {width: 270, height: 170, borderRadius: 14},

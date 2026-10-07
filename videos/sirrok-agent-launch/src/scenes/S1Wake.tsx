@@ -17,9 +17,9 @@ import {BlurWords, loudness, VOICE, VoiceWave} from '../voice';
 
 export const HEY_AT = 22; // frame bắt đầu phát "Hey Sirrok."
 export const CMD_AT = 132; // frame bắt đầu phát câu lệnh
-const HEY_END = HEY_AT + VOICE.hey.durFrames;
-const CMD_END = CMD_AT + VOICE.command.durFrames;
-const SEND = CMD_END + 8;
+export const HEY_END = HEY_AT + VOICE.hey.durFrames;
+export const CMD_END = CMD_AT + VOICE.command.durFrames;
+export const SEND = CMD_END + 8;
 
 const WIN = {x: (W - DESK.w) / 2, y: (H - DESK.h) / 2};
 const LISTEN_L = 170; // cỡ logo của cặp mắt khi nằm trong ô nhập
@@ -27,7 +27,7 @@ const SLOT_W = 84;
 // tâm chỗ của mắt trong ô nhập (chế độ giọng nói)
 const SLOT = {x: WIN.x + DESK.inputX + 34 + 36 + 22 + SLOT_W / 2, y: WIN.y + DESK.inputY + DESK.inputH / 2};
 const EYE0 = {x: 960, y: 372};
-const ASK = 'Gửi báo giá cho khách';
+export const ASK = 'Gửi báo giá cho khách';
 
 export const S1Wake: React.FC = () => {
   const f = useCurrentFrame();

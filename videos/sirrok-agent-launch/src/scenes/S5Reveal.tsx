@@ -20,10 +20,10 @@ const lockW = SMALL + SMALL * LOCKUP.gap + SMALL * LOCKUP.textWidth + SMALL * LO
 const LX = (1920 - lockW) / 2; // mép trái ghost trong lockup
 const LY = 400; // đỉnh ghost trong lockup
 
-const REVEAL = 40;
-const SETTLE = 96;
-const WORD = 112;
-const STAR = 136;
+export const REVEAL = 40;
+export const SETTLE = 96;
+export const WORD = 112;
+export const STAR = 136;
 
 export const S5Reveal: React.FC = () => {
   const f = useCurrentFrame();

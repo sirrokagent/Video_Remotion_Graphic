@@ -25,7 +25,7 @@ import {Kinetic, VoiceText} from '../text';
 const n9 = VO.n9.at;
 
 // ── Mốc thời gian ──────────────────────────────────────────────
-const T = {
+export const T = {
   eyesIn: 8,
   firstBlink: 21,
   reveal: 26,
@@ -40,7 +40,7 @@ const T = {
 } as const;
 
 // Bảng màu đội agent: các sắc xanh thương hiệu + đen + một màu ấm duy nhất.
-const AG = {
+export const AG = {
   blue: '#1877F2',
   deep: '#0B57D0',
   bright: '#236EEE',
@@ -49,7 +49,7 @@ const AG = {
   warm: '#D97757',
 } as const;
 // Chữ tên agent phải đạt ≥ 4.5:1 trên bong bóng xám → dùng sắc đậm hơn của cùng màu.
-const NAME = {deep: '#0B57D0', beta: AG.beta, warm: '#A4472A'} as const;
+export const NAME = {deep: '#0B57D0', beta: AG.beta, warm: '#A4472A'} as const;
 
 // ── Hai nét mắt (bản sao cách co mắt của logo.tsx để vẽ ghost hero) ──
 const eyeLines = (blink: number, look: {x: number; y: number}) =>
@@ -71,7 +71,7 @@ const eyeLines = (blink: number, look: {x: number; y: number}) =>
  * từ giữa hai mắt, phần mắt nằm trong vòng tròn đổi sang trắng — chuyển liền mạch,
  * không có khung nào mắt "biến mất".
  */
-const HeroGhost: React.FC<{width: number; reveal: number; blink: number; look: {x: number; y: number}; eyeScale: number}> = ({
+export const HeroGhost: React.FC<{width: number; reveal: number; blink: number; look: {x: number; y: number}; eyeScale: number}> = ({
   width,
   reveal,
   blink,
@@ -110,25 +110,25 @@ const HeroGhost: React.FC<{width: number; reveal: number; blink: number; look: {
 };
 
 /** Ghost thương hiệu làm icon nội dòng / avatar (bọc Ghost vào khung có kích thước thật). */
-const GhostIcon: React.FC<{width: number; color: string; blink?: number; style?: React.CSSProperties}> = ({width, color, blink = 0, style}) => (
+export const GhostIcon: React.FC<{width: number; color: string; blink?: number; style?: React.CSSProperties}> = ({width, color, blink = 0, style}) => (
   <span style={{position: 'relative', display: 'inline-block', width, height: (width * LOGO_H) / 100, flexShrink: 0, ...style}}>
     <Ghost width={width} bodyColor={color} blink={blink} style={{left: 0, top: 0}} />
   </span>
 );
 
-const ArrowUpRight: React.FC<{size: number}> = ({size}) => (
+export const ArrowUpRight: React.FC<{size: number}> = ({size}) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={C.ink} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
     <path d="M7 17 17 7M9 7h8v8" />
   </svg>
 );
 
-const Download: React.FC<{size: number}> = ({size}) => (
+export const Download: React.FC<{size: number}> = ({size}) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={C.white} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 4v11M7 10.5l5 5 5-5M5 20h14" />
   </svg>
 );
 
-const Monitor: React.FC<{size: number}> = ({size}) => (
+export const Monitor: React.FC<{size: number}> = ({size}) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="12" rx="2" />
     <path d="M12 16v4M8 20h8" />
@@ -136,13 +136,13 @@ const Monitor: React.FC<{size: number}> = ({size}) => (
 );
 
 /** Vào cảnh mềm: trồi + mờ → nét. */
-const pop = (f: number, at: number, dist = 40, dur = 18): React.CSSProperties => {
+export const pop = (f: number, at: number, dist = 40, dur = 18): React.CSSProperties => {
   const t = ev(f, [at, at + dur], [0, 1], E.out);
   return {opacity: t, translate: `0px ${(1 - t) * dist}px`, filter: `blur(${(1 - t) * 10}px)`};
 };
 
 /** Tin nhắn: trồi lên + phóng nhẹ từ góc neo của bong bóng. */
-const bubbleIn = (f: number, at: number, origin: string): React.CSSProperties => {
+export const bubbleIn = (f: number, at: number, origin: string): React.CSSProperties => {
   const t = ev(f, [at, at + 20], [0, 1], E.out);
   return {
     opacity: ev(f, [at, at + 10], [0, 1], E.out),
@@ -152,14 +152,14 @@ const bubbleIn = (f: number, at: number, origin: string): React.CSSProperties =>
   };
 };
 
-const SIDEBAR = [
+export const SIDEBAR = [
   {color: AG.blue, blink: [188, 236]},
   {color: AG.ink, blink: [232]},
   {color: AG.deep, blink: [212, 244]},
   {color: AG.warm, blink: [224]},
   {color: AG.beta, blink: [240]},
 ] as const;
-const SELECTED = 1;
+export const SELECTED = 1;
 
 export const Meet: React.FC = () => {
   const f = useCurrentFrame();
@@ -438,7 +438,7 @@ export const Meet: React.FC = () => {
 };
 
 /** Tên agent nội dòng: ghost mini + tên có màu, như nhắc tên đồng đội. */
-const AgentTag: React.FC<{width: number; color: string; name: string; nameColor: string}> = ({width, color, name, nameColor}) => (
+export const AgentTag: React.FC<{width: number; color: string; name: string; nameColor: string}> = ({width, color, name, nameColor}) => (
   <span style={{whiteSpace: 'nowrap'}}>
     <GhostIcon width={width} color={color} style={{verticalAlign: '-0.12em', marginRight: 8}} />
     <span style={{color: nameColor}}>{name}</span>

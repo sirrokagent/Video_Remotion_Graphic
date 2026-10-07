@@ -42,7 +42,7 @@ export const SOCIAL_MARKS = {
 };
 
 // ———————————————————————————— khung soạn bài ————————————————————————————
-const CARD = {w: 860, x: 530, y: 236, pad: 36};
+export const CARD = {w: 860, x: 530, y: 236, pad: 36};
 const IMG = {w: CARD.w - CARD.pad * 2, h: 360};
 
 /** Ảnh thương hiệu do agent "dựng": nền xanh, ghost trắng, sao ✦. `gen` 0 → 1 = mức đã hiện. */
@@ -157,7 +157,7 @@ const Avatar: React.FC<{size: number; blink?: number}> = ({size, blink = 0}) => 
   </div>
 );
 
-const Composer: React.FC<{f: number}> = ({f}) => {
+export const Composer: React.FC<{f: number}> = ({f}) => {
   const shown = typed(COPY, f, TYPE_START, TYPE_PER);
   const typing = f >= TYPE_START && shown.length < COPY.length;
   const caretBlink = blinkAt(f, [60, 84]);
@@ -252,7 +252,7 @@ const Composer: React.FC<{f: number}> = ({f}) => {
 };
 
 // ———————————————————————————— 6 thẻ nền tảng ————————————————————————————
-const TILE = {w: 280, h: 560};
+export const TILE = {w: 280, h: 560};
 const SHORT = 'Ra mắt Sirrok Agent — trợ lý AI làm mọi việc.';
 
 /** Định dạng số kiểu Việt: 1.248 · 18,6K */
@@ -318,7 +318,7 @@ const Stat: React.FC<{icon: React.ReactNode; value: string; color?: string}> = (
 const IW = TILE.w - 32; // bề rộng nội dung trong thẻ
 
 /** Mỗi nền tảng một bố cục gợi đúng "chất" của nó — không sao chép giao diện thật. */
-const Platform: React.FC<{brand: BrandKey; f: number; s: number}> = ({brand, f, s}) => {
+export const Platform: React.FC<{brand: BrandKey; f: number; s: number}> = ({brand, f, s}) => {
   const pad: React.CSSProperties = {padding: '18px 16px 52px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1};
   switch (brand) {
     case 'facebook':
@@ -424,7 +424,7 @@ const Platform: React.FC<{brand: BrandKey; f: number; s: number}> = ({brand, f, 
   }
 };
 
-const ORDER_B: BrandKey[] = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x', 'youtube'];
+export const ORDER_B: BrandKey[] = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x', 'youtube'];
 const FAN_C = {x: 960, y: 618};
 const fanPos = (i: number) => {
   const d = i - 2.5;
@@ -439,7 +439,7 @@ const stampPos = (i: number) => {
 };
 const COMPOSER_C = {x: CARD.x + CARD.w / 2, y: CARD.y + 380};
 
-const Stamp: React.FC<{f: number; s: number}> = ({f, s}) => {
+export const Stamp: React.FC<{f: number; s: number}> = ({f, s}) => {
   if (f < s) return null;
   const t = ev(f, [s, s + 12], [0, 1], E.back);
   return (

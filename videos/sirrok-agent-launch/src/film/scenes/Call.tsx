@@ -19,14 +19,14 @@ import {VO} from '../timeline';
  */
 
 /* ---------------- mốc thời gian (frame cảnh) ---------------- */
-const RING = [34, 70]; // hai hồi chuông
-const CONNECT = 105; // khách bắt máy
-const HANGUP = 533; // cúp máy (khách vừa dứt câu c2)
-const CARD = 545; // thẻ kết quả bật lên
-const CHECK = 551; // tick xanh bắt đầu vẽ
+export const RING = [34, 70]; // hai hồi chuông
+export const CONNECT = 105; // khách bắt máy
+export const HANGUP = 533; // cúp máy (khách vừa dứt câu c2)
+export const CARD = 545; // thẻ kết quả bật lên
+export const CHECK = 551; // tick xanh bắt đầu vẽ
 
 /** Mốc một chữ của câu thoại tính theo frame cảnh. */
-const wordAt = (id: keyof typeof VO, i: number) => VO[id].at + VOICE[id].words[i].at;
+export const wordAt = (id: keyof typeof VO, i: number) => VO[id].at + VOICE[id].words[i].at;
 
 /* ---------------- bố cục ---------------- */
 const PY = (1080 - PHONE.h) / 2;
@@ -40,8 +40,8 @@ const BUBBLE_BASE = 846; // đáy bong bóng mới nhất
 const BUBBLE_SHIFT = 160; // bong bóng cũ bị đẩy lên bao nhiêu
 
 /* ---------------- lời thoại thành bong bóng ---------------- */
-type Phrase = {side: 'a' | 'c'; id: 'a1' | 'a2' | 'c1' | 'c2'; pick: number[]; hi?: boolean; replace?: Record<number, string>};
-const PHRASES: Phrase[] = [
+export type Phrase = {side: 'a' | 'c'; id: 'a1' | 'a2' | 'c1' | 'c2'; pick: number[]; hi?: boolean; replace?: Record<number, string>};
+export const PHRASES: Phrase[] = [
   {side: 'a', id: 'a1', pick: [0, 1, 2, 3, 4, 5], replace: {5: 'Sirrok.'}},
   {side: 'a', id: 'a1', pick: [11, 12, 13, 14, 15, 16]},
   {side: 'c', id: 'c1', pick: [0, 1, 2, 3, 4]},
@@ -51,10 +51,10 @@ const PHRASES: Phrase[] = [
   {side: 'c', id: 'c2', pick: [0, 1, 2, 3]},
 ];
 /** Bong bóng hiện ra ngay trước chữ đầu tiên được đọc. */
-const appearAt = (p: Phrase) => wordAt(p.id, p.pick[0]) - 6;
+export const appearAt = (p: Phrase) => wordAt(p.id, p.pick[0]) - 6;
 
 /** Mắt agent chớp theo nhịp nói. */
-const AGENT_BLINKS = [20, 96, 150, 236, 300, 392, 452, 506, 556];
+export const AGENT_BLINKS = [20, 96, 150, 236, 300, 392, 452, 506, 556];
 
 /* ---------------- icon nhỏ cho màn hình gọi ---------------- */
 const IconKeypad: React.FC<{size: number; color: string}> = ({size, color}) => (
@@ -79,7 +79,7 @@ const IconHandset: React.FC<{size: number; color: string; rotate?: number}> = ({
 );
 
 /* ---------------- Dynamic Island: live activity cuộc gọi ---------------- */
-const CallIsland: React.FC<{f: number}> = ({f}) => {
+export const CallIsland: React.FC<{f: number}> = ({f}) => {
   const grow = Math.min(ev(f, [20, 36], [0, 1], E.back), 1 - ev(f, [HANGUP + 2, HANGUP + 14], [0, 1], E.inOut));
   const w = 160 + (204 - 160) * grow; // vừa khít giữa giờ và pin của thanh trạng thái
   const h = 46 + (54 - 46) * grow;
@@ -126,7 +126,7 @@ const CallIsland: React.FC<{f: number}> = ({f}) => {
 };
 
 /* ---------------- màn hình cuộc gọi kiểu iOS ---------------- */
-const CallScreen: React.FC<{f: number}> = ({f}) => {
+export const CallScreen: React.FC<{f: number}> = ({f}) => {
   const live = ev(f, [CONNECT, CONNECT + 10], [0, 1], E.out);
   const ended = ev(f, [HANGUP, HANGUP + 8], [0, 1], E.out);
   const secs = Math.max(0, Math.floor((Math.min(f, HANGUP) - CONNECT) / 30));
@@ -238,7 +238,7 @@ const CallScreen: React.FC<{f: number}> = ({f}) => {
 };
 
 /* ---------------- cột người nói (trái: Sirrok, phải: khách) ---------------- */
-const SpeakerHead: React.FC<{f: number; side: 'a' | 'c'}> = ({f, side}) => {
+export const SpeakerHead: React.FC<{f: number; side: 'a' | 'c'}> = ({f, side}) => {
   const isA = side === 'a';
   const clip = isA ? (f < VO.a2.at - 4 ? 'a1' : 'a2') : f < VO.c2.at - 4 ? 'c1' : 'c2';
   const lf = f - VO[clip].at;

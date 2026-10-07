@@ -12,7 +12,7 @@ import {IconCheck} from '../ui';
  * Bảng bên phải là danh sách việc của Sirrok, tick xanh theo từng bước.
  */
 
-const CLICK = {mail: 70, pdfBtn: 196, send: 318};
+export const CLICK = {mail: 70, pdfBtn: 196, send: 318};
 
 const KEYS: Key[] = [
   {f: 0, x: 900, y: 1160},
@@ -32,7 +32,7 @@ const KEYS: Key[] = [
   {f: 352, x: 1530, y: 770},
 ];
 
-const card: React.CSSProperties = {
+export const card: React.CSSProperties = {
   position: 'absolute',
   background: C.white,
   borderRadius: 26,
@@ -53,25 +53,25 @@ const TitleBar: React.FC<{title: string; right?: React.ReactNode}> = ({title, ri
   </div>
 );
 
-const pop = (f: number, at: number) => ({
+export const pop = (f: number, at: number) => ({
   opacity: ev(f, [at, at + 12], [0, 1], E.out),
   scale: String(0.94 + 0.06 * ev(f, [at, at + 16], [0, 1], E.back)),
   translate: `0px ${ev(f, [at, at + 16], [40, 0], E.out)}px`,
 });
 
-const STEPS = [
+export const STEPS = [
   {label: 'Tìm email của khách', start: 30, done: 104},
   {label: 'Lập bảng giá', start: 110, done: 184},
   {label: 'Xuất báo giá PDF', start: 190, done: 262},
   {label: 'Gửi email', start: 266, done: 330},
 ];
 
-const ROWS = [
+export const ROWS = [
   {item: 'Gói Agent Pro', qty: '5', unit: 2_400_000, sum: 12_000_000, at: 128},
   {item: 'Thiết lập ban đầu', qty: '1', unit: 3_000_000, sum: 3_000_000, at: 142},
   {item: 'Hỗ trợ 3 tháng', qty: '1', unit: 0, sum: 0, at: 156},
 ];
-const TOTAL = 15_000_000;
+export const TOTAL = 15_000_000;
 
 export const S2Work: React.FC = () => {
   const f = useCurrentFrame();

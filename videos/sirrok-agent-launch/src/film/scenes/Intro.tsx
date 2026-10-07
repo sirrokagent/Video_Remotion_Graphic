@@ -20,9 +20,9 @@ import {VOICE, VoiceWave} from '../../voice';
 export const BEAT = 18;
 export const CALM_AT = 162;
 
-type Shot = {fx: FxKey; dark: boolean; off: number; size: number};
+export type Shot = {fx: FxKey; dark: boolean; off: number; size: number};
 /** off = hiệu ứng bắt đầu từ frame nào; mỗi shot chạy hiệu ứng nhanh gấp 1.5 lần để kịp "đã" trong 18 frame. */
-const SHOTS: Shot[] = [
+export const SHOTS: Shot[] = [
   {fx: 'draw', dark: false, off: 2, size: 520},
   {fx: 'glitch', dark: true, off: 2, size: 540},
   {fx: 'liquid', dark: false, off: 4, size: 520},
@@ -33,15 +33,15 @@ const SHOTS: Shot[] = [
   {fx: 'hologram', dark: true, off: 2, size: 540},
   {fx: 'pulse', dark: false, off: 0, size: 520},
 ];
-const SPEED = 1.5;
+export const SPEED = 1.5;
 const GHOST_CY = 372; // tâm dọc của ghost trong montage — nửa trên khung
 
 /* nhịp cuối: cùng chỗ, cùng cỡ với S1Wake frame 0 */
 const EYE = {x: 960, y: 372};
 const LW = 700;
 const KK = LW / 100;
-const COLLAPSE: [number, number] = [176, 197];
-const CLOSE: [number, number] = [272, 279];
+export const COLLAPSE: [number, number] = [176, 197];
+export const CLOSE: [number, number] = [272, 279];
 
 const Montage: React.FC<{f: number}> = ({f}) => {
   const i = Math.min(SHOTS.length - 1, Math.floor(f / BEAT));

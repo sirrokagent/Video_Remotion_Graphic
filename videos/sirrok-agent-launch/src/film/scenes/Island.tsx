@@ -20,7 +20,7 @@ import {VO} from '../timeline';
  * bước 3 ở 212 · bước 4 ở 246 · xong ✓ ở 282 · từ ~306 đứng yên cho vệt chuyển cảnh.
  */
 
-const N5 = VO.n5.at; // 15
+export const N5 = VO.n5.at; // 15
 
 /* ---------------- nhịp nhiệm vụ: dùng chung cho cả ba máy ---------------- */
 
@@ -151,9 +151,9 @@ const PhoneActivity: React.FC<{f: number; app: string}> = ({f, app}) => (
 
 /* ---------------- macOS ---------------- */
 
-const MAC = {sw: 1000, sh: 640, bez: 18, baseW: 1220, baseH: 30};
-const LID_W = MAC.sw + MAC.bez * 2;
-const LID_H = MAC.sh + MAC.bez * 2;
+export const MAC = {sw: 1000, sh: 640, bez: 18, baseW: 1220, baseH: 30};
+export const LID_W = MAC.sw + MAC.bez * 2;
+export const LID_H = MAC.sh + MAC.bez * 2;
 
 const MacIsland: React.FC<{f: number}> = ({f}) => {
   const open = ev(f, [24, 44], [0, 1], E.back); // vượt nhẹ quá 1 → cảm giác lò xo
@@ -258,7 +258,7 @@ const TaskWindow: React.FC<{f: number}> = ({f}) => (
   </div>
 );
 
-const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
+export const Mac: React.FC<{f: number; win?: boolean}> = ({f, win = false}) => (
   <div style={{position: 'relative', width: LID_W, height: LID_H + MAC.baseH}}>
     <div
       style={{
@@ -397,7 +397,7 @@ const IosIsland: React.FC<{f: number}> = ({f}) => {
   );
 };
 
-const IPhone: React.FC<{f: number}> = ({f}) => (
+export const IPhone: React.FC<{f: number}> = ({f}) => (
   <PhoneFrame island={<IosIsland f={f} />}>
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 560, background: 'radial-gradient(ellipse at 50% 100%, rgba(35,110,238,0.16), transparent 70%)'}} />
     <div style={{position: 'absolute', left: 0, right: 0, top: 300, textAlign: 'center', color: C.ink}}>
@@ -416,7 +416,7 @@ const IPhone: React.FC<{f: number}> = ({f}) => (
 
 /* ---------------- Android (tự vẽ: lỗ camera, thanh trạng thái kiểu Material) ---------------- */
 
-const AND = {w: 480, h: 1000, r: 62, bezel: 12};
+export const AND = {w: 480, h: 1000, r: 62, bezel: 12};
 
 const AndroidLive: React.FC<{f: number}> = ({f}) => {
   const chip = ev(f, [146, 156], [0, 1], E.back);
@@ -465,7 +465,7 @@ const AndroidLive: React.FC<{f: number}> = ({f}) => {
   );
 };
 
-const Android: React.FC<{f: number}> = ({f}) => (
+export const Android: React.FC<{f: number}> = ({f}) => (
   <div
     style={{
       position: 'relative',
@@ -521,7 +521,7 @@ const Android: React.FC<{f: number}> = ({f}) => (
 /* ---------------- dàn cảnh ---------------- */
 
 /** Đặt một thiết bị theo tâm ngang + mép trên, phóng quanh mép trên-giữa. */
-const Place: React.FC<{cx: number; top: number; s: number; w: number; dx?: number; o?: number; children: React.ReactNode}> = ({cx, top, s, w, dx = 0, o = 1, children}) => (
+export const Place: React.FC<{cx: number; top: number; s: number; w: number; dx?: number; o?: number; children: React.ReactNode}> = ({cx, top, s, w, dx = 0, o = 1, children}) => (
   <div style={{position: 'absolute', left: cx - w / 2, top, width: w, translate: `${dx}px 0px`, scale: String(s), transformOrigin: 'top center', opacity: o}}>{children}</div>
 );
 
