@@ -96,7 +96,9 @@ export const ListenRings: React.FC<{
   r: number;
   /** số hạt mỗi vòng */
   dots?: number;
-}> = ({t, level, color, on, cx, cy, r, dots = 150}) => {
+  /** bán kính hạt tối thiểu (đơn vị svg) — vòng nhỏ cần hạt không quá li ti */
+  dotMin?: number;
+}> = ({t, level, color, on, cx, cy, r, dots = 150, dotMin = 0}) => {
   if (on <= 0.001) return null;
   const lv = Math.max(0, Math.min(1, level));
   const out: React.ReactNode[] = [];
@@ -107,7 +109,7 @@ export const ListenRings: React.FC<{
     const wob = Math.sin(a * 5 + t * 0.21) * 0.5 + Math.sin(a * 9 - t * 0.17) * 0.5;
     const rr = inner + r * (0.05 * (rnd(i + 31) - 0.5) + 0.07 * lv * wob);
     out.push(
-      <circle key={`i${i}`} cx={cx + Math.cos(a) * rr} cy={cy + Math.sin(a) * rr} r={r * (0.009 + 0.011 * rnd(i + 3))} fill={color} opacity={on * (0.3 + 0.45 * rnd(i + 11)) * (0.65 + 0.35 * lv)} />,
+      <circle key={`i${i}`} cx={cx + Math.cos(a) * rr} cy={cy + Math.sin(a) * rr} r={Math.max(dotMin, r * (0.009 + 0.011 * rnd(i + 3)))} fill={color} opacity={on * (0.3 + 0.45 * rnd(i + 11)) * (0.65 + 0.35 * lv)} />,
     );
   }
   // ba đợt sóng hạt lan ra ngoài (sonar), biên độ theo giọng
@@ -126,7 +128,7 @@ export const ListenRings: React.FC<{
           key={`w${j}-${i}`}
           cx={cx + Math.cos(a) * rr}
           cy={cy + Math.sin(a) * rr}
-          r={r * (0.008 + 0.012 * rnd(i + j * 101))}
+          r={Math.max(dotMin * 0.85, r * (0.008 + 0.012 * rnd(i + j * 101)))}
           fill={color}
           opacity={on * fade * (0.22 + 0.5 * rnd(i * 5 + j)) * (0.5 + 0.5 * lv)}
         />,
@@ -266,6 +268,13 @@ export const Mascot: React.FC<Props> = ({
   const wave = Math.sin(t * 0.36);
   rot += -2.5 * wave * kGreet;
 
+  // chỉ còn cặp mắt (reveal → 0): thân chưa có thì không thở, không nhún — để nối khớp với EyePair
+  const extras = Math.max(0, Math.min(1, reveal)); // huy hiệu, tay, z… chỉ hiện khi đã có thân
+  sx = 1 + (sx - 1) * extras;
+  sy = 1 + (sy - 1) * extras;
+  dy *= extras;
+  rot *= extras;
+
   /* --- mắt --- */
   const drift = {x: 1.3 * Math.sin(f * 0.043) + 0.5 * Math.sin(f * 0.11 + 1), y: 0.7 * Math.sin(f * 0.031 + 2)};
   const target = {
@@ -303,8 +312,8 @@ export const Mascot: React.FC<Props> = ({
   const surf = LOGO_H + 4 - rise * (52 + 2.5 * Math.sin(t * 0.07));
 
   const bodyT = `translate(${FOOT.x} ${FOOT.y + dy}) rotate(${rot}) scale(${sx} ${sy}) translate(${-FOOT.x} ${-FOOT.y})`;
-  const r = 112 * Math.max(0, Math.min(1, reveal));
-  const extras = Math.max(0, Math.min(1, reveal)); // huy hiệu, tay, z… chỉ hiện khi đã có thân
+  // bỏ phần chấm thân còn sót khi gần thu hết (reveal rất nhỏ)
+  const r = 112 * Math.max(0, (extras - 0.03) / 0.97);
 
   return (
     <div style={{position: 'relative', width: size, height: (size * LOGO_H) / 100, flexShrink: 0, ...style}}>
@@ -415,7 +424,7 @@ export const MASCOT_SHOWCASE = GRID_AT + 150;
 /** Mức giọng giả lập cho trang trưng bày: lấy từ giọng thật, lặp lại. */
 const demoLevel = (f: number) => {
   const d = VOICE.command.durFrames;
-  return Math.min(1, loudness(VOICE.command, ((f % d) + d) % d) * 1.4);
+  return Math.min(1, loudness(VOICE.command, ((f % d) + d) % d) * 2.4);
 };
 
 export const MascotShowcase: React.FC = () => {
@@ -487,10 +496,10 @@ export const MascotShowcase: React.FC = () => {
                 <div style={{position: 'absolute', left: x - 80, top: 670, scale: String(pop)}}>
                   <Mascot size={160} state={s.state} f={f} since={sinceG} level={demoLevel(f + i * 9)} body={C.white} eyes={C.ink} />
                 </div>
-                <div style={{position: 'absolute', left: x - 137, width: 274, top: 380, textAlign: 'center', fontSize: 36, fontWeight: 700, color: C.ink, opacity: pop > 0 ? Math.min(1, pop) : 0}}>
+                <div style={{position: 'absolute', left: x - 137, width: 274, top: 400, textAlign: 'center', fontSize: 36, fontWeight: 700, color: C.ink, opacity: pop > 0 ? Math.min(1, pop) : 0}}>
                   {s.label}
                 </div>
-                <div style={{position: 'absolute', left: x - 137, width: 274, top: 900, textAlign: 'center', fontSize: 36, fontWeight: 700, color: C.white, opacity: pop > 0 ? Math.min(1, pop) : 0}}>
+                <div style={{position: 'absolute', left: x - 137, width: 274, top: 915, textAlign: 'center', fontSize: 36, fontWeight: 700, color: C.white, opacity: pop > 0 ? Math.min(1, pop) : 0}}>
                   {s.label}
                 </div>
               </React.Fragment>

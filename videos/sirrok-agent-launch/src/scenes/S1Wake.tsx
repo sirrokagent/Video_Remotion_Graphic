@@ -1,7 +1,8 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, interpolateColors, useCurrentFrame} from 'remotion';
 import {blinkAt, ev, keys, typed} from '../anim';
-import {EyePair, Ghost} from '../logo';
+import {ListenRings, Mascot} from '../film/mascot';
+import {EYE_MID, EyePair, Ghost} from '../logo';
 import {C, E, FONT, H, W} from '../theme';
 import {DESK, DesktopApp} from '../ui';
 import {BlurWords, loudness, VOICE, VoiceWave} from '../voice';
@@ -27,6 +28,13 @@ const SLOT_W = 84;
 // tâm chỗ của mắt trong ô nhập (chế độ giọng nói)
 const SLOT = {x: WIN.x + DESK.inputX + 34 + 36 + 22 + SLOT_W / 2, y: WIN.y + DESK.inputY + DESK.inputH / 2};
 const EYE0 = {x: 960, y: 372};
+/* "Hey Sirrok." — con ghost hiện nguyên hình để LẮNG NGHE (mascot listen), rồi thu về cặp mắt */
+const GHOST_L = 300; // cỡ logo khi ghost hiện đủ thân
+// tâm hai mắt khi có thân: đặt sao cho thân nằm giữa ngang, vòng hạt không chạm sóng âm (top 530)
+const EYE1 = {x: 960 + (EYE_MID.x - 50) * (GHOST_L / 100), y: 265 - (45 - EYE_MID.y) * (GHOST_L / 100)};
+const BODY_IN: [number, number] = [HEY_AT + 4, HEY_AT + 22]; // thân nở ra khi giọng bắt đầu
+const BODY_OUT: [number, number] = [64, 82]; // thân thu về cặp mắt, trước khi mắt bay vào ô nhập (84)
+const RING_R = 38; // vòng hạt quanh cặp mắt trong ô nhập (px)
 export const ASK = 'Gửi báo giá cho khách';
 
 export const S1Wake: React.FC = () => {
@@ -41,12 +49,29 @@ export const S1Wake: React.FC = () => {
     y: keys(f, [HEY_END + 16, HEY_END + 24, 78, 86], [0, -1.3, -1.3, 0], E.inOut),
   };
   const heyOut = ev(f, [76, 92], [0, 1], E.in);
+  // thân ghost: nở từ giữa hai mắt khi "Hey" vang lên, giữ suốt câu, thu lại trước khi bay
+  const bodyIn = ev(f, BODY_IN, [0, 1], E.out);
+  const bodyOut = ev(f, BODY_OUT, [0, 1], E.inOut);
+  const body = bodyIn * (1 - bodyOut);
+  // cặp mắt co từ cỡ mở cảnh (700) về cỡ ghost (300) và dời lên — thân nở quanh mắt
+  const grow = ev(f, [HEY_AT, HEY_AT + 14], [0, 1], E.out);
+  const ghostL = 700 + (GHOST_L - 700) * grow;
+  const ghostX = EYE0.x + (EYE1.x - EYE0.x) * grow;
+  const ghostY = EYE0.y + (EYE1.y - EYE0.y) * grow;
+  const heyLevel = Math.min(1, heyLoud * 2.4);
+  const asGhost = f >= HEY_AT && f < BODY_OUT[1];
+  // mắt đen trên nền trắng khi chưa có thân → trắng ngay khi thân đã phủ tới mắt (r ≈ 112·body)
+  const eyeInk = interpolateColors(E.inOut(Math.min(1, Math.max(0, (body - 0.03) / 0.09))), [0, 1], [C.ink, C.white]);
+  // nhìn lên chăm chú khi đang có thân (như mascot listen), về đúng wakeLook khi thu lại
+  const ghostLook = {x: wakeLook.x + 0.8 * body, y: wakeLook.y - 1.9 * body};
 
   /* --- pha 2: mắt bay vào ô nhập, UI lắp quanh --- */
   const fly = ev(f, [84, 120], [0, 1], E.inOut);
-  const eyeX = EYE0.x + (SLOT.x - EYE0.x) * fly;
-  const eyeY = EYE0.y + (SLOT.y - EYE0.y) * E.out(fly);
-  const eyeL = 700 + (LISTEN_L - 700) * fly;
+  // trước "Hey": cặp mắt mở cảnh (khớp frame cuối intro); sau khi ghost thu lại: bay từ chỗ ghost
+  const from = f < HEY_AT ? {...EYE0, l: 700} : {x: ghostX, y: ghostY, l: ghostL};
+  const eyeX = from.x + (SLOT.x - from.x) * fly;
+  const eyeY = from.y + (SLOT.y - from.y) * E.out(fly);
+  const eyeL = from.l + (LISTEN_L - from.l) * fly;
   const flying = f < 121;
   const ui = ev(f, [88, 122], [0, 1], E.out);
 
@@ -137,8 +162,31 @@ export const S1Wake: React.FC = () => {
         <BlurWords clip={VOICE.hey} f={f} start={HEY_AT} size={120} out={heyOut} />
       </div>
 
+      {/* vòng hạt lắng nghe quanh cặp mắt trong ô nhập (vẽ ngoài ô vì ô nhập cắt tràn) */}
+      {listen > 0 && !flying ? (
+        <svg width={RING_R * 4} height={RING_R * 4} viewBox={`${-RING_R * 2} ${-RING_R * 2} ${RING_R * 4} ${RING_R * 4}`} style={{position: 'absolute', left: SLOT.x - RING_R * 2, top: SLOT.y - RING_R * 2, overflow: 'visible', opacity: 1 - out}}>
+          <ListenRings t={f - 114} level={Math.min(1, cmdLoud * 2.4)} color={C.send} on={listen} cx={0} cy={0} r={RING_R} dotMin={1.1} dots={72} />
+        </svg>
+      ) : null}
+
+      {/* "Hey Sirrok." — ghost hiện nguyên hình, lắng nghe: vòng hạt nhịp theo giọng */}
+      {asGhost ? (
+        <Mascot
+          size={ghostL}
+          state="listen"
+          f={f}
+          since={HEY_AT}
+          level={heyLevel}
+          reveal={body}
+          blink={wakeBlink}
+          look={ghostLook}
+          eyes={eyeInk}
+          style={{position: 'absolute', left: ghostX - (EYE_MID.x * ghostL) / 100, top: ghostY - (EYE_MID.y * ghostL) / 100}}
+        />
+      ) : null}
+
       {/* hai nét mắt khi còn tự do */}
-      {flying ? (
+      {flying && !asGhost ? (
         <EyePair
           logoWidth={eyeL}
           blink={wakeBlink}
