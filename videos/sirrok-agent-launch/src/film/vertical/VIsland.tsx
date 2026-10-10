@@ -14,7 +14,9 @@ import {SAFE, VW} from './frame';
  *  106–137 iPhone trượt vào từ phải, đảo thu gọn 108 → nở 117–131, chữ "iPhone" bên dưới
  *  137–168 Android trượt vào, chip 146, thẻ thả xuống 152–166, chữ "Android"
  *  168–206 ghép bộ ba: Mac ở trên, iPhone + Android cạnh nhau bên dưới, thẻ tên 202/206/210
- *  212 / 246 bước 3, 4 · 282 cả ba báo ✓ "Đã gửi báo giá" · từ ~300 đứng yên cho vệt chuyển cảnh
+ *  176 bước 3 · 205–255 KHỰNG ở 50% "Đang chờ…" (hổ phách, ghost liếc mắt) · 255–282 bứt tốc
+ *  (bước 4 ở 268) · 282 cả ba báo ✓ "Đã gửi báo giá" · từ ~300 đứng yên cho vệt chuyển cảnh.
+ *  Nhịp tiến độ, mascot trong đảo và trạng thái chờ nằm ở Island.tsx (dùng chung, đồng bộ ba máy).
  * Mọi chuyển động có easing, không ngẫu nhiên.
  */
 

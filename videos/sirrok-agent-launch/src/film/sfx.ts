@@ -55,8 +55,10 @@ export const SFX: {at: number; file: string; vol: number}[] = [
   {at: START.island + 137, file: 'layered-paper-whoosh', vol: 0.25},
   {at: START.island + 146, file: 'subtle-haptic-pop', vol: 0.4},
   {at: START.island + 168, file: 'layered-paper-whoosh', vol: 0.3},
-  {at: START.island + 212, file: 'soft-digital-tick', vol: 0.5},
-  {at: START.island + 246, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.island + 176, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.island + 205, file: 'subtle-haptic-pop', vol: 0.35}, // khựng: đang chờ
+  {at: START.island + 255, file: 'layered-paper-whoosh', vol: 0.4}, // vọt nhanh
+  {at: START.island + 268, file: 'soft-digital-tick', vol: 0.5},
   {at: START.island + 282, file: 'four-soft-task-complete-ticks', vol: 0.3},
 
   // mạng xã hội

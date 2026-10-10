@@ -1,23 +1,26 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {blinkAt, ev, keys} from '../../anim';
+import {AbsoluteFill, Easing, useCurrentFrame} from 'remotion';
+import {blinkAt, ev} from '../../anim';
 import {IconCheck, PHONE, PhoneFrame} from '../../ui';
 import {AppTile} from '../../brands';
 import {Ghost, GhostMark} from '../../logo';
 import {C, E, FONT} from '../../theme';
 import {Kinetic, VoiceText} from '../text';
 import {VO} from '../timeline';
+import {Mascot, MascotState} from '../mascot';
 
 /**
  * Cảnh Island — việc agent đang chạy hiện ngay trong "Dynamic Island" trên Mac,
  * iPhone, Android. Một nhiệm vụ duy nhất ("Gửi báo giá cho khách", 4 bước) chạy
- * đồng bộ trên cả ba máy; mỗi lần qua bước, cặp mắt chớp một nhịp. Cuối cảnh cả
- * ba cùng báo ✓ "Đã gửi báo giá".
+ * đồng bộ trên cả ba máy. Nhịp tiến độ (theo yêu cầu khách): chạy đều tới giữa →
+ * KHỰNG lại ở trạng thái "Đang chờ…" (vàng hổ phách, thanh lấp lánh, ghost liếc mắt)
+ * → bứt tốc chạy nhanh tới 100% → cả ba cùng báo ✓ "Đã gửi báo giá".
  *
  * Mốc (frame cảnh): Mac nở đảo 24–44 · bước 2 ở 72 · "Mac" 100 · iPhone vào 106–122,
  * đảo thu gọn 108, nở 117–131 · Android vào 137–150, chip 146, thẻ thả xuống 152–166 ·
- * ghép bộ ba 168–206 ·
- * bước 3 ở 212 · bước 4 ở 246 · xong ✓ ở 282 · từ ~306 đứng yên cho vệt chuyển cảnh.
+ * ghép bộ ba 168–206 · bước 3 ở 176 ·
+ * KHỰNG (pending) 205–255 · BỨT TỐC 255–282 (bước 4 ở 268) · xong ✓ ở 282 ·
+ * từ ~306 đứng yên cho vệt chuyển cảnh.
  */
 
 export const N5 = VO.n5.at; // 15
@@ -25,59 +28,114 @@ export const N5 = VO.n5.at; // 15
 /* ---------------- nhịp nhiệm vụ: dùng chung cho cả ba máy ---------------- */
 
 const STEPS = ['Đọc email', 'Lập báo giá', 'Xuất PDF', 'Gửi'];
+/** tiến độ bắt đầu chạy */
+const RUN = 30;
+/** bắt đầu khựng — tiến độ đứng yên ở giữa, trạng thái "Đang chờ…" */
+export const STALL = 205;
+/** hết chờ — bứt tốc */
+export const BURST = 255;
+/** xong ✓ */
+export const DONE = 282;
 // mốc bắt đầu từng bước; phần tử cuối = lúc xong
-const STEP_AT = [0, 72, 212, 246, 282];
-const DONE = STEP_AT[4];
+const STEP_AT = [0, 72, 176, 268, DONE];
 const TICKS = STEP_AT.slice(1);
+/** tiến độ lúc khựng */
+const MID = 0.5;
 
-const progressAt = (f: number) => keys(f, [36, 72, 212, 246, DONE], [0.06, 0.25, 0.5, 0.75, 1], E.inOut);
+// chạy đều tới giữa rồi KHỰNG: cuối đoạn vẫn còn vận tốc → dừng gắt ở STALL (có easing, không linear)
+const RUN_EASE = Easing.bezier(0.3, 0.12, 0.65, 0.75);
+// bứt tốc: lấy đà rồi tăng tốc mạnh, chạm 100% gọn gàng
+const BURST_EASE = Easing.bezier(0.72, 0, 0.18, 1);
+
+const progressAt = (f: number) =>
+  f < BURST ? ev(f, [RUN, STALL], [0.04, MID], RUN_EASE) : ev(f, [BURST, DONE], [MID, 1], BURST_EASE);
+/** 0 → 1: đang ở trạng thái chờ (vào nhanh, ra ngay trước lúc bứt tốc) */
+const pendAt = (f: number) => ev(f, [STALL, STALL + 8], [0, 1], E.out) * (1 - ev(f, [BURST - 3, BURST + 3], [0, 1], E.out));
+/** nhịp thở của trạng thái chờ 0 → 1 → 0, chu kỳ 20 frame (hình sin, mượt) */
+const pulseAt = (f: number) => 0.5 - 0.5 * Math.cos(((f - STALL) / 20) * Math.PI * 2);
+/** 0 → 1: đang bứt tốc (tắt khi xong) */
+const burstAt = (f: number) => ev(f, [BURST, BURST + 4], [0, 1], E.out) * (1 - ev(f, [DONE - 2, DONE + 6], [0, 1], E.out));
 const doneAt = (f: number) => ev(f, [DONE, DONE + 10], [0, 1], E.out);
-/** nhịp "đập" lúc xong: 0 → 1 → 0 */
-const bumpAt = (f: number) => ev(f, [DONE, DONE + 6], [0, 1], E.out) * (1 - ev(f, [DONE + 6, DONE + 24], [0, 1], E.inOut));
-/** mắt chớp mỗi lần qua bước, thêm vài nhịp nghỉ cho sống động */
-const blinkOf = (f: number) => blinkAt(f, [...TICKS, 50, 101, 160, 300]);
+/** nhịp "đập" 0 → 1 → 0 quanh mốc t */
+const bump = (f: number, t: number, up = 6, down = 18) => ev(f, [t, t + up], [0, 1], E.out) * (1 - ev(f, [t + up, t + up + down], [0, 1], E.inOut));
+/** nhịp "đập" lúc xong */
+const bumpAt = (f: number) => bump(f, DONE);
+/** mắt (ghost trên dock) chớp mỗi lần qua bước, thêm vài nhịp nghỉ cho sống động */
+const blinkOf = (f: number) => blinkAt(f, [...TICKS, 50, 101, 140, 300]);
+
+/** Trạng thái mascot trong đảo: làm → chờ (liếc mắt) → làm (bứt tốc) → xong. */
+const mascotAt = (f: number): {state: MascotState; since: number} =>
+  f >= DONE ? {state: 'done', since: DONE} : f >= BURST ? {state: 'work', since: BURST} : f >= STALL ? {state: 'pending', since: STALL} : {state: 'work', since: RUN};
 
 const GRAY = '#B9BDC4'; // 10.6:1 trên đen
 const TRACK = 'rgba(255,255,255,0.16)';
+/** vàng hổ phách — trạng thái chờ. Trên đen 11.4:1 */
+export const AMBER = '#FFB020';
+/** vàng hổ phách đậm cho nền trắng — 5.0:1 */
+const AMBER_INK = '#B45309';
 
-/** Biểu tượng bên trái: cặp mắt trắng trên đen → vòng xanh lá có dấu ✓ khi xong. */
+/** Ghost trong đảo: mascot thân trắng mắt đen; nảy nhẹ mỗi lần qua bước. */
 const Badge: React.FC<{f: number; size: number}> = ({f, size}) => {
-  const d = doneAt(f);
-  const pop = ev(f, [DONE, DONE + 12], [0, 1], E.back);
+  const m = mascotAt(f);
+  const hop = Math.max(...TICKS.slice(0, 3).map((t) => bump(f, t, 4, 12)));
   return (
-    <div style={{position: 'relative', width: size, height: size, flexShrink: 0}}>
-      <div style={{position: 'absolute', left: size / 2, top: size / 2, opacity: 1 - d, scale: String(1 - 0.4 * d)}}>
-        <GhostMark size={size * 0.92} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 0, top: 0}} />
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          borderRadius: size / 2,
-          background: C.ok,
-          display: 'grid',
-          placeItems: 'center',
-          opacity: d,
-          scale: String(0.4 + 0.6 * pop),
-        }}
-      >
-        <IconCheck size={size * 0.66} color={C.white} stroke={3} progress={ev(f, [DONE + 3, DONE + 14], [0, 1], E.out)} />
+    <div style={{position: 'relative', width: size, height: size, flexShrink: 0, display: 'grid', placeItems: 'center'}}>
+      <div style={{translate: `0px ${-size * 0.1 * hop}px`, scale: String(1 + 0.06 * hop)}}>
+        <Mascot size={size * 0.9} state={m.state} f={f} since={m.since} body={C.white} eyes={C.ink} />
       </div>
     </div>
   );
 };
 
+/** Ba chấm chạy lần lượt — "đang chờ". */
+const Dots: React.FC<{f: number; color: string; size: number}> = ({f, color, size}) => (
+  <span style={{display: 'inline-flex', gap: size * 0.12, marginLeft: size * 0.08}}>
+    {[0, 1, 2].map((i) => {
+      const ph = (((f - STALL - i * 4) % 18) + 18) % 18;
+      const o = 0.3 + 0.7 * ev(ph, [0, 5], [0, 1], E.out) * (1 - ev(ph, [6, 14], [0, 1], E.inOut));
+      return <span key={i} style={{color, opacity: o}}>.</span>;
+    })}
+  </span>
+);
+
+/** Chỉ báo chờ: chấm hổ phách thở + "Đang chờ" + ba chấm chạy. */
+const PendingLabel: React.FC<{f: number; size: number; color?: string}> = ({f, size, color = AMBER}) => {
+  const p = pulseAt(f);
+  const d = size * 0.42;
+  return (
+    <span style={{display: 'inline-flex', alignItems: 'center', gap: size * 0.32, color}}>
+      <span style={{position: 'relative', width: d, height: d, flexShrink: 0}}>
+        <span style={{position: 'absolute', inset: 0, borderRadius: d, background: color, opacity: 0.35 * (1 - p), scale: String(1 + 0.9 * p)}} />
+        <span style={{position: 'absolute', inset: 0, borderRadius: d, background: color}} />
+      </span>
+      <span style={{fontWeight: 600}}>
+        Đang chờ
+        <Dots f={f} color={color} size={size} />
+      </span>
+    </span>
+  );
+};
+
 /** Chữ cuộn dọc: chữ cũ trôi lên, chữ mới trồi từ dưới — mỗi mốc một dòng. */
-const Roll: React.FC<{f: number; at: number[]; texts: string[]; size: number; weight: number; color: string}> = ({f, at, texts, size, weight, color}) => {
+const Roll: React.FC<{f: number; at: number[]; texts: React.ReactNode[]; size: number; weight: number; color: string; dur?: number}> = ({
+  f,
+  at,
+  texts,
+  size,
+  weight,
+  color,
+  dur = 12,
+}) => {
   const h = Math.round(size * 1.3);
   return (
     <div style={{position: 'relative', height: h, overflow: 'hidden', fontSize: size, fontWeight: weight, color, lineHeight: `${h}px`, whiteSpace: 'nowrap'}}>
       {texts.map((t, i) => {
-        const inn = i === 0 ? 0 : ev(f, [at[i], at[i] + 12], [1, 0], E.out);
-        const out = i < texts.length - 1 ? ev(f, [at[i + 1], at[i + 1] + 12], [0, 1], E.out) : 0;
+        const inn = i === 0 ? 0 : ev(f, [at[i], at[i] + dur], [1, 0], E.out);
+        const out = i < texts.length - 1 ? ev(f, [at[i + 1], at[i + 1] + dur], [0, 1], E.out) : 0;
         const before = i > 0 && f < at[i];
+        if (before || (out >= 1 && i < texts.length - 1)) return null;
         return (
-          <div key={t} style={{position: 'absolute', left: 0, top: 0, opacity: before ? 0 : (1 - inn) * (1 - out), translate: `0px ${(inn - out) * h}px`}}>
+          <div key={i} style={{position: 'absolute', left: 0, top: 0, opacity: (1 - inn) * (1 - out), translate: `0px ${(inn - out) * h}px`}}>
             {t}
           </div>
         );
@@ -90,33 +148,139 @@ const Title: React.FC<{f: number; size: number}> = ({f, size}) => (
   <Roll f={f} at={[0, DONE]} texts={['Gửi báo giá cho khách', 'Đã gửi báo giá']} size={size} weight={700} color={C.white} />
 );
 
+/** Dòng bước: …3/4 Xuất PDF → Đang chờ… (khựng) → 3/4 → 4/4 Gửi → Hoàn tất (cuộn nhanh khi bứt tốc). */
 const StepLine: React.FC<{f: number; size: number}> = ({f, size}) => (
   <Roll
     f={f}
-    at={STEP_AT}
-    texts={[...STEPS.map((s, i) => `${i + 1}/4 · ${s}`), '4/4 · Hoàn tất']}
+    at={[0, STEP_AT[1], STEP_AT[2], STALL, BURST, STEP_AT[3], DONE]}
+    texts={[
+      `1/4 · ${STEPS[0]}`,
+      `2/4 · ${STEPS[1]}`,
+      `3/4 · ${STEPS[2]}`,
+      <PendingLabel key="p" f={f} size={size} />,
+      `3/4 · ${STEPS[2]}`,
+      `4/4 · ${STEPS[3]}`,
+      <span key="d" style={{color: '#4CD07D', fontWeight: 600}}>
+        4/4 · Hoàn tất
+      </span>,
+    ]}
     size={size}
     weight={500}
     color={GRAY}
+    dur={f >= BURST ? 8 : 12}
   />
 );
 
+/** Thanh tiến độ: xanh khi chạy · hổ phách + vệt sáng lướt khi chờ · đầu sáng có đuôi khi bứt tốc · xanh lá khi xong. */
 const Bar: React.FC<{f: number; h: number}> = ({f, h}) => {
   const p = progressAt(f);
+  const pend = pendAt(f);
+  const pulse = pulseAt(f);
+  const bst = burstAt(f);
   const d = doneAt(f);
+  // vệt sáng lướt qua phần đã chạy, mỗi 26 frame một lượt (có easing)
+  const ph = (((f - STALL) % 26) + 26) % 26;
+  const sweep = ev(ph, [0, 22], [-0.35, 1.15], E.inOut);
+  const pct = `${p * 100}%`;
+  const knob = h * 1.9;
   return (
-    <div style={{position: 'relative', height: h, borderRadius: h / 2, background: TRACK, overflow: 'hidden'}}>
-      <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: `${p * 100}%`, borderRadius: h / 2, background: C.sparkle}} />
-      <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: `${p * 100}%`, borderRadius: h / 2, background: C.ok, opacity: d}} />
+    <div style={{position: 'relative', height: h}}>
+      <div style={{position: 'absolute', inset: 0, borderRadius: h / 2, background: TRACK, overflow: 'hidden'}}>
+        <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: pct, borderRadius: h / 2, background: C.sparkle}} />
+        <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: pct, borderRadius: h / 2, background: AMBER, opacity: pend * (0.82 + 0.18 * pulse)}} />
+        {pend > 0 && (
+          <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: pct, borderRadius: h / 2, overflow: 'hidden', opacity: pend}}>
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: `${sweep * 100}%`,
+                width: '35%',
+                background: 'linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.75), rgba(255,255,255,0))',
+              }}
+            />
+          </div>
+        )}
+        {/* đuôi sáng khi bứt tốc */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: `calc(${pct} - 46%)`,
+            width: '46%',
+            background: 'linear-gradient(90deg, rgba(120,170,255,0), rgba(170,205,255,0.95))',
+            opacity: bst,
+          }}
+        />
+        <div style={{position: 'absolute', left: 0, top: 0, bottom: 0, width: pct, borderRadius: h / 2, background: '#1E9E4F', opacity: d}} />
+      </div>
+      {/* đầu thanh: chấm hổ phách thở khi chờ, đầu trắng phát sáng khi bứt tốc */}
+      <div
+        style={{
+          position: 'absolute',
+          left: pct,
+          top: h / 2,
+          width: knob,
+          height: knob,
+          translate: '-50% -50%',
+          borderRadius: knob,
+          background: bst > pend ? C.white : AMBER,
+          opacity: Math.max(pend, bst),
+          scale: String(0.75 + 0.25 * (pend * pulse + bst)),
+          boxShadow:
+            bst > pend
+              ? `0 0 ${h * 1.6}px ${h * 0.5}px rgba(140,185,255,${0.9 * bst})`
+              : `0 0 ${h * 1.4}px ${h * 0.3 * pulse}px rgba(255,176,32,${0.75 * pend})`,
+        }}
+      />
     </div>
   );
 };
 
-const Percent: React.FC<{f: number; size: number}> = ({f, size}) => (
-  <div style={{fontSize: size, fontWeight: 700, color: C.white, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', flexShrink: 0}}>
-    {Math.round(progressAt(f) * 100)}%
-  </div>
-);
+/** Phần trăm → hổ phách khi chờ → vòng xanh lá có dấu ✓ khi xong. */
+const Percent: React.FC<{f: number; size: number}> = ({f, size}) => {
+  const d = doneAt(f);
+  const pop = ev(f, [DONE, DONE + 12], [0, 1], E.back);
+  const pend = pendAt(f);
+  const disc = size * 1.45;
+  return (
+    <div style={{position: 'relative', flexShrink: 0, display: 'grid', placeItems: 'center'}}>
+      <div
+        style={{
+          fontSize: size,
+          fontWeight: 700,
+          color: pend > 0.5 ? AMBER : C.white,
+          fontVariantNumeric: 'tabular-nums',
+          whiteSpace: 'nowrap',
+          opacity: 1 - d,
+          scale: String(1 - 0.5 * d + 0.08 * burstAt(f)),
+        }}
+      >
+        {Math.round(progressAt(f) * 100)}%
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          translate: '-50% -50%',
+          width: disc,
+          height: disc,
+          borderRadius: disc,
+          background: '#1E9E4F',
+          display: 'grid',
+          placeItems: 'center',
+          opacity: d,
+          scale: String(0.4 + 0.6 * pop),
+        }}
+      >
+        <IconCheck size={disc * 0.7} color={C.white} stroke={3.2} progress={ev(f, [DONE + 3, DONE + 14], [0, 1], E.out)} />
+      </div>
+    </div>
+  );
+};
 
 /** Vòng tiến độ nhỏ cho đảo dạng thu gọn. */
 const Ring: React.FC<{f: number; size: number}> = ({f, size}) => {
@@ -129,11 +293,20 @@ const Ring: React.FC<{f: number; size: number}> = ({f, size}) => {
   );
 };
 
-/** Viền sáng xanh lá lan ra lúc xong. */
+/** Viền đảo: hổ phách thở nhẹ khi chờ, sáng xanh lá lan ra lúc xong. */
 const glow = (f: number) => {
   const g = bumpAt(f);
-  return `0 0 0 ${7 * g}px rgba(19,115,51,${0.6 * g}), 0 0 ${60 * g}px rgba(19,115,51,${0.45 * g})`;
+  const a = pendAt(f) * (0.35 + 0.65 * pulseAt(f));
+  return [
+    `0 0 0 ${2 + 3 * a}px rgba(255,176,32,${0.85 * a})`,
+    `0 0 ${34 * a}px rgba(255,176,32,${0.45 * a})`,
+    `0 0 0 ${7 * g}px rgba(30,158,79,${0.6 * g})`,
+    `0 0 ${60 * g}px rgba(30,158,79,${0.45 * g})`,
+  ].join(', ');
 };
+
+/** Đảo "giật" nhẹ: khựng ở STALL, lấy đà rồi bật lúc bứt tốc, đập lúc xong. */
+const kick = (f: number) => 1 - 0.02 * bump(f, STALL, 3, 9) - 0.03 * bump(f, BURST - 4, 4, 4) + 0.035 * bump(f, BURST, 5, 14) + 0.05 * bumpAt(f);
 
 /** Thân Live Activity dạng mở rộng — điện thoại (chữ ≥ 32 px để thu nhỏ 0.76 vẫn ≥ 24 px). */
 const PhoneActivity: React.FC<{f: number; app: string}> = ({f, app}) => (
@@ -173,7 +346,7 @@ const MacIsland: React.FC<{f: number}> = ({f}) => {
         borderRadius: `0 0 ${r}px ${r}px`,
         background: '#000',
         overflow: 'hidden',
-        scale: String(1 + 0.05 * bumpAt(f)),
+        scale: String(kick(f)),
         transformOrigin: 'top center',
         boxShadow: glow(f),
       }}
@@ -232,25 +405,36 @@ const TaskWindow: React.FC<{f: number}> = ({f}) => (
       <div style={{fontSize: 30, fontWeight: 800, color: C.ink, marginBottom: 4}}>Gửi báo giá cho khách</div>
       {STEPS.map((s, i) => {
         const end = STEP_AT[i + 1];
-        const doneK = ev(f, [end, end + 10], [0, 1], E.out);
+        const doneK = ev(f, [end, end + (f >= BURST ? 6 : 10)], [0, 1], E.out);
         const active = f >= STEP_AT[i] && f < end;
+        // bước đang chạy lúc khựng → vòng hổ phách thở + nhãn "Đang chờ…"
+        const pend = active ? pendAt(f) : 0;
+        const pulse = pulseAt(f);
         return (
           <div key={s} style={{display: 'flex', alignItems: 'center', gap: 16, fontSize: 28, fontWeight: 500, color: active || doneK > 0 ? C.text : C.muted}}>
             <div
               style={{
+                position: 'relative',
                 width: 36,
                 height: 36,
                 borderRadius: 18,
-                border: `2.5px solid ${doneK > 0 ? C.ok : active ? C.sparkle : C.field}`,
+                border: `2.5px solid ${doneK > 0 ? C.ok : pend > 0.5 ? AMBER_INK : active ? C.sparkle : C.field}`,
                 background: doneK > 0 ? C.ok : 'transparent',
                 display: 'grid',
                 placeItems: 'center',
-                scale: String(1 + 0.15 * ev(f, [end, end + 5], [0, 1], E.out) * (1 - ev(f, [end + 5, end + 14], [0, 1], E.inOut))),
+                scale: String(1 + 0.15 * bump(f, end, 5, 9)),
+                boxShadow: pend > 0 ? `0 0 0 ${6 * pulse * pend}px rgba(224,138,0,${0.28 * (1 - pulse) * pend})` : 'none',
               }}
             >
+              {pend > 0 && <div style={{position: 'absolute', width: 14, height: 14, borderRadius: 7, background: AMBER_INK, opacity: pend * (0.55 + 0.45 * pulse)}} />}
               <IconCheck size={24} color={C.white} stroke={3} progress={doneK} />
             </div>
             {s}
+            {pend > 0 && (
+              <div style={{marginLeft: 'auto', fontSize: 26, opacity: pend, translate: `${(1 - pend) * 16}px 0px`}}>
+                <PendingLabel f={f} size={26} color={AMBER_INK} />
+              </div>
+            )}
           </div>
         );
       })}
@@ -378,14 +562,16 @@ const IosIsland: React.FC<{f: number}> = ({f}) => {
         borderRadius: r,
         background: '#000',
         overflow: 'hidden',
-        scale: String(1 + 0.05 * bumpAt(f)),
+        scale: String(kick(f)),
         transformOrigin: 'top center',
         boxShadow: glow(f),
       }}
     >
       {/* dạng thu gọn: mắt bên trái, vòng tiến độ bên phải */}
       <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: 46, opacity: showCompact}}>
-        <GhostMark size={34} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 38, top: 23}} />
+        <div style={{position: 'absolute', left: 38, top: 23, translate: '-50% -50%'}}>
+          <Mascot size={32} state={mascotAt(f).state} f={f} since={mascotAt(f).since} body={C.white} eyes={C.ink} />
+        </div>
         <div style={{position: 'absolute', right: 12, top: 8}}>
           <Ring f={f} size={30} />
         </div>
@@ -418,6 +604,13 @@ export const IPhone: React.FC<{f: number}> = ({f}) => (
 
 export const AND = {w: 480, h: 1000, r: 62, bezel: 12};
 
+/** Màu chip trạng thái Android: xanh khi chạy → hổ phách khi chờ → xanh lá khi xong. */
+const chipBg = (f: number) => {
+  const a = Math.round(pendAt(f) * 100);
+  const g = Math.round(doneAt(f) * 100);
+  return `color-mix(in srgb, #1E9E4F ${g}%, color-mix(in srgb, #E08A00 ${a}%, ${C.beta}))`;
+};
+
 const AndroidLive: React.FC<{f: number}> = ({f}) => {
   const chip = ev(f, [146, 156], [0, 1], E.back);
   const open = ev(f, [152, 166], [0, 1], E.back);
@@ -433,12 +626,14 @@ const AndroidLive: React.FC<{f: number}> = ({f}) => {
           width: 92 * chip,
           height: 38,
           borderRadius: 19,
-          background: C.beta,
+          background: chipBg(f),
           overflow: 'hidden',
           opacity: Math.min(1, chip * 2),
         }}
       >
-        <GhostMark size={30} body={C.white} eyes={C.ink} blink={blinkOf(f)} style={{position: 'absolute', translate: '-50% -50%', left: 46, top: 19}} />
+        <div style={{position: 'absolute', left: 46, top: 19, translate: '-50% -50%'}}>
+          <Mascot size={28} state={mascotAt(f).state} f={f} since={mascotAt(f).since} body={C.white} eyes={C.ink} />
+        </div>
       </div>
       {/* thẻ thông báo trực tiếp thả xuống từ trên */}
       <div
@@ -452,7 +647,7 @@ const AndroidLive: React.FC<{f: number}> = ({f}) => {
           background: '#000',
           overflow: 'hidden',
           opacity: Math.min(1, open * 3),
-          scale: String(1 + 0.05 * bumpAt(f)),
+          scale: String(kick(f)),
           transformOrigin: 'top center',
           boxShadow: glow(f),
         }}
