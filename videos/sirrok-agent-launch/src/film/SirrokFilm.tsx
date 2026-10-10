@@ -16,11 +16,14 @@ import {Intro} from './scenes/Intro';
 import {Island} from './scenes/Island';
 import {Meet} from './scenes/Meet';
 import {Social} from './scenes/Social';
+import {Pick} from './scenes/Pick';
+import {Team} from './scenes/Team';
+import {Sleep} from './scenes/Sleep';
 import {CUT, F, ORDER, START, VO} from './timeline';
 import {SFX} from './sfx';
 
 /**
- * Sirrok Agent — phim ra mắt 90 giây.
+ * Sirrok Agent — phim ra mắt ~2 phút.
  * Ghost nhiều hiệu ứng → "Hey Sirrok" → agent tự làm trên desktop → tự gọi khách →
  * tiến độ trên Dynamic Island (Mac / iPhone / Android) → tự đăng mạng xã hội →
  * kết nối mọi công cụ → mọi nơi, mọi lúc → hé lộ logo → "Meet Sirrok Agent".
@@ -31,14 +34,17 @@ export type SceneMap = Record<(typeof ORDER)[number]['key'], React.FC>;
 const SCENES: SceneMap = {
   intro: Intro,
   wake: S1Wake,
+  pick: Pick,
   work: S2Work,
   call: Call,
   island: Island,
   social: Social,
   connect: Connect,
+  team: Team,
   everywhere: S4Everywhere,
   reveal: S5Reveal,
   meet: Meet,
+  sleep: Sleep,
 };
 
 const wipe = linearTiming({durationInFrames: F.wipe, easing: E.inOut});

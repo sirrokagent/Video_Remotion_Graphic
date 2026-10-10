@@ -1,8 +1,8 @@
 """
-Nhạc nền phim 90 giây — tổng hợp bằng numpy, tất định (seed cố định). 100 BPM.
+Nhạc nền phim ~2 phút — tổng hợp bằng numpy, tất định (seed cố định). 100 BPM.
 Mọi mốc lấy từ src/film/timeline.ts (frame tuyệt đối @30fps):
-  intro 0 · wake 290 · work 510 · call 830 · island 1370 · social 1660 · connect 1940
-  everywhere 2100 · reveal 2310 (thân ghost nở +40) · meet 2470 · hết 2700
+  intro 0 · wake 290 · pick 510 · work 910 · call 1230 · island 1770 · social 2060 · connect 2340
+  team 2500 · everywhere 2840 · reveal 3050 (+40 thân nở) · meet 3210 · sleep 3420 · hết 3720
 
   python3 scripts/make_music_film.py /tmp/film.wav && ffmpeg -i /tmp/film.wav -b:a 256k public/music/film.mp3
 """
@@ -10,7 +10,7 @@ import sys, wave
 import numpy as np
 
 SR = 48000
-DUR = 2700 / 30
+DUR = 3720 / 30
 N = int(SR * DUR)
 BEAT = 60 / 100
 rng = np.random.RandomState(7)
@@ -46,7 +46,7 @@ def add(sig, start, gain=1.0, pan=0.0):
 
 
 S = lambda fr: fr / 30  # frame → giây
-WAKE, WORK, CALL, ISLAND, SOCIAL, CONNECT, EVERY, REVEAL, MEET = map(S, [290, 510, 830, 1370, 1660, 1940, 2100, 2310, 2470])
+WAKE, PICK, WORK, CALL, ISLAND, SOCIAL, CONNECT, TEAM, EVERY, REVEAL, MEET, SLEEP = map(S, [290, 510, 910, 1230, 1770, 2060, 2340, 2500, 2840, 3050, 3210, 3420])
 
 # ---------- pad ----------
 CHORDS = [[53, 57, 60, 64], [57, 60, 64, 67], [48, 55, 59, 64], [55, 59, 62, 64]]  # Fmaj7 Am7 Cmaj7 G6
@@ -113,27 +113,27 @@ pad(CHORDS[0], S(160), WAKE - S(160) + 1.0, 0.09)
 
 # ---------- giọng nói ra lệnh: chỉ pad nhẹ ----------
 t = WAKE; ci = 1
-while t < WORK:
+while t < PICK:
     pad(CHORDS[ci % 4], t, BAR2 + 1.2, 0.08); t += BAR2; ci += 1
 
 # ---------- từ lúc agent làm việc: groove dày dần tới cảnh "mọi nơi" ----------
-t = WORK; ci = 0
+t = PICK; ci = 0
 while t < REVEAL - 0.6:
-    g = 0.10 + 0.05 * min(1, (t - WORK) / (EVERY - WORK))
+    g = 0.10 + 0.05 * min(1, (t - PICK) / (EVERY - PICK))
     pad(CHORDS[ci % 4], t, min(BAR2 + 1.2, REVEAL - t + 0.4), g)
     t += BAR2; ci += 1
 
 eighth = BEAT / 2
-t = WORK; i = 0
+t = PICK; i = 0
 while t < REVEAL - 0.8:
-    ch = CHORDS[int((t - WORK) / BAR2) % 4]
+    ch = CHORDS[int((t - PICK) / BAR2) % 4]
     seq = [ch[0] + 12, ch[1] + 12, ch[2] + 12, ch[3] + 12, ch[2] + 12, ch[1] + 12]
     # cuộc gọi: lùi arp lại để nghe rõ thoại
     g = 0.045 if CALL <= t < ISLAND else (0.07 if t < EVERY else 0.09)
     add(pluck(note(seq[i % len(seq)])), t, g, pan=0.25 if i % 2 else -0.25)
     t += eighth; i += 1
 
-t = WORK; b = 0
+t = PICK; b = 0
 while t < REVEAL - 0.8:
     dense = t >= SOCIAL
     in_call = CALL <= t < ISLAND
@@ -144,7 +144,7 @@ while t < REVEAL - 0.8:
     t += BEAT; b += 1
 
 # cú đập mở mỗi cảnh lớn
-for at in [WORK, CALL, ISLAND, SOCIAL, CONNECT, EVERY]:
+for at in [PICK, WORK, CALL, ISLAND, SOCIAL, CONNECT, TEAM, EVERY]:
     add(boom(1.8, 40), at - 0.05, 0.16)
 add(riser(2.4), EVERY - 2.4, 0.05)
 
@@ -153,20 +153,32 @@ n = int(2.0 * SR); tt = np.arange(n) / SR
 add(np.sin(2 * np.pi * note(36) * tt) * env_adsr(n, 0.6, 0.6), REVEAL - 0.6, 0.10)
 HIT = REVEAL + S(40)
 add(boom(3.2, 38), HIT, 0.45)
-pad([48, 55, 59, 62, 64], HIT, DUR - HIT, 0.18)          # Cmaj9 ngân tới hết
-pad([60, 67, 71, 74], HIT + 0.05, DUR - HIT - 0.05, 0.06)
+pad([48, 55, 59, 62, 64], HIT, SLEEP - HIT + 1.0, 0.18)          # Cmaj9 ngân tới cảnh đêm
+pad([60, 67, 71, 74], HIT + 0.05, SLEEP - HIT + 0.9, 0.06)
 STAR = REVEAL + S(136)
 add(bell(note(88)), STAR, 0.10, pan=-0.2)
 add(bell(note(95)), STAR + 0.09, 0.07, pan=0.25)
 add(bell(note(91)), STAR + 0.18, 0.05)
 
-# ---------- màn kết "Gặp Sirrok Agent": nhịp nhẹ, khép bằng hợp âm ----------
+# ---------- màn kết "Meet Sirrok Agent": nhịp nhẹ ----------
 t = MEET + 0.3; i = 0
 seq = [72, 76, 79, 83, 79, 76]
-while t < DUR - 2.4:
+while t < SLEEP - 0.3:
     add(pluck(note(seq[i % 6])), t, 0.05, pan=0.25 if i % 2 else -0.25)
     t += eighth; i += 1
-add(bell(note(84), 4.0), DUR - 2.6, 0.08)
+
+# ---------- đêm: "Làm việc cả khi bạn ngủ" — pad trầm, chuông như sao, bình minh khép phim ----------
+pad([45, 52, 57, 60, 64], SLEEP, 6.8, 0.13)                 # Am9 — đêm
+n = int(7.0 * SR); tt = np.arange(n) / SR
+add(np.sin(2 * np.pi * note(33) * tt) * env_adsr(n, 1.2, 1.5), SLEEP, 0.10)
+for k, m in enumerate([88, 91, 86, 93, 89, 95]):            # sao lấp lánh, tất định
+    add(bell(note(m), 2.0), SLEEP + 0.6 + k * 0.9, 0.035, pan=(-0.4 if k % 2 else 0.4))
+DAWN = SLEEP + S(200)
+add(riser(2.2), DAWN - 2.2, 0.03)
+pad([48, 55, 60, 64, 67, 71], DAWN, DUR - DAWN, 0.17)       # Cmaj7 — bình minh
+add(boom(2.6, 40), DAWN, 0.22)
+add(bell(note(84), 4.0), DUR - 3.4, 0.09)
+add(bell(note(91), 3.0), DUR - 3.3, 0.05, pan=0.3)
 
 # ---------- master ----------
 mix = np.stack([L, R], 1)

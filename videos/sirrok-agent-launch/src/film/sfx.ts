@@ -2,10 +2,10 @@ import {VOICE} from '../voice';
 import {CMD_AT} from '../scenes/S1Wake';
 import {START} from './timeline';
 
-/** Hiệu ứng âm thanh của phim 90 giây — frame tuyệt đối. */
+/** Hiệu ứng âm thanh của phim ~2 phút — frame tuyệt đối. */
 export const SFX: {at: number; file: string; vol: number}[] = [
   // chuyển cảnh: tiếng vệt quét ngay trước mỗi wipe
-  ...(['work', 'call', 'island', 'social', 'connect', 'everywhere', 'meet'] as const).map((k) => ({at: START[k] - 4, file: 'layered-paper-whoosh', vol: 0.4})),
+  ...(['pick', 'work', 'call', 'island', 'social', 'connect', 'team', 'meet', 'sleep'] as const).map((k) => ({at: START[k] - 4, file: 'layered-paper-whoosh', vol: 0.4})),
 
   // mở đầu: ghost bị hút về giữa hai mắt, mắt nhắm
   {at: START.intro + 176, file: 'layered-paper-whoosh', vol: 0.3},

@@ -1,5 +1,8 @@
 import React from 'react';
 import {FilmBody, SceneMap} from '../SirrokFilm';
+import {Pick} from '../scenes/Pick';
+import {Team} from '../scenes/Team';
+import {Sleep} from '../scenes/Sleep';
 import {VIntro} from './VIntro';
 import {VWake} from './VWake';
 import {VWork} from './VWork';
@@ -15,14 +18,17 @@ import {VMeet} from './VMeet';
 const VSCENES: SceneMap = {
   intro: VIntro,
   wake: VWake,
+  pick: Pick,
   work: VWork,
   call: VCall,
   island: VIsland,
   social: VSocial,
   connect: VConnect,
+  team: Team,
   everywhere: VEverywhere,
   reveal: VReveal,
   meet: VMeet,
+  sleep: Sleep,
 };
 
 export const SirrokFilmVertical: React.FC = () => <FilmBody scenes={VSCENES} />;

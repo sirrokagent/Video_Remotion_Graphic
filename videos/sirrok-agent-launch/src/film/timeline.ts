@@ -1,5 +1,5 @@
 /**
- * Phim dài 90 giây (2700 frame @30fps). Mọi mốc nằm ở đây: thời lượng cảnh,
+ * Phim dài ~2 phút (@30fps). Mọi mốc nằm ở đây: thời lượng cảnh,
  * và lúc mỗi câu thoại bắt đầu — tính theo frame CỦA CẢNH chứa nó.
  * Mốc từng chữ bên trong câu nằm ở src/voice.json (đo trên file giọng).
  */
@@ -13,12 +13,15 @@ export const F = {
   connect: 200, // logo bên thứ ba quanh ghost
   everywhere: 210, // ở mọi nơi, mọi lúc (S4Everywhere)
   reveal: 240, // hé lộ logo (S5Reveal)
-  meet: 250, // màn kết "Meet Sirrok Agent" — trang ra mắt + đội agent ghost
+  meet: 250, // "Meet Sirrok Agent" — trang ra mắt + đội agent ghost
+  pick: 420, // tạo agent (màu, hình), chọn model, chọn agent để giao việc
+  team: 360, // đội 10 agent làm việc của 30–50 người
+  sleep: 300, // câu chốt: làm việc cả khi bạn ngủ (cảnh cuối)
   wipe: 20,
 } as const;
 
 /**
- * Thời lượng THẬT trong phim — cắt bớt đuôi tĩnh của vài cảnh để cả phim đúng 90 giây.
+ * Thời lượng THẬT trong phim — cắt bớt đuôi tĩnh của vài cảnh để cả phim ~2 phút.
  * (F giữ độ dài thiết kế của từng cảnh khi xem riêng.)
  */
 export const CUT = {...F, wake: 240, work: 340, call: 560, island: 310, social: 300, connect: 180, everywhere: 210, reveal: 180, meet: 230} as const;
@@ -27,14 +30,17 @@ export const CUT = {...F, wake: 240, work: 340, call: 560, island: 310, social: 
 export const ORDER = [
   {key: 'intro', wipeAfter: false},
   {key: 'wake', wipeAfter: true},
+  {key: 'pick', wipeAfter: true},
   {key: 'work', wipeAfter: true},
   {key: 'call', wipeAfter: true},
   {key: 'island', wipeAfter: true},
   {key: 'social', wipeAfter: true},
   {key: 'connect', wipeAfter: true},
+  {key: 'team', wipeAfter: true},
   {key: 'everywhere', wipeAfter: false},
   {key: 'reveal', wipeAfter: true},
-  {key: 'meet', wipeAfter: false},
+  {key: 'meet', wipeAfter: true},
+  {key: 'sleep', wipeAfter: false},
 ] as const;
 
 type SceneKey = (typeof ORDER)[number]['key'];
@@ -49,7 +55,7 @@ export const START = (() => {
   return s;
 })();
 
-export const TOTAL = START.meet + CUT.meet; // = 2700
+export const TOTAL = START.sleep + CUT.sleep; // ≈ 2 phút
 
 /** Câu thoại: id trong voice.json → (cảnh, frame bắt đầu trong cảnh). */
 export const VO = {
