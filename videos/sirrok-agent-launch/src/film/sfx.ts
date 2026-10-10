@@ -74,4 +74,18 @@ export const SFX: {at: number; file: string; vol: number}[] = [
   {at: START.meet + 26, file: 'low-impact-hit', vol: 0.45},
   {at: START.meet + 122, file: 'layered-paper-whoosh', vol: 0.3},
   ...[150, 174, 198].map((t) => ({at: START.meet + t, file: 'soft-digital-tick', vol: 0.35})),
+
+  // đội 10 agent = 30–50 người
+  {at: START.team + 10, file: 'staggered-soft-snaps-x4', vol: 0.25},
+  {at: START.team + 86, file: 'subtle-haptic-pop', vol: 0.5},
+  ...[116, 126, 136, 146, 156].map((t) => ({at: START.team + t, file: 'soft-digital-tick', vol: 0.35})),
+  {at: START.team + 222, file: 'rising-density', vol: 0.25},
+  {at: START.team + 248, file: 'low-impact-hit', vol: 0.35},
+
+  // đêm — làm việc cả khi bạn ngủ
+  ...[46, 68, 90, 112].map((t) => ({at: START.sleep + t, file: 'subtle-haptic-pop', vol: 0.3})),
+  {at: START.sleep + 160, file: 'four-soft-task-complete-ticks', vol: 0.25},
+  {at: START.sleep + 200, file: 'layered-paper-whoosh', vol: 0.35},
+  {at: START.sleep + 224, file: 'low-impact-hit', vol: 0.4},
+  {at: START.sleep + 244, file: 'final-brand-chime', vol: 0.45},
 ];
