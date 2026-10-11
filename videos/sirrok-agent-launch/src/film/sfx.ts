@@ -1,0 +1,102 @@
+import {VOICE} from '../voice';
+import {CMD_AT} from '../scenes/S1Wake';
+import {START} from './timeline';
+
+/** Hiệu ứng âm thanh của phim ~2 phút — frame tuyệt đối. */
+export const SFX: {at: number; file: string; vol: number}[] = [
+  // chuyển cảnh: tiếng vệt quét ngay trước mỗi wipe
+  ...(['pick', 'work', 'call', 'island', 'social', 'connect', 'team', 'everywhere', 'meet', 'sleep'] as const).map((k) => ({at: START[k] - 4, file: 'layered-paper-whoosh', vol: 0.4})),
+
+  // mở đầu: ghost bị hút về giữa hai mắt, mắt nhắm
+  {at: START.intro + 176, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.intro + 272, file: 'soft-digital-tick', vol: 0.35},
+
+  // "Hey Sirrok" + câu lệnh
+  {at: START.wake + 84, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.wake + 114, file: 'mic-open-blip', vol: 0.45},
+  {at: START.wake + CMD_AT + Math.round(VOICE.command.durFrames) + 8, file: 'subtle-haptic-pop', vol: 0.6},
+
+  // desktop — như bản 41 giây
+  {at: START.work + 70, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.work + 104, file: 'four-soft-task-complete-ticks', vol: 0.22},
+  {at: START.work + 120, file: 'progress-whirr', vol: 0.15},
+  {at: START.work + 184, file: 'four-soft-task-complete-ticks', vol: 0.22},
+  {at: START.work + 196, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.work + 262, file: 'four-soft-task-complete-ticks', vol: 0.22},
+  {at: START.work + 318, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.work + 330, file: 'subtle-haptic-pop', vol: 0.5},
+
+  // mọi nơi, mọi lúc
+  {at: START.everywhere + 40, file: 'soft-digital-tick', vol: 0.45},
+  {at: START.everywhere + 80, file: 'soft-digital-tick', vol: 0.45},
+  {at: START.everywhere + 120, file: 'soft-digital-tick', vol: 0.45},
+  {at: START.everywhere + 160, file: 'soft-digital-tick', vol: 0.45},
+  {at: START.everywhere + 60, file: 'rising-density', vol: 0.28},
+
+  // hé lộ logo
+  {at: START.reveal + 26, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.reveal + 40, file: 'low-impact-hit', vol: 0.7},
+  {at: START.reveal + 112, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.reveal + 134, file: 'final-brand-chime', vol: 0.45},
+
+  // gọi điện
+  {at: START.call + 34, file: 'ringback', vol: 0.35},
+  {at: START.call + 70, file: 'ringback', vol: 0.35},
+  {at: START.call + 105, file: 'call-connect', vol: 0.45},
+  ...[175, 321, 416].map((t) => ({at: START.call + t, file: 'soft-digital-tick', vol: 0.25})),
+  {at: START.call + 533, file: 'call-end', vol: 0.45},
+  {at: START.call + 545, file: 'subtle-haptic-pop', vol: 0.55},
+
+  // Dynamic Island
+  {at: START.island + 24, file: 'subtle-haptic-pop', vol: 0.5},
+  {at: START.island + 72, file: 'soft-digital-tick', vol: 0.45},
+  {at: START.island + 106, file: 'layered-paper-whoosh', vol: 0.25},
+  {at: START.island + 117, file: 'subtle-haptic-pop', vol: 0.4},
+  {at: START.island + 137, file: 'layered-paper-whoosh', vol: 0.25},
+  {at: START.island + 146, file: 'subtle-haptic-pop', vol: 0.4},
+  {at: START.island + 168, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.island + 176, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.island + 205, file: 'subtle-haptic-pop', vol: 0.35}, // khựng: đang chờ
+  {at: START.island + 255, file: 'layered-paper-whoosh', vol: 0.4}, // vọt nhanh
+  {at: START.island + 268, file: 'soft-digital-tick', vol: 0.5},
+  {at: START.island + 282, file: 'four-soft-task-complete-ticks', vol: 0.3},
+
+  // mạng xã hội
+  {at: START.social + 22, file: 'staggered-soft-snaps-x4', vol: 0.2},
+  {at: START.social + 71, file: 'soft-digital-tick', vol: 0.55},
+  {at: START.social + 79, file: 'layered-paper-whoosh', vol: 0.35},
+  ...[122, 140, 158, 176, 194, 212].map((t) => ({at: START.social + t, file: 'subtle-haptic-pop', vol: 0.4})),
+
+  // kết nối
+  ...[36, 45, 53, 62, 70, 79, 88].map((t) => ({at: START.connect + t, file: 'soft-digital-tick', vol: 0.3})),
+
+  // gặp Sirrok Agent
+  {at: START.meet + 26, file: 'low-impact-hit', vol: 0.45},
+  {at: START.meet + 122, file: 'layered-paper-whoosh', vol: 0.3},
+  ...[150, 174, 198].map((t) => ({at: START.meet + t, file: 'soft-digital-tick', vol: 0.35})),
+
+  // đội 10 agent = 30–50 người
+  {at: START.team + 10, file: 'staggered-soft-snaps-x4', vol: 0.25},
+  {at: START.team + 86, file: 'subtle-haptic-pop', vol: 0.5},
+  ...[116, 126, 136, 146, 156].map((t) => ({at: START.team + t, file: 'soft-digital-tick', vol: 0.35})),
+  {at: START.team + 222, file: 'rising-density', vol: 0.25},
+  {at: START.team + 248, file: 'low-impact-hit', vol: 0.35},
+
+  // đêm — làm việc cả khi bạn ngủ
+  ...[46, 68, 90, 112].map((t) => ({at: START.sleep + t, file: 'subtle-haptic-pop', vol: 0.3})),
+  {at: START.sleep + 160, file: 'four-soft-task-complete-ticks', vol: 0.25},
+  {at: START.sleep + 200, file: 'layered-paper-whoosh', vol: 0.35},
+  {at: START.sleep + 224, file: 'low-impact-hit', vol: 0.4},
+  {at: START.sleep + 244, file: 'final-brand-chime', vol: 0.45},
+
+  // tạo agent, chọn model, giao việc
+  ...[26, 40, 52, 64, 78].map((t) => ({at: START.pick + t, file: 'soft-digital-tick', vol: 0.4})),
+  {at: START.pick + 94, file: 'staggered-soft-snaps-x4', vol: 0.18},
+  {at: START.pick + 156, file: 'subtle-haptic-pop', vol: 0.4},
+  ...[180, 196, 212].map((t) => ({at: START.pick + t, file: 'soft-digital-tick', vol: 0.45})),
+  {at: START.pick + 246, file: 'layered-paper-whoosh', vol: 0.35},
+  ...[300, 316, 332].map((t) => ({at: START.pick + t, file: 'subtle-haptic-pop', vol: 0.4})),
+  {at: START.pick + 350, file: 'soft-digital-tick', vol: 0.55},
+  {at: START.pick + 356, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.pick + 378, file: 'four-soft-task-complete-ticks', vol: 0.25},
+];
