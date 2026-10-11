@@ -88,4 +88,15 @@ export const SFX: {at: number; file: string; vol: number}[] = [
   {at: START.sleep + 200, file: 'layered-paper-whoosh', vol: 0.35},
   {at: START.sleep + 224, file: 'low-impact-hit', vol: 0.4},
   {at: START.sleep + 244, file: 'final-brand-chime', vol: 0.45},
+
+  // tạo agent, chọn model, giao việc
+  ...[26, 40, 52, 64, 78].map((t) => ({at: START.pick + t, file: 'soft-digital-tick', vol: 0.4})),
+  {at: START.pick + 94, file: 'staggered-soft-snaps-x4', vol: 0.18},
+  {at: START.pick + 156, file: 'subtle-haptic-pop', vol: 0.4},
+  ...[180, 196, 212].map((t) => ({at: START.pick + t, file: 'soft-digital-tick', vol: 0.45})),
+  {at: START.pick + 246, file: 'layered-paper-whoosh', vol: 0.35},
+  ...[300, 316, 332].map((t) => ({at: START.pick + t, file: 'subtle-haptic-pop', vol: 0.4})),
+  {at: START.pick + 350, file: 'soft-digital-tick', vol: 0.55},
+  {at: START.pick + 356, file: 'layered-paper-whoosh', vol: 0.3},
+  {at: START.pick + 378, file: 'four-soft-task-complete-ticks', vol: 0.25},
 ];

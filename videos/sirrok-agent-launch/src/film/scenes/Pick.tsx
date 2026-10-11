@@ -156,7 +156,7 @@ const geo = (portrait: boolean) => {
       task,
       cards,
       cardAv: (i: number) => ({x: cards[i].x + cards[i].w / 2, y: cards[i].y + 68, size: 96}),
-      slot: (i: number) => ({x: task.x + task.w - 64 - 42 - (2 - i) * 66, y: task.y + task.h / 2, size: 84}),
+      slot: (i: number) => ({x: task.x + task.w - 50 - 42 - (2 - i) * 92, y: task.y + task.h / 2, size: 84}),
       assign: {x: task.x + task.w - 240, y: cards[5].y + cards[5].h + 34, w: 240, h: 62} as Rect,
       head: {top: 46, size: 76},
       cursorW: 70,
@@ -206,7 +206,7 @@ const geo = (portrait: boolean) => {
     task,
     cards,
     cardAv: (i: number) => ({x: cards[i].x + cards[i].w / 2, y: cards[i].y + 72, size: 104}),
-    slot: (i: number) => ({x: task.x + task.w - 60 - 45 - (2 - i) * 70, y: task.y + task.h / 2, size: 90}),
+    slot: (i: number) => ({x: task.x + task.w - 46 - 45 - (2 - i) * 98, y: task.y + task.h / 2, size: 90}),
     assign: {x: task.x + task.w - 280, y: cards[5].y + cards[5].h + 30, w: 280, h: 74} as Rect,
     head: {top: 236, size: 104},
     cursorW: 92,
@@ -280,7 +280,7 @@ export const Pick: React.FC = () => {
     ...T.ticks.map((t, k) => ({f: t, p: rowCenter(TICKED[k])})),
     {f: T.clickDone, p: center(g.done)},
     {f: T.clickCreate, p: center(g.create)},
-    ...T.select.map((t, k) => ({f: t, p: {x: g.cards[SEL[k]].x + g.cards[SEL[k]].w * 0.5, y: g.cards[SEL[k]].y + g.cards[SEL[k]].h * 0.72}})),
+    ...T.select.map((t, k) => ({f: t, p: {x: g.cards[SEL[k]].x + g.cards[SEL[k]].w * 0.2, y: g.cards[SEL[k]].y + g.cards[SEL[k]].h * 0.42}})),
     {f: T.clickAssign, p: center(g.assign)},
   ];
   const ks: Key[] = [{f: 8, ...g.start}];
@@ -307,7 +307,7 @@ export const Pick: React.FC = () => {
 
   // ── Khung (cửa sổ desktop / sheet điện thoại) ──
   const winT = ev(f, [0, 22], [0, 1], E.out);
-  const cam = keys(f, [T.push, T.push + 22], [1, 1.06], E.inOut);
+  const cam = keys(f, [T.push, T.push + 22], [1, g.portrait ? 1.025 : 1.06], E.inOut);
   const camO = center(g.task);
 
   // ── Phần 1: form ──
@@ -357,7 +357,7 @@ export const Pick: React.FC = () => {
     y:
       lerp(lerp(P0.y, S1.y, sideT), K0.y, flyT) -
       (g.portrait ? 0 : 70 * Math.sin(Math.PI * ev(f, [T.clickModel + 2, T.clickModel + 18], [0, 1], E.inOut)) + 70 * Math.sin(Math.PI * ev(f, [T.clickDone, T.clickDone + 14], [0, 1], E.inOut))) -
-      150 * Math.sin(Math.PI * flyT),
+      (g.portrait ? 90 : 70) * Math.sin(Math.PI * flyT),
     size: lerp(P0.size, K0.size, flyT),
   };
   const heroSquash =
@@ -1130,7 +1130,7 @@ export const Pick: React.FC = () => {
               style={{
                 position: 'absolute',
                 left: av.x + av.size * 0.5,
-                top: av.y - av.size * 0.36,
+                top: av.y - av.size * 0.04,
                 zIndex: 4,
                 padding: g.portrait ? '8px 18px' : '6px 16px',
                 borderRadius: '20px 20px 20px 6px',
