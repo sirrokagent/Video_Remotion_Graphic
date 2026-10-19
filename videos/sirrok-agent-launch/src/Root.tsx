@@ -22,6 +22,7 @@ import {Team} from './film/scenes/Team';
 import {Sleep} from './film/scenes/Sleep';
 import {MascotShowcase, MASCOT_SHOWCASE} from './film/mascot';
 import {durationOf, ViralCut} from './viral/ViralCut';
+import {IPHONE_DUR, ShotOnIphone} from './viral/ShotOnIphone';
 import {SirrokFilmVertical} from './film/vertical/SirrokFilmVertical';
 import {VW, VH} from './film/vertical/frame';
 import {VIntro} from './film/vertical/VIntro';
@@ -58,6 +59,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Viral-Cinematic" component={ViralCut} defaultProps={{kind: 'cinematic' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('cinematic')} />
       <Composition id="Viral-Dreamy" component={ViralCut} defaultProps={{kind: 'dreamy' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('dreamy')} />
       <Composition id="Viral-Flash" component={ViralCut} defaultProps={{kind: 'flash' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('flash')} />
+      <Composition id="Viral-iPhone15Pro" component={ShotOnIphone} width={1080} height={1920} fps={30} durationInFrames={IPHONE_DUR} />
     </Folder>
     <Composition id="Mascot" component={MascotShowcase} width={W} height={H} fps={FPS} durationInFrames={MASCOT_SHOWCASE} />
     <Composition id="GhostFX" component={GhostFXShowcase} width={W} height={H} fps={FPS} durationInFrames={GHOSTFX_DURATION} />
