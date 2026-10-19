@@ -21,6 +21,7 @@ import {Pick} from './film/scenes/Pick';
 import {Team} from './film/scenes/Team';
 import {Sleep} from './film/scenes/Sleep';
 import {MascotShowcase, MASCOT_SHOWCASE} from './film/mascot';
+import {durationOf, ViralCut} from './viral/ViralCut';
 import {SirrokFilmVertical} from './film/vertical/SirrokFilmVertical';
 import {VW, VH} from './film/vertical/frame';
 import {VIntro} from './film/vertical/VIntro';
@@ -52,6 +53,11 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="V-Everywhere" component={VEverywhere} width={VW} height={VH} fps={FPS} durationInFrames={F.everywhere} />
       <Composition id="V-Reveal" component={VReveal} width={VW} height={VH} fps={FPS} durationInFrames={F.reveal} />
       <Composition id="V-Meet" component={VMeet} width={VW} height={VH} fps={FPS} durationInFrames={F.meet} />
+    </Folder>
+    <Folder name="Viral">
+      <Composition id="Viral-Cinematic" component={ViralCut} defaultProps={{kind: 'cinematic' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('cinematic')} />
+      <Composition id="Viral-Dreamy" component={ViralCut} defaultProps={{kind: 'dreamy' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('dreamy')} />
+      <Composition id="Viral-Flash" component={ViralCut} defaultProps={{kind: 'flash' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('flash')} />
     </Folder>
     <Composition id="Mascot" component={MascotShowcase} width={W} height={H} fps={FPS} durationInFrames={MASCOT_SHOWCASE} />
     <Composition id="GhostFX" component={GhostFXShowcase} width={W} height={H} fps={FPS} durationInFrames={GHOSTFX_DURATION} />
