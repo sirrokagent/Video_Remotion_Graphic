@@ -80,7 +80,25 @@ export function claude(prompt, { cwd = ROOT, timeoutMs = 15 * 60 * 1000 } = {}) 
     "Kiem tra 'claude --version'. Pipeline dung 'claude -p' lam buoc sang tao.\n" +
     "    Tren CI can mot trong hai: CLAUDE_CODE_OAUTH_TOKEN (chay 'claude setup-token'\n" +
     "    tren may co trinh duyet, can goi Pro/Max) hoac ANTHROPIC_API_KEY (tra theo luot goi).");
-  if (r.status !== 0) throw new Error("claude -p that bai:\n" + (r.stderr || r.stdout || "").slice(0, 2000));
+
+  if (r.status !== 0) {
+    const out = (r.stderr || r.stdout || "").slice(0, 2000);
+
+    // Het han muc KHONG phai loi code — no tu het han roi tu khoi. Mot cron hang
+    // tuan ma bao "chay hong" chung chung o day thi nguoi doc khong biet la phai
+    // sua gi hay chi can doi. Goi dung ten no.
+    const quota = out.match(/hit your (weekly|daily|\w+) limit[^\n]*/i)
+      || out.match(/rate.?limit[^\n]*/i)
+      || out.match(/usage limit[^\n]*/i);
+    if (quota) throw new Blocked(
+      `Het han muc Claude: ${quota[0].trim()}`,
+      "Khong phai loi cua pipeline — doi han muc reset la chay lai duoc.\n" +
+      "    Muon cron khong phu thuoc han muc goi thue bao thi dat secret ANTHROPIC_API_KEY\n" +
+      "    (tra theo luot goi, han muc rieng). Co ca hai thi API key duoc dung truoc."
+    );
+
+    throw new Error("claude -p that bai:\n" + out);
+  }
   return (r.stdout || "").trim();
 }
 

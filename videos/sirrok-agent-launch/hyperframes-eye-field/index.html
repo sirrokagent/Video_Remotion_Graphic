@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <!--
+      Lớp nền cho cảnh "Ở mọi nơi. Mọi lúc." của video ra mắt Sirrok Agent.
+      Một trường đều các CẶP MẮT của logo, chớp theo những làn sóng lan từ tâm ra —
+      ngôn ngữ chuyển động của cả video, dùng làm hoạ tiết nền.
+      Dựng bằng HyperFrames, render ra MP4, rồi Remotion đặt nó làm lớp dưới cùng.
+      Kích thước mắt lấy đúng số đo của logo (mắt trái to hơn mắt phải).
+    -->
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #FDFDFD; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #FDFDFD; }
+      #field { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="eye-field" data-start="0" data-duration="7" data-width="1920" data-height="1080">
+      <svg id="field" class="clip" data-layout-allow-overflow data-start="0" data-duration="7" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+    </div>
+    <script>
+      (function () {
+        // Hai mắt, đơn vị logo (rộng 100) — trùng với src/logo.json của dự án Remotion
+        var EYES = [
+          { x1: 50.59, y1: 28.26, x2: 45.98, y2: 18.87, w: 10.35 },
+          { x1: 73.45, y1: 23.95, x2: 68.05, y2: 14.10, w: 8.83 },
+        ];
+        var MID = { x: 59.52, y: 21.30 };
+        var K = 0.95;            // cỡ logo 95 px
+        var GAP = 124;           // khoảng lưới
+        var COLS = 17, ROWS = 10;
+        var NS = 'http://www.w3.org/2000/svg';
+        var svg = document.getElementById('field');
+        var ox = (1920 - (COLS - 1) * GAP) / 2;
+        var oy = (1080 - (ROWS - 1) * GAP) / 2;
+        for (var r = 0; r < ROWS; r++) {
+          for (var c = 0; c < COLS; c++) {
+            var g = document.createElementNS(NS, 'g');
+            g.setAttribute('class', 'pair');
+            // so le hàng lẻ nửa ô — lưới đỡ cứng
+            var x = ox + c * GAP + (r % 2 ? GAP / 2 : 0) - GAP / 4;
+            var y = oy + r * GAP;
+            g.setAttribute('transform', 'translate(' + x + ' ' + y + ')');
+            var inner = document.createElementNS(NS, 'g');
+            inner.setAttribute('class', 'eyes');
+            EYES.forEach(function (e) {
+              var l = document.createElementNS(NS, 'line');
+              l.setAttribute('x1', ((e.x1 - MID.x) * K).toFixed(2));
+              l.setAttribute('y1', ((e.y1 - MID.y) * K).toFixed(2));
+              l.setAttribute('x2', ((e.x2 - MID.x) * K).toFixed(2));
+              l.setAttribute('y2', ((e.y2 - MID.y) * K).toFixed(2));
+              l.setAttribute('stroke', '#E2E3E9');
+              l.setAttribute('stroke-width', (e.w * K).toFixed(2));
+              l.setAttribute('stroke-linecap', 'round');
+              inner.appendChild(l);
+            });
+            g.appendChild(inner);
+            svg.appendChild(g);
+          }
+        }
+
+        var eyes = document.querySelectorAll('#field .eyes');
+        var grid = [ROWS, COLS];
+        var tl = gsap.timeline({ paused: true });
+
+        // hiện ra từ tâm
+        tl.fromTo(eyes, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' },
+          { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2.2)', stagger: { grid: grid, from: 'center', amount: 1.0 } }, 0.1);
+
+        // ba làn sóng chớp mắt lan từ tâm ra rìa
+        [1.7, 3.5, 5.3].forEach(function (t) {
+          tl.to(eyes, { scaleY: 0.14, duration: 0.1, ease: 'power3.in', stagger: { grid: grid, from: 'center', amount: 0.9 } }, t);
+          tl.to(eyes, { scaleY: 1, duration: 0.16, ease: 'power3.out', stagger: { grid: grid, from: 'center', amount: 0.9 } }, t + 0.1);
+        });
+
+        // cả trường hơi trôi lên một chút — nền không đứng chết
+        tl.fromTo('#field', { y: 14 }, { y: -14, duration: 7, ease: 'sine.inOut' }, 0);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines['eye-field'] = tl;
+      })();
+    </script>
+  </body>
+</html>

@@ -57,7 +57,10 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # Secret khong ton tai thi bieu thuc tra ve chuoi rong, va mot
+      # ANTHROPIC_API_KEY rong VAN duoc coi la da dat — no co the che mat token
+      # OAuth. Nen chi dat bien nay khi that su co gia tri.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' && secrets.ANTHROPIC_API_KEY || null }}
 
     steps:
       - uses: actions/checkout@v4
@@ -131,8 +134,15 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] || exit 0
-          msg="Day chuyen reel chay HONG. Khong co kich ban tuan nay.
-          Xem log: $RUN_URL"
+          # Kem LY DO that. "Chay hong" khong thoi thi van phai mo log len doc,
+          # ma phan lon ly do (het han muc, thieu khoa) doc mot dong la biet ngay.
+          reason="(khong ro ly do — xem log)"
+          [ -f automation/last-error.txt ] && reason="$(head -c 1500 automation/last-error.txt)"
+          msg="Day chuyen reel chay HONG. Khong co kich ban lan nay.
+
+          $reason
+
+          Log: $RUN_URL"
           curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${msg}" -o /dev/null
