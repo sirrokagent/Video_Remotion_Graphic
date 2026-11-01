@@ -42,3 +42,7 @@ automation/config.json
 automation/runs/
 # file giong doc ban bo vao
 automation/inbox/
+
+# khung hinh video tham khao tai ve — tai lieu nghien cuu, khong phai ma nguon
+reference/
+scripts/yt-dlp.exe
