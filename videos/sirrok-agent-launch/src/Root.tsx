@@ -24,6 +24,7 @@ import {MascotShowcase, MASCOT_SHOWCASE} from './film/mascot';
 import {durationOf, ViralCut} from './viral/ViralCut';
 import {IPHONE_DUR, ShotOnIphone} from './viral/ShotOnIphone';
 import {BMW_DUR, BmwM} from './bmw/BmwM';
+import {BeDifferent, DIFF_DUR} from './different/BeDifferent';
 import {SirrokFilmVertical} from './film/vertical/SirrokFilmVertical';
 import {VW, VH} from './film/vertical/frame';
 import {VIntro} from './film/vertical/VIntro';
@@ -62,6 +63,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Viral-Flash" component={ViralCut} defaultProps={{kind: 'flash' as const}} width={1080} height={1920} fps={30} durationInFrames={durationOf('flash')} />
       <Composition id="Viral-iPhone15Pro" component={ShotOnIphone} width={1080} height={1920} fps={30} durationInFrames={IPHONE_DUR} />
       <Composition id="BMW-M3-M4" component={BmwM} width={1920} height={1080} fps={30} durationInFrames={BMW_DUR} />
+      <Composition id="Be-Different" component={BeDifferent} width={1080} height={1920} fps={30} durationInFrames={DIFF_DUR} />
     </Folder>
     <Composition id="Mascot" component={MascotShowcase} width={W} height={H} fps={FPS} durationInFrames={MASCOT_SHOWCASE} />
     <Composition id="GhostFX" component={GhostFXShowcase} width={W} height={H} fps={FPS} durationInFrames={GHOSTFX_DURATION} />
