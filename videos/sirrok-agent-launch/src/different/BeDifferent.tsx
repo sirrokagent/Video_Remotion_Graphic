@@ -70,7 +70,7 @@ const ROADS = [
 ];
 
 // ---------- nhân vật ----------
-const SPEED = 1.6;
+const SPEED = 3.4; // chạy
 const ROWS = 92;
 const LANES = 6;
 type Walker = {s0: number; lane: number; tone: number; phase: number; jx: number};
@@ -79,7 +79,7 @@ for (let r = 0; r < ROWS; r++) {
   for (let j = 0; j < LANES; j++) {
     const i = r * LANES + j;
     CROWD.push({
-      s0: -18 - r * 1.22 + (hash(i, 1) - 0.5) * 0.7,
+      s0: -36 - r * 1.3 + (hash(i, 1) - 0.5) * 0.7,
       lane: -3.9 + j * 1.56 + (hash(i, 2) - 0.5) * 0.5,
       tone: hash(i, 3),
       phase: hash(i, 4) * 6.28,
@@ -101,16 +101,22 @@ const crowdPos = (w: Walker, t: number): {p: V3; s: number} => {
 // Người khác biệt
 const HERO_STOP = 10.5; // tới ngã rẽ
 const HERO_GO = 13.4; // quay lưng bước đi
-const HERO_SPEED = 2.05;
+const HERO_SPEED = 3.2;
+const DECEL = 1.0; // giây chạy chậm lại trước khi dừng
 const heroState = (t: number) => {
   if (t < HERO_STOP) {
-    const s = SPEED * (t - HERO_STOP);
-    return {p: onRoad(mainC, s, -2.5), dist: s, walking: 1, front: true};
+    // chạy cùng đám đông, chậm dần rồi dừng đúng ngã rẽ
+    const s =
+      t < HERO_STOP - DECEL ? -SPEED * (HERO_STOP - t) + (SPEED * DECEL) / 2 : -(SPEED / (2 * DECEL)) * (HERO_STOP - t) ** 2;
+    return {p: onRoad(mainC, s, -2.5), dist: s, walking: 1, run: 1 - smooth(HERO_STOP - DECEL, HERO_STOP, t), front: true};
   }
-  if (t < HERO_GO) return {p: [-2.5, 0, 0] as V3, dist: 0, walking: 0, front: true};
-  const u = HERO_SPEED * (t - HERO_GO) * smooth(HERO_GO, HERO_GO + 0.8, t) + 0;
+  if (t < HERO_GO) return {p: [-2.5, 0, 0] as V3, dist: 0, walking: 0, run: 0, front: true};
+  // bước đi rồi tăng tốc chạy (tích phân của tốc độ tăng mượt)
+  const R = 1.2;
+  const x = (t - HERO_GO) / R;
+  const u = x < 1 ? HERO_SPEED * R * (x ** 3 - x ** 4 / 2) : HERO_SPEED * (R / 2 + (t - HERO_GO - R));
   const off = -2.5 * (1 - smooth(0, 7, u));
-  return {p: onRoad(leftC, u, off), dist: u, walking: smooth(HERO_GO, HERO_GO + 0.5, t), front: false};
+  return {p: onRoad(leftC, u, off), dist: u, walking: smooth(HERO_GO, HERO_GO + 0.4, t), run: smooth(HERO_GO + 0.3, HERO_GO + 1.2, t), front: false};
 };
 
 // Chiếc cặp: rời tay lúc 11,85 s, bay vòng cung rồi rơi xuống đường
@@ -322,6 +328,7 @@ type FigOpts = {
   head: string;
   phase: number;
   walk: number;
+  run?: number; // 0 đi bộ → 1 chạy
   hero?: boolean;
   front?: boolean;
   caseInHand?: boolean;
@@ -330,7 +337,7 @@ type FigOpts = {
 };
 const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: number, o: FigOpts) => {
   const sw = Math.sin(o.phase) * 0.42 * o.walk;
-  const bob = Math.abs(Math.cos(o.phase)) * 0.012 * h * o.walk;
+  const bob = Math.abs(Math.cos(o.phase)) * lerp(0.012, 0.05, o.run ?? 0) * h * o.walk;
   ctx.save();
   ctx.translate(x, y - bob);
   ctx.rotate((o.lean ?? 0) * 0.25);
@@ -347,15 +354,36 @@ const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: numb
   const legW = 0.085 * h;
   const hipY = -0.48 * h;
   const dark = o.hero ? '#2e2e33' : o.body;
-  // chân
-  limb(-0.045 * h, hipY, 0.48 * h, legW, sw, dark);
-  limb(0.045 * h, hipY, 0.48 * h, legW, -sw, dark);
+  const run = o.run ?? 0;
+  const seg = (x1: number, y1: number, x2: number, y2: number, wdt: number, col: string) => {
+    const ang = Math.atan2(x1 - x2, y2 - y1);
+    limb(x1, y1, Math.hypot(x2 - x1, y2 - y1), wdt, ang, col);
+  };
+  const legLen = 0.48 * h;
+  const feet: [number, number][] = [];
+  // chân: đi bộ = vung chân; chạy = co gối luân phiên (nhìn từ trước/sau)
+  for (const sgn of [-1, 1]) {
+    const hx = sgn * 0.045 * h;
+    const walkAng = sgn === -1 ? sw : -sw;
+    const wfx = hx - Math.sin(walkAng) * legLen;
+    const wfy = hipY + Math.cos(walkAng) * legLen;
+    const lift = Math.max(0, Math.sin(o.phase + (sgn === -1 ? 0 : Math.PI)));
+    const rfx = hx + sgn * 0.02 * h;
+    const rfy = hipY + legLen * (1 - 0.42 * lift);
+    const fx = lerp(wfx, rfx, run);
+    const fy = lerp(wfy, rfy, run);
+    const kx = (hx + fx) / 2 + sgn * 0.07 * h * lift * run;
+    const ky = (hipY + fy) / 2 - 0.03 * h * lift * run;
+    seg(hx, hipY, kx, ky, legW, dark);
+    seg(kx, ky, fx, fy, legW * 0.92, dark);
+    feet.push([fx, fy]);
+  }
   // giày
   if (o.hero) {
     ctx.fillStyle = '#151517';
-    for (const [ox, ang] of [[-0.045 * h, sw], [0.045 * h, -sw]]) {
+    for (const [fx, fy] of feet) {
       ctx.beginPath();
-      ctx.ellipse(ox - Math.sin(ang) * 0.48 * h, hipY + Math.cos(ang) * 0.48 * h, 0.06 * h, 0.03 * h, 0, 0, Math.PI * 2);
+      ctx.ellipse(fx, fy, 0.06 * h, 0.03 * h, 0, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -388,12 +416,27 @@ const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: numb
   const armLen = 0.36 * h;
   const armW = 0.07 * h;
   const handCol = o.hero ? '#f4f4f6' : '#e2e2e6';
-  const arm = (sgn: number, ang: number, withCase: boolean) => {
+  const arm = (sgn: number, ang: number, withCase: boolean, pump: number) => {
     const ox = sgn * 0.15 * h;
     const oy = bodyTop + 0.03 * h;
-    limb(ox, oy, armLen, armW, ang, o.body);
-    const hx = ox - Math.sin(ang) * armLen;
-    const hy = oy + Math.cos(ang) * armLen;
+    let hx = ox - Math.sin(ang) * armLen;
+    let hy = oy + Math.cos(ang) * armLen;
+    if (pump > 0) {
+      // chạy: khuỷu gập, tay đánh lên xuống trước ngực
+      const up = Math.sin(o.phase + (sgn === -1 ? Math.PI : 0));
+      const ex = ox + sgn * 0.06 * h;
+      const ey = oy + 0.17 * h + up * 0.03 * h;
+      const rx = sgn * 0.1 * h;
+      const ry = oy + 0.16 * h - up * 0.12 * h;
+      const wx = lerp(hx, rx, pump);
+      const wy = lerp(hy, ry, pump);
+      seg(ox, oy, lerp((ox + hx) / 2, ex, pump), lerp((oy + hy) / 2, ey, pump), armW, o.body);
+      seg(lerp((ox + hx) / 2, ex, pump), lerp((oy + hy) / 2, ey, pump), wx, wy, armW * 0.9, o.body);
+      hx = wx;
+      hy = wy;
+    } else {
+      limb(ox, oy, armLen, armW, ang, o.body);
+    }
     ctx.fillStyle = handCol;
     ctx.beginPath();
     ctx.arc(hx, hy, 0.034 * h, 0, Math.PI * 2);
@@ -409,8 +452,9 @@ const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: numb
     }
   };
   const throwA = (o.throwArm ?? 0) * -2.3;
-  arm(-1, -sw * 0.8 + 0.05, false);
-  arm(1, sw * 0.8 - 0.05 + throwA, !!o.caseInHand);
+  const busy = !!o.caseInHand || (o.throwArm ?? 0) > 0;
+  arm(-1, -sw * 0.8 + 0.05, false, run);
+  arm(1, sw * 0.8 - 0.05 + throwA, !!o.caseInHand, busy ? run * 0.25 : run);
   // đầu
   const headR = (o.hero ? 0.105 : 0.095) * h;
   ctx.fillStyle = o.head;
@@ -476,15 +520,15 @@ export const BeDifferent: React.FC = () => {
       const {p, s} = crowdPos(w, t);
       if (s > 228) continue;
       const tone = 112 + Math.round(w.tone * 40);
-      figureItem(p, 1.78 + w.tone * 0.08, {body: grey(tone), head: grey(tone + 60), phase: s * 3.6 + w.phase, walk: 1}, false, [tone, tone, tone + 3]);
+      figureItem(p, 1.78 + w.tone * 0.08, {body: grey(tone), head: grey(tone + 60), phase: s * 2.5 + w.phase, walk: 1, run: 1}, false, [tone, tone, tone + 3]);
     }
 
     const hs = heroState(t);
     const cs = caseState(t, hs.p);
     const throwArm = t < CASE_THROW ? smooth(11.35, CASE_THROW, t) : 1 - smooth(CASE_THROW + 0.1, 12.6, t);
     const lean = smooth(11.35, CASE_THROW, t) * (1 - smooth(CASE_THROW + 0.1, 12.8, t));
-    const heroPhase = t < HERO_STOP ? hs.dist * 3.6 : t < HERO_GO ? 0 : hs.dist * 3.0;
-    figureItem(hs.p, 1.86, {body: '#4b4b51', head: '#f2f2f4', phase: heroPhase, walk: hs.walking, hero: true, front: hs.front, caseInHand: cs.inHand, throwArm, lean: -lean}, true, [75, 75, 81]);
+    const heroPhase = t < HERO_STOP ? hs.dist * 2.5 : t < HERO_GO ? 0 : hs.dist * 2.6;
+    figureItem(hs.p, 1.86, {body: '#4b4b51', head: '#f2f2f4', phase: heroPhase, walk: hs.walking, run: hs.run, hero: true, front: hs.front, caseInHand: cs.inHand, throwArm, lean: -lean}, true, [75, 75, 81]);
 
     if (!cs.inHand) {
       const q = cam.toCam(cs.p);

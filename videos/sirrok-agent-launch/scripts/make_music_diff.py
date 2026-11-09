@@ -25,8 +25,8 @@ THROW = 11.85
 LAND = 12.45
 GO = 13.4
 RISE = 17.0
-STEP_CROWD = 1 / 1.83  # nhịp bước đám đông (khớp hoạt hình)
-STEP_HERO = 1 / 1.96
+STEP_CROWD = 1 / 2.7  # nhịp chạy của đám đông (khớp hoạt hình)
+STEP_HERO = 1 / 2.65  # nhịp chạy của người khác biệt
 
 
 def add(sig, at, gain=1.0, pan=0.0):
@@ -196,11 +196,12 @@ add(whoosh(0.55), THROW - 0.15, 0.45, -0.3)
 add(thud(), LAND, 0.8, -0.35)
 
 # bước chân riêng: rõ, có vang
-x = GO + 0.25
+x = GO + 0.4
 while x < 24.0:
     fade = 1 - min(1, max(0, (x - 17.5) / 5))
     add(footstep(True), x, 0.5 * fade, -0.15)
-    x += STEP_HERO
+    # bước đầu chậm, tăng tốc thành nhịp chạy trong ~1,2 s
+    x += STEP_HERO + 0.25 * max(0.0, 1 - (x - GO) / 1.3)
 
 # vòng hợp âm Am – F – C – G (mỗi hợp âm 1,4 s), dâng dần
 prog = [
