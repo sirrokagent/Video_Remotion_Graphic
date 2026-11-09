@@ -323,7 +323,7 @@ export const drawWorld = (ctx: CanvasRenderingContext2D, cam: Camera) => {
 };
 
 // ---------- người ----------
-type FigOpts = {
+export type FigOpts = {
   body: string;
   head: string;
   phase: number;
@@ -335,7 +335,7 @@ type FigOpts = {
   throwArm?: number; // 0..1 vung tay ném
   lean?: number;
 };
-const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: number, o: FigOpts) => {
+export const drawFigure = (ctx: CanvasRenderingContext2D, x: number, y: number, h: number, o: FigOpts) => {
   const sw = Math.sin(o.phase) * 0.42 * o.walk;
   const bob = Math.abs(Math.cos(o.phase)) * lerp(0.012, 0.05, o.run ?? 0) * h * o.walk;
   ctx.save();
