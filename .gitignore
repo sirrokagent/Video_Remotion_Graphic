@@ -40,5 +40,7 @@ videos/*/assets/bgm/*
 automation/config.json
 # ket qua tung lan chay
 automation/runs/
+# ly do hong cua lan chay gan nhat — CI doc de nhan vao tin bao hong
+automation/last-error.txt
 # file giong doc ban bo vao
 automation/inbox/

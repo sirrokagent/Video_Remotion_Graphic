@@ -199,6 +199,18 @@ Workflow: [`.github/workflows/reel.yml`](../.github/workflows/reel.yml) — ch�
 Thay cho `CLAUDE_CODE_OAUTH_TOKEN` có thể dùng `ANTHROPIC_API_KEY` (trả theo lượt gọi).
 Token OAuth hạn **1 năm** và **không tự gia hạn** — hết hạn thì workflow hỏng cho tới khi chạy lại `setup-token`.
 
+**Hạn mức dùng chung — đây là chỗ đã vấp thật.** Token OAuth tiêu hạn mức của gói
+Pro/Max, **chung với lúc bạn ngồi làm việc**. Dùng Claude nhiều trong tuần thì tới
+lượt cron chạy có thể nhận:
+
+```
+You've hit your weekly limit · resets Oct 10, 11pm (UTC)
+```
+
+Pipeline nhận ra riêng lỗi này, gọi đúng tên nó và nói rõ là **không phải lỗi code** —
+đợi reset là chạy lại được. Muốn cron không phụ thuộc hạn mức gói thuê bao thì đặt
+thêm secret `ANTHROPIC_API_KEY`; có cả hai thì API key được dùng trước.
+
 ### Vấn đề thật: runner của GitHub bị YouTube chặn
 
 Runner `ubuntu-latest` dùng IP trung tâm dữ liệu. YouTube chặn rất mạnh IP loại đó

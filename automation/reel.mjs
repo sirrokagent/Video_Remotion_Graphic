@@ -96,6 +96,9 @@ console.log(`\n  lan chay: ${slug}`);
 console.log(`  thu muc : automation/runs/${slug}`);
 if (args.dryRun) log.warn("--dry-run: buoc 4 se KHONG gui gi vao Telegram");
 
+// Xoa ly do hong cua lan truoc, keo CI bao lai loi tuan truoc nhu loi tuan nay.
+try { fs.rmSync(path.join(AUTO, "last-error.txt"), { force: true }); } catch { /* khong sao */ }
+
 for (const s of STEPS) {
   if (s.n < args.from || s.n > args.to) continue;
   log.step(s.n, s.t);
@@ -104,6 +107,14 @@ for (const s of STEPS) {
     await mod.run({ cfg, dir, slug, args, state: readState(dir) });
     writeState(dir, { lastStep: s.n });
   } catch (e) {
+    // Ghi ly do ra mot cho co dinh de CI doc lai va nhan vao tin bao hong.
+    // "Chay hong" khong kem ly do thi nguoi nhan van phai tu mo log len doc.
+    const why = e instanceof Blocked ? `${e.what}\n${e.howToFix}` : e.message;
+    try {
+      fs.writeFileSync(path.join(AUTO, "last-error.txt"),
+        `buoc ${s.n} (${s.t})\n${why}\n`);
+    } catch { /* khong ghi duoc thi thoi, dung de no che mat loi that */ }
+
     if (e instanceof Blocked) {
       log.err(e.what);
       console.log(`\n  Cach go:\n    ${e.howToFix}\n`);
