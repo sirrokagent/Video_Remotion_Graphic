@@ -26,6 +26,7 @@ import {IPHONE_DUR, ShotOnIphone} from './viral/ShotOnIphone';
 import {BMW_DUR, BmwM} from './bmw/BmwM';
 import {BeDifferent, DIFF_DUR} from './different/BeDifferent';
 import {BeDifferentAvatar} from './different/Avatars';
+import {SQ_DUR, SquareWheels} from './square/SquareWheels';
 import {SirrokFilmVertical} from './film/vertical/SirrokFilmVertical';
 import {VW, VH} from './film/vertical/frame';
 import {VIntro} from './film/vertical/VIntro';
@@ -65,6 +66,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Viral-iPhone15Pro" component={ShotOnIphone} width={1080} height={1920} fps={30} durationInFrames={IPHONE_DUR} />
       <Composition id="BMW-M3-M4" component={BmwM} width={1920} height={1080} fps={30} durationInFrames={BMW_DUR} />
       <Composition id="Be-Different" component={BeDifferent} width={1080} height={1920} fps={30} durationInFrames={DIFF_DUR} />
+      <Composition id="Square-Wheels" component={SquareWheels} width={1080} height={1920} fps={30} durationInFrames={SQ_DUR} />
       <Still id="Avatar-Hero" component={BeDifferentAvatar} defaultProps={{variant: 'hero' as const}} width={1080} height={1080} />
       <Still id="Avatar-Bust" component={BeDifferentAvatar} defaultProps={{variant: 'bust' as const}} width={1080} height={1080} />
       <Still id="Avatar-Fork" component={BeDifferentAvatar} defaultProps={{variant: 'fork' as const}} width={1080} height={1080} />
