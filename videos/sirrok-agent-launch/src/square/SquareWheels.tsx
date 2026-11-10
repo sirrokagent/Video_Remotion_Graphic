@@ -22,10 +22,10 @@ const R = 128; // bán kính bánh
 
 // ---------- lịch trình (giây) — giữ khớp với scripts/make_music_square.py ----------
 export const STAGES = [
-  {at: 2.4, label: 'TUẦN 1', n: 40, color: [229, 57, 47], omega: 1.5, strain: 1},
-  {at: 7.2, label: 'TUẦN 4', n: 6.5, color: [240, 122, 42], omega: 2.4, strain: 0.75},
-  {at: 11.4, label: 'THÁNG 3', n: 3.0, color: [236, 164, 128], omega: 3.4, strain: 0.4},
-  {at: 15.0, label: 'THÁNG 12', n: 2.0, color: [120, 182, 255], omega: 5.6, strain: 0},
+  {at: 2.4, label: 'WEEK 1', n: 40, color: [229, 57, 47], omega: 1.5, strain: 1},
+  {at: 7.2, label: 'WEEK 4', n: 6.5, color: [240, 122, 42], omega: 2.4, strain: 0.75},
+  {at: 11.4, label: 'MONTH 3', n: 3.0, color: [236, 164, 128], omega: 3.4, strain: 0.4},
+  {at: 15.0, label: 'MONTH 12', n: 2.0, color: [120, 182, 255], omega: 5.6, strain: 0},
 ];
 const MORPH = 0.9; // giây biến hình bánh quanh mỗi mốc
 const FINAL_TEXT = 19.2;
@@ -428,12 +428,12 @@ export const SquareWheels: React.FC = () => {
         ) : null,
       )}
 
-      {/* "ĐÀ" + mũi tên */}
+      {/* "MOMENTUM" + mũi tên */}
       <div
         style={{
           position: 'absolute',
           top: 660,
-          left: 640,
+          left: 500,
           fontFamily: FONT,
           fontWeight: 700,
           fontSize: 38,
@@ -442,8 +442,8 @@ export const SquareWheels: React.FC = () => {
           opacity: smooth(STAGES[3].at + 0.6, STAGES[3].at + 1.1, t) * (1 - fin1),
         }}
       >
-        ĐÀ
-        <svg width="220" height="60" style={{position: 'absolute', left: 80, top: 8, overflow: 'visible'}}>
+        MOMENTUM
+        <svg width="220" height="60" style={{position: 'absolute', left: 318, top: 8, overflow: 'visible'}}>
           <path
             d="M 0 20 Q 100 -10 200 30"
             fill="none"
@@ -479,9 +479,9 @@ export const SquareWheels: React.FC = () => {
 
       {/* câu kết */}
       <div style={{position: 'absolute', top: 470, left: 0, right: 0, textAlign: 'center', fontFamily: FONT, color: '#f4f4f6'}}>
-        <div style={{fontSize: 64, fontWeight: 800, letterSpacing: '0.06em', opacity: fin1, transform: `translateY(${(1 - fin1) * 24}px)`}}>KHỞI ĐẦU VUÔNG.</div>
+        <div style={{fontSize: 64, fontWeight: 800, letterSpacing: '0.06em', opacity: fin1, transform: `translateY(${(1 - fin1) * 24}px)`}}>EVERYONE STARTS SQUARE.</div>
         <div style={{fontSize: 88, fontWeight: 800, letterSpacing: '0.04em', marginTop: 18, opacity: fin2, transform: `translateY(${(1 - fin2) * 24}px)`}}>
-          CỨ <span style={{color: blue, textShadow: '0 0 30px rgba(77,155,255,0.7)'}}>ĐẠP TIẾP.</span>
+          KEEP <span style={{color: blue, textShadow: '0 0 30px rgba(77,155,255,0.7)'}}>PEDALING.</span>
         </div>
       </div>
       <AbsoluteFill style={{background: '#000', opacity: fadeOut}} />
